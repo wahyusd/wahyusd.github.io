@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title data-render="page-title">WS B-Roll Assistant — Wahyusd</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" data-render="page-desc" content="WS B-Roll Assistant — AI-powered desktop companion for video editors with transcription, segmentation, B-Roll recommendations, and YouTube chapter generation.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="/css/page.css">
+    <link rel="icon" type="image/png" href="/assets/images/profile-photo.png">
+</head>
+<body>
+
+    <div data-include="navbar" data-active="projects"></div>
+
+    <main data-project="ws-broll-assistant">
+
+        <!-- ======= HERO ======= -->
+        <section class="page-hero">
+            <div class="container">
+
+                <div class="page-breadcrumb">
+                    <a href="/index.html">Home</a>
+                    <span class="page-breadcrumb-sep">/</span>
+                    <a href=".">Projects</a>
+                    <span class="page-breadcrumb-sep">/</span>
+                    <span data-render="breadcrumb-title"></span>
+                </div>
+
+                <div class="page-hero-tags" data-render="hero-tags"></div>
+
+                <h1 data-render="hero-title"></h1>
+                <p class="page-hero-desc" data-render="hero-desc"></p>
+
+                <div class="page-hero-actions">
+                    <a data-render="github-link" href="https://github.com/wahyusd/ws-broll-assistant" target="_blank" rel="noopener" class="btn btn--primary">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                    <a href="/index.html#projects" class="btn btn--stroke">
+                        <i class="fas fa-arrow-left"></i> Back to Projects
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ======= CONTENT ======= -->
+        <div class="page-content">
+            <div class="container">
+
+                <div class="page-media">
+                    <img data-render="media-src" src="/assets/images/portfolio/ws-b-roll/preview.jpeg" alt="WS B-Roll Assistant Screenshot">
+                    <div class="media-caption" data-render="media-caption"></div>
+                </div>
+
+                <!-- Overview -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">📖</span> Overview
+                    </h2>
+                    <p>
+                        WS B-Roll Assistant adalah aplikasi desktop yang dirancang untuk mempercepat alur kerja pembuatan konten video. Menggunakan kekuatan AI — baik cloud (OpenAI, Anthropic, Gemini, OpenRouter, Groq, DeepSeek) maupun lokal (Ollama) — aplikasi ini secara otomatis menganalisis transkrip, membagi segmen, memberikan rekomendasi B-Roll, hingga menentukan chapter YouTube dengan musik yang tepat.
+                    </p>
+                    <p>
+                        Proyek ini lahir dari frustrasi pribadi: proses editing video yang repetitif dan memakan waktu. Pertanyaannya sederhana — <em>"Bisakah AI mengerjakan bagian membosankan dari editing?"</em>
+                    </p>
+                    <div class="callout">
+                        <span class="callout-icon">🔒</span>
+                        <span>API Key disimpan dengan enkripsi AES — tidak disimpan dalam plaintext di sistem kamu.</span>
+                    </div>
+                </section>
+
+                <!-- Features -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">✨</span> Fitur Utama
+                    </h2>
+                    <ul class="feature-list">
+                        <li><strong>Multi-Agent AI Support</strong> — Terintegrasi dengan GPT-4, Claude 3.5, Gemini 2.0, OpenRouter, Groq, DeepSeek serta dukungan penuh untuk AI Lokal (Ollama) untuk privasi maksimal.</li>
+                        <li><strong>High-Precision Transcription</strong> — Menggunakan engine Faster-Whisper (CTranslate2) untuk hasil transkripsi audio ke teks (SRT/TXT) yang sangat cepat dan akurat.</li>
+                        <li><strong>Smart Segmentation</strong> — Secara otomatis membagi video menjadi segmen-segmen logis berdasarkan narasi.</li>
+                        <li><strong>Intelligent B-Roll Search</strong> — Memberikan rekomendasi visual mulai dari AI Video Prompt, AI Image Prompt, hingga pencarian otomatis di stok media lokal.</li>
+                        <li><strong>YouTube Chapters & Music</strong> — Menghasilkan chapter YouTube secara instan lengkap dengan rekomendasi musik (keyword online & stok lokal).</li>
+                        <li><strong>Professional UI</strong> — Antarmuka modern dengan Tailwind CSS, responsif, mendukung drag-and-drop, dan workflow yang intuitif.</li>
+                    </ul>
+                </section>
+
+                <!-- Workflow Screenshots -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">🎮</span> Workflow
+                    </h2>
+                    <ol class="steps-list">
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">Step 1: Transcribe</div>
+                                <div class="step-desc">Masukkan file video/audio kamu. Tunggu hingga AI selesai membuat file SRT/TXT.</div>
+                            </div>
+                        </li>
+                        <div class="page-media" style="margin-top:1rem;">
+                            <img src="/assets/images/portfolio/ws-b-roll/transcribe.png" alt="Transcribe Step">
+                            <div class="media-caption">WS B-Roll Assistant — Transcription</div>
+                        </div>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">Step 2: Segment</div>
+                                <div class="step-desc">AI akan menganalisis transkrip dan membaginya menjadi beberapa bagian cerita.</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">Step 3: B-Roll Review</div>
+                                <div class="step-desc">Untuk setiap segmen, AI memberikan strategi visual (A-Roll vs B-Roll).</div>
+                            </div>
+                        </li>
+                        <div class="page-media" style="margin-top:1rem;">
+                            <img src="/assets/images/portfolio/ws-b-roll/segment-review.png" alt="Segment Review">
+                            <div class="media-caption">WS B-Roll Assistant — Segment Review</div>
+                        </div>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">Step 4: Generate B-Roll</div>
+                                <div class="step-desc">Klik "Generate Recommendations" untuk mendapatkan prompt AI atau mencari file di folder stok kamu.</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">Step 5: Chapters</div>
+                                <div class="step-desc">Masuk ke menu Chapters untuk membuat daftar isi video YouTube secara otomatis.</div>
+                            </div>
+                        </li>
+                            <div class="page-media" style="margin-top:1rem;">
+                                <img src="/assets/images/portfolio/ws-b-roll/chapter-page.png" alt="Chapters Page">
+                                <div class="media-caption">WS B-Roll Assistant — YouTube Chapters</div>
+                            </div>
+                    </ol>
+                </section>
+
+                <!-- Tech Stack -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">🛠</span> Tech Stack
+                    </h2>
+                    <p style="margin-bottom:1.2rem;"><strong>Backend:</strong> Python 3.x, Faster-Whisper (CTranslate2), Requests (REST API), Cryptography (AES)</p>
+                    <p style="margin-bottom:1.2rem;"><strong>Frontend:</strong> HTML5, Vanilla JS, CSS3, Tailwind CSS</p>
+                    <p style="margin-bottom:1.2rem;"><strong>GUI Framework:</strong> Eel (Chrome-based)</p>
+                    <div class="tech-grid" data-render="tech-grid"></div>
+                </section>
+
+                <!-- Requirements -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">📋</span> Requirements
+                    </h2>
+                    <ul class="feature-list">
+                        <li>Python 3.9 atau lebih tinggi</li>
+                        <li>Google Chrome atau Microsoft Edge (untuk menjalankan GUI Eel)</li>
+                        <li>FFmpeg — sudah disertakan dalam folder <code>ffmpeg/</code></li>
+                        <li>Ollama (opsional) — untuk menggunakan AI lokal tanpa API key</li>
+                    </ul>
+                </section>
+
+                <!-- Installation -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">📦</span> Installation
+                    </h2>
+                    <ol class="steps-list">
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">Clone Repository</div>
+                                <div class="code-block"><pre>git clone https://github.com/wahyusd/ws-broll-assistant.git
+cd ws-broll-assistant</pre></div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">Setup Virtual Environment</div>
+                                <div class="code-block"><pre>python -m venv .venv
+.venv\Scripts\activate</pre></div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">Install Dependencies</div>
+                                <div class="code-block"><pre>pip install -r requirements.txt</pre></div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">Jalankan Aplikasi</div>
+                                <div class="code-block"><pre>Run-Assistant.bat    ← jalankan aplikasi
+Build-App.bat        ← bundle menjadi .exe</pre></div>
+                            </div>
+                        </li>
+                    </ol>
+                </section>
+
+                <!-- AI Configuration -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">⚙️</span> AI Configuration
+                    </h2>
+                    <p>Aplikasi ini mendukung berbagai provider AI yang bisa dikonfigurasi melalui menu <strong>Settings</strong> di dalam aplikasi:</p>
+                    <ul class="feature-list">
+                        <li><strong>Cloud:</strong> OpenAI, Anthropic, Gemini, OpenRouter, Groq, DeepSeek</li>
+                        <li><strong>Local (Ollama):</strong> Jalankan Ollama di port 11434 — tidak perlu API key, semua berjalan di komputermu</li>
+                    </ul>
+                    <div class="callout">
+                        <span class="callout-icon">🔒</span>
+                        <span>API Key disimpan dengan enkripsi AES — tidak disimpan dalam plaintext di sistem kamu.</span>
+                    </div>
+                </section>
+
+                <!-- Output Structure -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">📁</span> Output Structure
+                    </h2>
+                    <p>Hasil kerja aplikasi disimpan di folder <code>output/</code>:</p>
+                    <div class="code-block"><pre>output/
+├── transcript.srt / transcript.txt   ← hasil transkripsi
+├── segments.md                        ← daftar segmen video
+├── review_segments.json               ← analisis visual per segmen
+├── broll_recommendations.json         ← rekomendasi B-Roll (akumulatif)
+└── chapters.md                        ← daftar chapter YouTube & musik</pre></div>
+                </section>
+
+            </div>
+        </div>
+
+    </main>
+
+    <div data-include="footer"></div>
+
+<script src="/js/data.js"></script>
+<script src="/js/project-data.js"></script>
+<script src="/js/page.js"></script>
+<script src="/js/include.js"></script>
+</body>
+</html>

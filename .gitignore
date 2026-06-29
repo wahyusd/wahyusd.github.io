@@ -1,0 +1,6 @@
+list socmed.txt
+example/
+.vscode/
+node_modules/
+.env
+*.local

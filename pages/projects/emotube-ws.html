@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title data-render="page-title">EmoTube WS — Wahyusd</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" data-render="page-desc" content="EmoTube WS — Advanced YouTube comment sentiment analyzer with NLP pipeline and interactive word network graphs.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="/css/page.css">
+    <link rel="icon" type="image/png" href="/assets/images/profile-photo.png">
+</head>
+<body>
+
+    <div data-include="navbar" data-active="projects"></div>
+
+    <main data-project="emotube-ws">
+
+        <!-- ======= HERO ======= -->
+        <section class="page-hero">
+            <div class="container">
+
+                <div class="page-breadcrumb">
+                    <a href="/index.html">Home</a>
+                    <span class="page-breadcrumb-sep">/</span>
+                    <a href=".">Projects</a>
+                    <span class="page-breadcrumb-sep">/</span>
+                    <span data-render="breadcrumb-title"></span>
+                </div>
+
+                <div class="page-hero-tags" data-render="hero-tags"></div>
+
+                <h1 data-render="hero-title"></h1>
+                <p class="page-hero-desc" data-render="hero-desc"></p>
+
+                <div class="page-hero-actions">
+                    <a data-render="github-link" href="https://github.com/wahyusd/emotube-ws" target="_blank" rel="noopener" class="btn btn--primary">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                    <a href="/index.html#projects" class="btn btn--stroke">
+                        <i class="fas fa-arrow-left"></i> Back to Projects
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ======= CONTENT ======= -->
+        <div class="page-content">
+            <div class="container">
+
+                <div class="page-media">
+                    <img data-render="media-src" src="/assets/images/portfolio/emotube-ws/main.png" alt="EmoTube WS Screenshot">
+                    <div class="media-caption" data-render="media-caption"></div>
+                </div>
+
+                <!-- Overview -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">📖</span> Overview
+                    </h2>
+                    <p>
+                        EmoTube WS adalah fork yang diperluas secara signifikan dari proyek Emotube original. Di atas pipeline sentiment yang sudah ada, proyek ini menambahkan layer <strong>Advanced Analysis</strong> dengan <strong>NLP Pipeline</strong> statistik murni (tokenization, TF-IDF, K-Means clustering, co-occurrence graph via networkx), sistem cache berbasis PostgreSQL (<strong>AnalysisCache</strong>), dan classifier <strong>SentimentHeadline</strong> yang melabeli tone keseluruhan video.
+                    </p>
+                    <p>
+                        Dimulai dari rasa penasaran: <em>"Apa sebenarnya yang dirasakan penonton dari video YouTube ini?"</em> — lalu berkembang menjadi tool analisis komentar yang cukup lengkap.
+                    </p>
+                    <div class="callout">
+                        <span class="callout-icon">ℹ️</span>
+                        <span>Proyek ini merupakan fork dari <a href="https://github.com/00200200/youtube-comment-sentiment-analyzer" target="_blank" rel="noopener" style="color: var(--color-primary)">Emotube</a> oleh 00200200, dengan tambahan Advanced Analysis Dashboard, NLP Pipeline statistik, dan sistem cache terdistribusi.</span>
+                    </div>
+                </section>
+
+                <!-- What's New -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">✨</span> What's New in This Fork
+                    </h2>
+
+                    <h3 style="font-size:1.6rem; margin-bottom:1.2rem; margin-top:2rem; color: var(--text-main);">Advanced Analysis Dashboard</h3>
+                    <p>Layer analisis khusus yang dijalankan per-video, dikomputasi di background dengan live progress tracking via polling:</p>
+                    <ul class="feature-list">
+                        <li><strong>Word Cloud</strong> — Top 150 kata per sentiment group (positive / negative / neutral / ambiguous) dengan multilingual stopword filtering (Indonesian + English).</li>
+                        <div class="page-media">
+                            <img src="/assets/images/portfolio/emotube-ws/word-cloud.png" alt="Word Cloud Screenshot">
+                            <div class="media-caption">EmoTube WS — Word Cloud</div>
+                        </div>
+                        <li><strong>N-gram Analysis</strong> — Top bigrams dan trigrams diekstrak dari semua komentar; klik phrase manapun untuk filter komentar di tabel.</li>
+                        <div class="page-media">
+                            <img src="/assets/images/portfolio/emotube-ws/top-phrases.png" alt="N-gram Analysis Screenshot">
+                            <div class="media-caption">EmoTube WS — N-gram Analysis</div>
+                        </div>
+                        <li><strong>Topic Clusters</strong> — TF-IDF + K-Means clustering untuk mengelompokkan komentar berdasarkan tema; auto-selects jumlah cluster optimal (silhouette score); drilldown modal per cluster dengan statistik sentimen.</li>
+                        <div class="page-media">
+                            <img src="/assets/images/portfolio/emotube-ws/clustering.png" alt="Topic Clusters Screenshot">
+                            <div class="media-caption">EmoTube WS — Topic Clusters</div>
+                        </div>
+                        <li><strong>Word Network Graph</strong> — Co-occurrence graph dengan vis-network: ForceAtlas2 physics, sentiment-colored nodes, community detection, path finding, timeline filter, play animation, export PNG.</li>
+                        <div class="page-media">
+                            <img src="/assets/images/portfolio/emotube-ws/word-network.png" alt="Word Network Graph Screenshot">
+                            <div class="media-caption">EmoTube WS — Word Network Graph</div>
+                        </div>
+                        <li><strong>Engagement by Sentiment</strong> — Rata-rata likes, total likes, dan jumlah komentar per sentiment group.</li>
+                        <div class="page-media">
+                            <img src="/assets/images/portfolio/emotube-ws/engagement.png" alt="Engagement by Sentiment Screenshot">
+                            <div class="media-caption">EmoTube WS — Engagement by Sentiment</div>
+                        </div>
+                    </ul>
+
+                    <h3 style="font-size:1.6rem; margin-bottom:1.2rem; margin-top:2.5rem; color: var(--text-main);">Backend Additions</h3>
+                    <ul class="feature-list">
+                        <li><strong>NLP Pipeline</strong> (<code>nlp_pipeline.py</code>) — statistik murni (tanpa LLM): tokenisasi dengan langdetect, co-occurrence graph via networkx, TF-IDF clustering via scikit-learn.</li>
+                        <li><strong>AnalysisCache</strong> — model PostgreSQL dengan JSONB caching untuk 5 komponen NLP; setiap field di-cache incremental saat selesai dikomputasi.</li>
+                        <li><strong>SentimentHeadline</strong> — classifier yang melabeli tone video sebagai Positive / Negative / Controversial / Viral / Boring / Neutral berdasarkan rasio sentimen dan metrik engagement.</li>
+                        <li>Metrik controversially dan engagement rate.</li>
+                        <li>CSV export, delete video + cache endpoint, cluster detail endpoint (sentimen breakdown + avg likes per cluster).</li>
+                    </ul>
+
+                    <h3 style="font-size:1.6rem; margin-bottom:1.2rem; margin-top:2.5rem; color: var(--text-main);">Frontend Additions</h3>
+                    <ul class="feature-list">
+                        <li><strong>AdvancedDashboard</strong> — polling-based progress UI, per-component status indicators, elapsed timer, stop/re-analyze controls.</li>
+                        <li><strong>AnalysisGlobalTracker</strong> — persist state analisis aktif antar navigasi via sessionStorage.</li>
+                        <li>Export utilities — PNG export untuk charts, JSON report download, CSV comment export.</li>
+                        <li>Property-based tests (<code>fast-check</code> + <code>vitest</code>) untuk network graph logic (bundling, color, edge options, node sizing, reveal order).</li>
+                        <li>React 19 + TypeScript + TanStack Router + TanStack Query + Tailwind CSS v4 + ShadCN/UI + Recharts + Vite + Bun.</li>
+                    </ul>
+
+                    <h3 style="font-size:1.6rem; margin-bottom:1.2rem; margin-top:2.5rem; color: var(--text-main);">Port Changes</h3>
+                    <p>Default port diubah untuk menghindari konflik dengan service lain:</p>
+                    <table class="tech-grid" style="display:table; width:100%; max-width:500px; border-collapse:collapse;">
+                        <thead>
+                            <tr style="border-bottom:2px solid var(--border-color);">
+                                <th style="padding:0.6rem 1rem; text-align:left;">Service</th>
+                                <th style="padding:0.6rem 1rem; text-align:left;">Original</th>
+                                <th style="padding:0.6rem 1rem; text-align:left;">Fork</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom:1px solid var(--border-color);">
+                                <td style="padding:0.6rem 1rem;">Frontend</td>
+                                <td style="padding:0.6rem 1rem;">3000</td>
+                                <td style="padding:0.6rem 1rem;"><strong>3123</strong></td>
+                            </tr>
+                            <tr style="border-bottom:1px solid var(--border-color);">
+                                <td style="padding:0.6rem 1rem;">Backend</td>
+                                <td style="padding:0.6rem 1rem;">8000</td>
+                                <td style="padding:0.6rem 1rem;"><strong>8123</strong></td>
+                            </tr>
+                            <tr>
+                                <td style="padding:0.6rem 1rem;">PostgreSQL</td>
+                                <td style="padding:0.6rem 1rem;">5432</td>
+                                <td style="padding:0.6rem 1rem;"><strong>5433</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Tech Stack -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">🛠</span> Tech Stack
+                    </h2>
+                    <p style="margin-bottom:1.2rem;"><strong>Backend:</strong> Python 3.11, FastAPI, SQLModel, PostgreSQL, Transformers/PyTorch, scikit-learn, networkx, langdetect</p>
+                    <p style="margin-bottom:1.2rem;"><strong>Frontend:</strong> React 19, TypeScript, TanStack Router, TanStack Query, Tailwind CSS v4, ShadCN/UI, Recharts, vis-network, D3.js (word cloud), Vite, Bun</p>
+                    <p style="margin-bottom:1.2rem;"><strong>Infrastructure:</strong> Docker Compose, YouTube Data API v3</p>
+                    <div class="tech-grid" data-render="tech-grid"></div>
+                </section>
+
+                <!-- Quick Start -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">🚀</span> Quick Start
+                    </h2>
+                    <div class="callout" style="margin-bottom:1.5rem;">
+                        <span class="callout-icon">📋</span>
+                        <span><strong>Prerequisites:</strong> Docker Desktop (Windows/Mac) or Docker Engine + Compose plugin (Linux), dan YouTube Data API v3 key dari <a href="https://console.cloud.google.com" target="_blank" rel="noopener" style="color:var(--color-primary)">Google Cloud Console</a>.</span>
+                    </div>
+                    <ol class="steps-list">
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">Clone & Konfigurasi</div>
+                                <div class="code-block"><pre>git clone https://github.com/wahyusd/emotube-ws.git
+cd emotube-ws
+cp .env.example .env
+# Edit .env — isi YOUTUBE_API_KEY dan value lainnya</pre></div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">Jalankan dengan Docker (backend + database)</div>
+                                <div class="code-block"><pre>docker compose up -d --build</pre></div>
+                                <div class="step-desc">Gunakan <code>--build</code> hanya saat pertama kali atau setelah mengubah <code>requirements.txt</code> / <code>package.json</code>. Untuk run selanjutnya cukup <code>docker compose up -d</code> — bind-mounts membuat perubahan source code langsung terdeteksi.</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">Akses Aplikasi</div>
+                                <div class="step-desc">Setelah container berjalan, buka:</div>
+                                <div style="margin-top:0.5rem;">
+                                    <table style="width:100%; max-width:400px; border-collapse:collapse;">
+                                        <tr style="border-bottom:1px solid var(--border-color);">
+                                            <td style="padding:0.4rem 0.8rem;">Frontend</td>
+                                            <td style="padding:0.4rem 0.8rem;"><a href="http://localhost:3123" target="_blank" rel="noopener">http://localhost:3123</a></td>
+                                        </tr>
+                                        <tr style="border-bottom:1px solid var(--border-color);">
+                                            <td style="padding:0.4rem 0.8rem;">Backend API</td>
+                                            <td style="padding:0.4rem 0.8rem;"><a href="http://localhost:8123" target="_blank" rel="noopener">http://localhost:8123</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:0.4rem 0.8rem;">API Docs</td>
+                                            <td style="padding:0.4rem 0.8rem;"><a href="http://localhost:8123/docs" target="_blank" rel="noopener">http://localhost:8123/docs</a></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">Masukkan API Key</div>
+                                <div class="step-desc">Buka halaman Settings di aplikasi dan masukkan YouTube Data API v3 key kamu, atau atur melalui file <code>.env</code> sebelum build.</div>
+                            </div>
+                        </li>
+                    </ol>
+                </section>
+
+                <!-- API Endpoints -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">🔌</span> API Endpoints
+                    </h2>
+
+                    <h3 style="font-size:1.6rem; margin-bottom:0.8rem; margin-top:1.5rem; color: var(--text-main);">Videos</h3>
+                    <ul class="feature-list">
+                        <li><code>POST /api/videos/fetch</code> — fetch dan analisis video YouTube</li>
+                        <li><code>GET /api/videos/{id}</code> — metadata video</li>
+                        <li><code>GET /api/videos/{id}/with-comments</code> — video + komentar (paginated)</li>
+                        <li><code>DELETE /api/videos/{id}</code> — hapus video, komentar, dan cache</li>
+                    </ul>
+
+                    <h3 style="font-size:1.6rem; margin-bottom:0.8rem; margin-top:1.5rem; color: var(--text-main);">Comments</h3>
+                    <ul class="feature-list">
+                        <li><code>GET /api/videos/{id}/comments</code> — paginated, filterable by sentiment / author / likes / phrase / sort</li>
+                    </ul>
+
+                    <h3 style="font-size:1.6rem; margin-bottom:0.8rem; margin-top:1.5rem; color: var(--text-main);">Advanced Analysis</h3>
+                    <ul class="feature-list">
+                        <li><code>POST /api/analysis/{video_id}/compute</code> — trigger komputasi NLP</li>
+                        <li><code>GET /api/analysis/{video_id}</code> — cached analysis (partial results supported)</li>
+                        <li><code>GET /api/analysis/{video_id}/cluster/{cluster_id}</code> — detail cluster dengan komentar</li>
+                        <li><code>GET /api/analysis/{video_id}/export/csv</code> — download komentar sebagai CSV</li>
+                    </ul>
+
+                    <h3 style="font-size:1.6rem; margin-bottom:0.8rem; margin-top:1.5rem; color: var(--text-main);">Chart Data</h3>
+                    <ul class="feature-list">
+                        <li><code>GET /chart-data?url={youtube_url}</code> — data distribusi sentimen</li>
+                    </ul>
+                </section>
+
+                <!-- Running Tests -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">🧪</span> Running Tests
+                    </h2>
+                    <div class="code-block"><pre># Frontend (property-based tests dengan fast-check + vitest)
+cd frontend
+bun run test
+
+# Backend
+cd backend
+pytest tests/</pre></div>
+                </section>
+
+                <!-- Credits -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">🎓</span> Credits
+                    </h2>
+                    <p>
+                        Proyek ini merupakan fork dari <a href="https://github.com/00200200/youtube-comment-sentiment-analyzer" target="_blank" rel="noopener" style="color: var(--color-primary)">Emotube</a> oleh <strong>00200200</strong>, digunakan dan diperluas di bawah lisensi MIT.
+                    </p>
+                    <p style="margin-top:0.8rem;">
+                        Seluruh arsitektur original, integrasi YouTube, pipeline sentiment, dan fondasi UI merupakan karya dari original author.
+                    </p>
+                </section>
+
+            </div>
+        </div>
+
+    </main>
+
+    <div data-include="footer"></div>
+
+<script src="/js/data.js"></script>
+<script src="/js/project-data.js"></script>
+<script src="/js/page.js"></script>
+<script src="/js/include.js"></script>
+</body>
+</html>

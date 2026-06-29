@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title data-render="page-title">Project Name — Wahyusd</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" data-render="page-desc" content="Project description for SEO.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="/css/page.css">
+    <link rel="icon" type="image/png" href="/assets/images/profile-photo.png">
+</head>
+<body>
+
+    <div data-include="navbar" data-active="projects"></div>
+
+    <main data-project="project-id">
+
+        <section class="page-hero">
+            <div class="container">
+                <div class="page-breadcrumb">
+                    <a href="/index.html">Home</a>
+                    <span class="page-breadcrumb-sep">/</span>
+                    <a href="/pages/projects/">Projects</a>
+                    <span class="page-breadcrumb-sep">/</span>
+                    <span data-render="breadcrumb-title"></span>
+                </div>
+                <!-- Note: saat copy ke /pages/projects/, ganti href="/pages/projects/" menjadi "." -->
+
+                <div class="page-hero-tags" data-render="hero-tags"></div>
+
+                <h1 data-render="hero-title"></h1>
+                <p class="page-hero-desc" data-render="hero-desc"></p>
+
+                <div class="page-hero-actions">
+                    <a data-render="github-link" href="https://github.com/wahyusd/repo-name" target="_blank" rel="noopener" class="btn btn--primary">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                    <a href="/pages/projects/" class="btn btn--stroke">
+                        <i class="fas fa-arrow-left"></i> Back to Projects
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <div class="page-content">
+            <div class="container">
+
+                <!-- Media / Screenshot — data-render akan isi src & caption otomatis -->
+                <!-- <div class="page-media">
+                    <img data-render="media-src" src="/assets/images/portfolio/project-image.png" alt="Screenshot">
+                    <div class="media-caption" data-render="media-caption"></div>
+                </div> -->
+
+                <!-- Overview -->
+                <!-- <section class="page-section">
+                    <h2 class="page-section-title"><span class="section-icon">📖</span> Overview</h2>
+                    <p>Description here.</p>
+                </section> -->
+
+                <!-- Features -->
+                <!-- <section class="page-section">
+                    <h2 class="page-section-title"><span class="section-icon">✨</span> Features</h2>
+                    <ul class="feature-list">
+                        <li><strong>Feature 1</strong> — Description.</li>
+                        <li><strong>Feature 2</strong> — Description.</li>
+                    </ul>
+                </section> -->
+
+                <!-- Tech Stack — data-render akan isi tech-grid otomatis -->
+                <!-- <section class="page-section">
+                    <h2 class="page-section-title"><span class="section-icon">🛠</span> Tech Stack</h2>
+                    <div class="tech-grid" data-render="tech-grid"></div>
+                </section> -->
+
+                <!-- Installation -->
+                <!-- <section class="page-section">
+                    <h2 class="page-section-title"><span class="section-icon">📦</span> Installation</h2>
+                    <ol class="steps-list">
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">Step Name</div>
+                                <div class="code-block"><pre>command here</pre></div>
+                            </div>
+                        </li>
+                    </ol>
+                </section> -->
+
+            </div>
+        </div>
+
+    </main>
+
+    <div data-include="footer"></div>
+
+    <script src="/js/data.js"></script>
+    <script src="/js/project-data.js"></script>
+    <script src="/js/page.js"></script>
+    <script src="/js/include.js"></script>
+</body>
+</html>

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Dian Wahyu Saputra - Personal Portfolio | AI Enthusiast & Software Developer</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Personal portfolio of Dian Wahyu Saputra, a software developer and AI enthusiast specializing in desktop automation, media utility pipelines, and AI video editing companions.">
+    <meta name="author" content="Dian Wahyu Saputra">
+    <link rel="canonical" href="https://wahyusd.github.io/" />
+    
+    <!-- Open Graph (Facebook / LinkedIn) Meta Tags -->
+    <meta property="og:title" content="Dian Wahyu Saputra - Personal Portfolio | AI Enthusiast & Software Developer"/>
+    <meta property="og:description" content="Personal portfolio of Dian Wahyu Saputra, specializing in desktop automation, media pipelines, and AI tools."/>
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://wahyusd.github.io/" />
+    <meta property="og:image" content="https://wahyusd.github.io/assets/images/profile-photo.png"/>
+    <meta property="og:image:type" content="image/png" />
+    
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Dian Wahyu Saputra - Personal Portfolio" />
+    <meta name="twitter:description" content="Dian Wahyu Saputra - AI Enthusiast & Software Developer." />
+    <meta name="twitter:image" content="https://wahyusd.github.io/assets/images/profile-photo.png" />
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+    <link rel="stylesheet" href="css/main.css">
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/profile-photo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/profile-photo.png">
+    <link rel="apple-touch-icon" href="assets/images/profile-photo.png">
+</head>
+
+<body id="top">
+
+    <!-- Preloader screen -->
+    <div id="preloader" aria-hidden="true">
+        <div class="spinner" id="spinner"></div>
+    </div>
+
+    <!-- Main Vue container -->
+    <div id="app">
+        
+        <!-- Navigation Header -->
+        <header class="s-header" role="banner">
+            <div class="container header-container">
+                <div class="header-logo">
+                    <a href="index.html" id="link-logo-nav">
+                        <span class="logo-typewriter" id="logo-typewriter-text"></span><span class="logo-cursor" aria-hidden="true">_</span>
+                    </a>
+                </div>
+
+                <nav class="header-nav" aria-label="Main Navigation">
+                    <ul class="header-nav-list">
+                        <li><a class="smoothscroll active-link" href="#hero" id="nav-home" title="Home">Home</a></li>
+                        <li><a class="smoothscroll" href="#projects" id="nav-projects" title="Projects">Projects</a></li>
+                        <li><a class="smoothscroll" href="#learning" id="nav-learning" title="Learning">Learning</a></li>
+                        <li><a :href="'https://mail.google.com/mail/?view=cm&to=' + profile.email" target="_blank" id="nav-contact" title="Send Email via Gmail">Contact</a></li>
+                    </ul>
+                    <a :href="profile.cvLink" download class="btn btn--stroke btn--small" id="btn-cv-header" title="Download CV PDF">Download CV</a>
+                </nav>
+
+                <button class="header-menu-toggle" id="btn-menu-toggle" aria-label="Toggle Mobile Menu" aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            
+            <!-- Hero / Introduction Section -->
+            <section id="hero" class="s-hero target-section" aria-label="Introduction">
+                
+                <!-- Sleek abstract generated background -->
+                <div class="hero-background-media" aria-hidden="true"></div>
+                <div class="hero-glow-blob hero-glow-1" aria-hidden="true"></div>
+                <div class="hero-glow-blob hero-glow-2" aria-hidden="true"></div>
+                
+                <div class="container hero-container">
+                    
+                    <!-- Left: Welcomes and Summary -->
+                    <div class="hero-content">
+                        <div class="hero-tag">Welcome to my DIGITAL LABORATORY</div>
+                        <h1>
+                            Hi, I'm <span>{{ profile.shortName }}</span>,<br>
+                            I build things with AI.
+                        </h1>
+                        <div class="hero-subtitle-wrapper" aria-live="polite">
+                            <p class="hero-subtitle" id="hero-quote-rotator"></p>
+                        </div>
+                        <blockquote class="hero-quote">
+                            I don't build because I already know the answer.<br>
+                            I build because I want to understand how things work.<br>
+                            Most of what you'll find here started with a simple question:<br><br>
+                            <strong>"Can I build this myself?"</strong><br><br>
+                            This website is my digital laboratory, where I document experiments, share what I learn, and build practical AI systems in public.
+                        </blockquote>
+                        
+                        <!-- CTA and Social Links -->
+                        <div class="hero-cta">
+                            <a href="#projects" class="btn btn--primary smoothscroll" id="btn-view-works" title="View Portfolio Projects">View My Works</a>
+                            <a :href="profile.cvLink" download class="btn btn--stroke" id="btn-cv-hero" title="Download CV PDF">Get CV</a>
+                        </div>
+                        
+                        <ul class="hero-social" aria-label="Social Media Connections">
+                            <li v-for="(social, index) in socials" :key="index">
+                                <a :href="social.url" target="_blank" :id="'social-' + social.platform.toLowerCase().replace(/\s+/g, '-')" :title="social.platform" rel="noopener">
+                                    <!-- Inline SVG for platforms missing FontAwesome icon (Threads) -->
+                                    <span v-if="social.svg" v-html="social.svg"></span>
+                                    <!-- Standard FontAwesome icon -->
+                                    <i v-else :class="social.iconClass" aria-hidden="true"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Right: Circular Profile Floating Card (placed in hero section as requested) -->
+                    <div class="hero-profile-container">
+                        <div class="hero-profile-card">
+                            <div class="profile-avatar-wrapper">
+                                <div class="profile-avatar-glow" aria-hidden="true"></div>
+                                <img :src="profile.avatar" alt="Dian Wahyu Saputra Profile Photo" class="profile-avatar">
+                            </div>
+                            <h2 class="profile-name">{{ profile.name }}</h2>
+                            <div class="profile-title" id="profile-title-typewriter"></div>
+
+                            <!-- Currently Building -->
+                            <div class="profile-building">
+                                <div class="profile-section-label">Currently Building</div>
+                                <ul class="building-list">
+                                    <li v-for="(item, index) in profile.building" :key="index" class="building-item">
+                                        <span class="status-dot" :class="'status-' + item.status" aria-hidden="true"></span>
+                                        <span class="building-label">{{ item.label }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- Exploring -->
+                            <div class="profile-interests">
+                                <div class="profile-section-label">Exploring</div>
+                                <div class="interests-tags">
+                                    <span v-for="(item, index) in profile.exploring" :key="index" class="interest-tag">
+                                        {{ item }}
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Projects Grid Section -->
+            <section id="projects" class="s-projects section target-section" aria-label="Portfolio Projects">
+                <div class="container">
+                    
+                    <div class="section-header" data-aos="fade-up">
+                        <div class="section-intro">
+                            <h2>What I've <span>Built</span></h2>
+                            <p>A showcase of my open-source work — all vibe coded with AI assistance.</p>
+                        </div>
+                        <a href="https://github.com/wahyusd" target="_blank" class="btn btn--stroke btn--small" id="btn-more-github" title="Visit GitHub Profile">
+                            <i class="fab fa-github" aria-hidden="true" style="margin-right: 0.8rem;"></i> See More on GitHub
+                        </a>
+                    </div>
+
+                    <div class="projects-grid">
+                        <article 
+                            v-for="(portfolio, index) in portfolios" 
+                            :key="index" 
+                            class="project-card" 
+                            data-aos="fade-up" 
+                            :data-aos-delay="index * 150"
+                        >
+                            <!-- Invisible full-card link — clicking anywhere on card opens GitHub repo -->
+                            <a :href="portfolio.githubLink" target="_blank" rel="noopener" class="project-card-link" :title="portfolio.title"></a>
+                            <!-- Dynamic Project Media (supports Image, GIF, and Video dynamically) -->
+                            <div class="project-media">
+                                <div class="project-media-overlay" aria-hidden="true"></div>
+                                
+                                <!-- Video Player for MP4/WebM -->
+                                <video 
+                                    v-if="portfolio.mediaType === 'video' || portfolio.mediaLink.endsWith('.mp4') || portfolio.mediaLink.endsWith('.webm')" 
+                                    :src="portfolio.mediaLink" 
+                                    autoplay 
+                                    loop 
+                                    muted 
+                                    playsinline
+                                    class="project-media-source"
+                                ></video>
+                                
+                                <!-- Fallback standard Image/GIF reader -->
+                                <img 
+                                    v-else 
+                                    :src="portfolio.mediaLink" 
+                                    :alt="portfolio.title + ' Screenshot Preview'"
+                                    class="project-media-source"
+                                >
+                            </div>
+
+                            <div class="project-content">
+                                <div class="project-tech-tags" aria-label="Technologies used">
+                                    <span v-for="tag in portfolio.techStack.split(',')" class="tech-tag">{{ tag.trim() }}</span>
+                                </div>
+                                <h3 class="project-title">{{ portfolio.title }}</h3>
+                                <p class="project-desc">{{ portfolio.description }}</p>
+                                
+                                <div class="project-links">
+                                    <span class="project-date"><i class="far fa-calendar-alt"></i> {{ portfolio.date }}</span>
+                                    <a :href="portfolio.githubLink" target="_blank" class="project-link" :id="'project-git-' + index" title="Source Code Repository">
+                                        <i class="fab fa-github" aria-hidden="true"></i> Repository
+                                    </a>
+                                    <a v-if="portfolio.projectLink && portfolio.projectLink !== '#'" :href="portfolio.projectLink" target="_blank" class="project-link" :id="'project-live-' + index" title="Live Application Demo">
+                                        <i class="fas fa-external-link-alt" aria-hidden="true"></i> View Project
+                                    </a>
+                                </div>
+                            </div>
+                            <a :href="portfolio.pageLink" class="project-read-more" :id="'project-read-more-' + index" title="Project Details Page">
+                                Read More <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                            </a>
+                        </article>
+                    </div>
+
+                    <!-- View All Projects -->
+                    <div class="section-footer" data-aos="fade-up">
+                        <a href="pages/projects/" class="btn btn--stroke btn--small" id="btn-view-all-projects">
+                            View All <i class="fas fa-arrow-right" aria-hidden="true" style="margin-left: 0.6rem;"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- What I've Learned Section -->
+            <section id="learning" class="s-projects section target-section" aria-label="Learning Posts" style="border-top: none; padding-top: 3rem;">
+                <div class="container">
+
+                    <div class="section-header" data-aos="fade-up">
+                        <div class="section-intro">
+                            <h2>What I've <span>Learned</span></h2>
+                            <p>Notes, tutorials, and documentation from my experiments.</p>
+                        </div>
+                        <a href="pages/learning/" class="btn btn--stroke btn--small" id="btn-more-learning" title="View All Learning Posts">
+                            <i class="fas fa-book-open" aria-hidden="true" style="margin-right: 0.8rem;"></i> See All Posts
+                        </a>
+                    </div>
+
+                    <div class="projects-grid" id="learning-grid-home">
+                        <article
+                            v-for="(post, index) in sortedLearningPosts.slice(0, 6)"
+                            :key="index"
+                            class="learning-home-card"
+                            data-aos="fade-up"
+                            :data-aos-delay="index * 100"
+                        >
+                            <a :href="'pages/learning/#' + post.slug" class="learning-home-card-link" :title="post.title"></a>
+                            <div class="learning-home-thumb" v-if="getPostThumbnail(post)">
+                                <img :src="getPostThumbnail(post)" :alt="post.title" loading="lazy">
+                                <div class="learning-home-thumb-overlay"></div>
+                            </div>
+                            <div class="learning-home-card-content">
+                                <div class="learning-home-date">{{ formatDate(post.date) }}</div>
+                                <h3 class="learning-home-title">{{ post.title }}</h3>
+                                <p class="learning-home-desc">{{ post.description }}</p>
+                                <div class="learning-home-tags">
+                                    <span v-for="tag in post.tags" class="tech-tag" style="font-size: 1rem; padding: 0.25rem 0.8rem;">{{ tag }}</span>
+                                </div>
+                                <div class="learning-home-footer">
+                                    <a v-if="post.youtubeLink" :href="post.youtubeLink" target="_blank" class="learning-home-yt" @click.stop title="Watch on YouTube">
+                                        <i class="fab fa-youtube"></i> Watch on YouTube
+                                    </a>
+                                    <span class="learning-home-read">Read <i class="fas fa-arrow-right"></i></span>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+
+                    <!-- View All Learning -->
+                    <div class="section-footer" data-aos="fade-up">
+                        <a href="pages/learning/" class="btn btn--stroke btn--small" id="btn-view-all-learning">
+                            View All <i class="fas fa-arrow-right" aria-hidden="true" style="margin-left: 0.6rem;"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Back to Top floating arrow -->
+        <div class="ss-go-top" id="btn-go-top">
+            <a class="smoothscroll" title="Back to Top" href="#top">
+                <i class="fas fa-chevron-up" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <!-- Footer Section -->
+        <footer class="s-footer" role="contentinfo">
+            <div class="container footer-container">
+                <div>
+                    <p>&copy; <span id="footer-year"></span> Dian Wahyu Saputra. All rights reserved.</p>
+                    <p style="margin-top: 0.6rem;">
+                        <a :href="'https://mail.google.com/mail/?view=cm&to=' + profile.email" target="_blank" class="footer-email-link" rel="noopener">
+                            <i class="fas fa-envelope" aria-hidden="true"></i> {{ profile.email }}
+                        </a>
+                    </p>
+                </div>
+                <div class="footer-socials" aria-label="Footer Social Links">
+                    <a v-for="(social, index) in socials" :key="index" :href="social.url" target="_blank" :title="social.platform" rel="noopener">
+                        <span v-if="social.svg" v-html="social.svg"></span>
+                        <i v-else :class="social.iconClass" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts (Vue 3, Anime.js, and AOS) -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.4.21/dist/vue.global.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        // Dynamic copyright year
+        document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+        // Init AOS (Animate on Scroll)
+        AOS.init({
+            offset: 100,
+            duration: 800,
+            easing: 'ease-out-quad',
+            once: true,
+            disable: 'mobile'
+        });
+
+        // Native smooth scroll for .smoothscroll links
+        document.querySelectorAll('a.smoothscroll').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (!href || href === '#') {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    return;
+                }
+                if (href.startsWith('#')) {
+                    const target = document.querySelector(href);
+                    if (target) {
+                        e.preventDefault();
+                        const offsetTop = target.getBoundingClientRect().top + window.scrollY - 80;
+                        window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+    </script>
+    
+    <!-- Custom logic and data bindings -->
+    <script src="js/data.js"></script>
+    <script src="js/project-data.js"></script>
+    <script src="js/learning-data.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
+</html>

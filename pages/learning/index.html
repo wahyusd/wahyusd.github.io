@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>What I've Learned — Wahyusd</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Learning notes and documentation by Dian Wahyu Saputra — what I learn from building projects.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="/css/page.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="icon" type="image/png" href="/assets/images/profile-photo.png">
+    <style>
+        .learning-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2.5rem;
+        }
+
+        .project-card {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .project-card.aos-animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .learning-card-horizontal {
+            display: flex;
+            flex-direction: row;
+            overflow: hidden;
+        }
+
+        .learning-card-thumb {
+            width: 280px;
+            min-height: 180px;
+            flex-shrink: 0;
+            overflow: hidden;
+            background: var(--bg-base);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .learning-card-thumb img,
+        .learning-card-thumb video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .project-card:hover .learning-card-thumb img,
+        .project-card:hover .learning-card-thumb video {
+            transform: scale(1.05);
+        }
+        .learning-card-thumb-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(192,132,252,0.05), rgba(168,85,247,0.1));
+            font-size: 4rem;
+            color: var(--text-dim);
+            opacity: 0.4;
+        }
+        .learning-card-thumb-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(9,12,18,0.6), transparent 50%);
+            z-index: 1;
+        }
+
+        .learning-card-horizontal .project-content {
+            padding: 2.4rem 3rem;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .learning-card-date {
+            font-family: var(--font-mono);
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            margin-bottom: 0.6rem;
+        }
+        .learning-card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-bottom: 1rem;
+        }
+        .learning-card-tags .tech-tag {
+            font-size: 1.1rem;
+        }
+        .learning-card-horizontal .project-title {
+            font-size: 1.8rem;
+            margin-bottom: 0.8rem;
+        }
+        .learning-card-horizontal .project-desc {
+            font-size: 1.35rem;
+            margin-bottom: 1.2rem;
+            flex-grow: 1;
+        }
+        .learning-card-horizontal .project-links {
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 1.2rem;
+            margin-top: auto;
+            width: 100%;
+        }
+        .learning-card-horizontal .project-read-more {
+            bottom: 1.5rem;
+            right: 2rem;
+        }
+
+        @media screen and (max-width: 700px) {
+            .learning-card-horizontal {
+                flex-direction: column;
+            }
+            .learning-card-thumb {
+                width: 100%;
+                min-height: 200px;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .learning-card-horizontal .project-content {
+                padding: 2rem;
+            }
+            .learning-card-horizontal .project-title {
+                font-size: 1.6rem;
+            }
+        }
+
+        .learning-viewer { display: none; }
+        .learning-viewer.active { display: block; animation: viewerSlideIn 0.4s ease-out; }
+        @keyframes viewerSlideIn {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .learning-viewer.closing {
+            animation: viewerSlideOut 0.25s ease-in forwards;
+        }
+        @keyframes viewerSlideOut {
+            from { opacity: 1; transform: translateX(0); }
+            to { opacity: 0; transform: translateX(-20px); }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(-12px);
+            transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+        }
+        .animate-on-scroll.aos-animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .learning-viewer-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+        .learning-viewer-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-family: var(--font-heading);
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: var(--text-dim);
+            cursor: pointer;
+            border: none;
+            background: none;
+            padding: 0.5rem 0;
+            transition: var(--transition-fast);
+        }
+        .learning-viewer-back:hover { color: var(--color-primary); }
+        .learning-viewer-meta {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .learning-viewer-meta span {
+            font-family: var(--font-mono);
+            font-size: 1.2rem;
+            color: var(--text-dim);
+        }
+        .learning-viewer-content {
+            max-width: 780px;
+            margin: 0 auto;
+        }
+        .learning-viewer-content h1,
+        .learning-viewer-content h2,
+        .learning-viewer-content h3,
+        .learning-viewer-content h4 {
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+        .learning-viewer-content h1 { font-size: 2.8rem; }
+        .learning-viewer-content h2 { font-size: 2.2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.6rem; }
+        .learning-viewer-content h3 { font-size: 1.8rem; }
+        .learning-viewer-content p {
+            font-size: 1.55rem;
+            color: var(--text-muted);
+            line-height: 1.75;
+            margin-bottom: 1.5rem;
+        }
+        .learning-viewer-content strong { color: var(--text-main); }
+        .learning-viewer-content a { color: var(--color-primary); }
+        .learning-viewer-content a:hover { text-decoration: underline; }
+        .learning-viewer-content ul, .learning-viewer-content ol {
+            margin: 1rem 0 1.5rem 2rem;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            line-height: 1.7;
+        }
+        .learning-viewer-content li { margin-bottom: 0.5rem; }
+        .learning-viewer-content code {
+            font-family: var(--font-mono);
+            font-size: 1.3rem;
+            background: rgba(192,132,252,0.08);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            color: #a5b4fc;
+        }
+        .learning-viewer-content pre {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 2rem 2.4rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            position: relative;
+        }
+        .learning-viewer-content pre code {
+            background: none;
+            padding: 0;
+            font-size: 1.3rem;
+            line-height: 1.7;
+            color: #a5b4fc;
+        }
+        .learning-viewer-content blockquote {
+            border-left: 3px solid var(--color-primary);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            background: rgba(192,132,252,0.04);
+            border-radius: 0 8px 8px 0;
+            color: var(--text-muted);
+        }
+        .learning-viewer-content hr {
+            border: none;
+            border-top: 1px solid var(--border-color);
+            margin: 2.5rem 0;
+        }
+        .learning-viewer-content img {
+            max-width: 100%;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            margin: 1.5rem 0;
+        }
+        .learning-viewer-content figure {
+            margin: 2.5rem 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-surface);
+        }
+        .learning-viewer-content figure img {
+            margin: 0;
+            display: block;
+            border: none;
+            border-radius: 0;
+        }
+        .learning-viewer-content figcaption {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            font-family: var(--font-mono);
+            text-align: center;
+            padding: 1rem 2rem;
+            border-top: 1px solid var(--border-color);
+            line-height: 1.5;
+        }
+        .learning-viewer-content figcaption code {
+            font-size: 1.1rem;
+        }
+        .caption-center { text-align: center; }
+        .caption-left { text-align: left; }
+
+        .learning-viewer-content .img-overlay {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 2rem 0;
+        }
+        .learning-viewer-content .img-overlay img {
+            margin: 0;
+            border: none;
+            border-radius: 0;
+        }
+        .learning-viewer-content .img-overlay-text {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.5);
+            color: #fff;
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            padding: 2rem;
+            line-height: 1.4;
+        }
+        .learning-viewer-content .img-overlay-text small {
+            font-size: 1.3rem;
+            font-weight: 400;
+            opacity: 0.8;
+            display: block;
+            margin-top: 0.5rem;
+        }
+
+        .learning-viewer-content kbd {
+            font-family: var(--font-mono);
+            font-size: 1.2rem;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 0.15rem 0.6rem;
+            box-shadow: 0 1px 0 var(--border-color);
+        }
+        .learning-viewer-content mark {
+            background: rgba(192,132,252,0.15);
+            color: var(--text-main);
+            padding: 0.1rem 0.3rem;
+            border-radius: 3px;
+        }
+
+        .learning-card-youtube {
+            color: var(--text-dim);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .learning-card-youtube:hover { color: #ff4444; }
+        .learning-card-youtube i { font-size: 1.4rem; }
+
+        .empty-state {
+            text-align: center;
+            padding: 6rem 2rem;
+            color: var(--text-dim);
+            grid-column: 1 / -1;
+        }
+        .empty-state i { font-size: 4rem; margin-bottom: 1.5rem; opacity: 0.3; }
+        .empty-state p { font-size: 1.6rem; }
+    </style>
+</head>
+<body>
+
+    <div data-include="navbar" data-active="learning"></div>
+
+    <main>
+
+        <section class="page-hero">
+            <div class="container">
+                <div class="page-breadcrumb">
+                    <a href="/index.html">Home</a>
+                    <span class="page-breadcrumb-sep">/</span>
+                    <a href="." id="breadcrumb-learning-link">Learning</a>
+                    <span id="breadcrumb-post-sep" class="page-breadcrumb-sep" style="display:none">/</span>
+                    <span id="breadcrumb-post-title" style="display:none"></span>
+                </div>
+                <h1 data-render="learning-hero-title">What I've <span>Learned</span></h1>
+                <p class="page-hero-desc" data-render="learning-hero-desc">Notes, tutorials, and documentation from my experiments. Every project teaches me something new — I write it down here.</p>
+                <div class="page-hero-tags" data-render="learning-hero-tags"></div>
+                <div class="page-hero-actions">
+                    <a href="/index.html" class="btn btn--stroke">
+                        <i class="fas fa-arrow-left"></i> Back to Home
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <div class="page-content">
+            <div class="container">
+
+                <div id="learning-list">
+                    <div class="learning-grid" id="learning-grid"></div>
+                </div>
+
+                <div class="learning-viewer" id="learning-viewer">
+                    <div class="learning-viewer-header">
+                        <button class="learning-viewer-back" id="viewer-back">
+                            <i class="fas fa-arrow-left"></i> Back to posts
+                        </button>
+                        <div class="learning-viewer-meta">
+                            <span id="viewer-date"></span>
+                            <a id="viewer-youtube" href="#" target="_blank" rel="noopener" class="learning-card-youtube" style="display:none">
+                                <i class="fab fa-youtube"></i> Watch on YouTube
+                            </a>
+                        </div>
+                    </div>
+                    <div class="learning-viewer-content" id="viewer-content"></div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <div data-include="footer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked@15.0.3/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({ startOnLoad: false, theme: 'dark' });</script>
+    <script src="/js/data.js"></script>
+    <script src="/js/learning-data.js"></script>
+    <script src="/js/learning.js"></script>
+    <script src="/js/page.js"></script>
+    <script src="/js/include.js"></script>
+
+</body>
+</html>

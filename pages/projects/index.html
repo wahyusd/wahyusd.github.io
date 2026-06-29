@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>All Projects — Wahyusd</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="All portfolio projects by Dian Wahyu Saputra — AI tools, desktop apps, and open source experiments.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="/css/page.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="icon" type="image/png" href="/assets/images/profile-photo.png">
+    <style>
+        .all-projects-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 4rem;
+        }
+        @media screen and (max-width: 700px) {
+            .all-projects-grid { grid-template-columns: 1fr; gap: 3rem; }
+        }
+        .project-card {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .project-card.aos-animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <div data-include="navbar" data-active="projects"></div>
+
+    <main>
+        <section class="page-hero">
+            <div class="container">
+                <div class="page-breadcrumb">
+                    <a href="/index.html">Home</a>
+                    <span class="page-breadcrumb-sep">/</span>
+                    <a href=".">Projects</a>
+                </div>
+                <h1>What I've <span>Built</span></h1>
+                <p class="page-hero-desc">A complete collection of my open-source work — all built with AI assistance.</p>
+                <div class="page-hero-actions">
+                    <a href="https://github.com/wahyusd" target="_blank" rel="noopener" class="btn btn--primary">
+                        <i class="fab fa-github"></i> GitHub Profile
+                    </a>
+                    <a href="/index.html" class="btn btn--stroke">
+                        <i class="fas fa-arrow-left"></i> Back to Home
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <div class="page-content">
+            <div class="container">
+                <div class="all-projects-grid" id="projects-grid"></div>
+            </div>
+        </div>
+    </main>
+
+    <div data-include="footer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.4.21/dist/vue.global.prod.js"></script>
+    <script src="/js/data.js"></script>
+    <script src="/js/project-data.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const grid = document.getElementById('projects-grid');
+            const data = [...portfolioData.portfolios].sort((a, b) => new Date(b.date) - new Date(a.date));
+            data.forEach((p, i) => {
+                const card = document.createElement('article');
+                card.className = 'project-card';
+                card.style.transitionDelay = (i * 0.1) + 's';
+                card.innerHTML = `
+                    <a href="${p.githubLink}" target="_blank" rel="noopener" class="project-card-link" title="${p.title}"></a>
+                    <div class="project-media">
+                        <div class="project-media-overlay"></div>
+                        ${p.mediaType === 'video' || p.mediaLink.endsWith('.mp4') || p.mediaLink.endsWith('.webm')
+                            ? `<video src="${p.mediaLink}" autoplay loop muted playsinline class="project-media-source"></video>`
+                            : `<img src="${p.mediaLink}" alt="${p.title} Screenshot" class="project-media-source">`
+                        }
+                    </div>
+                    <div class="project-content">
+                        <div class="project-tech-tags">
+                            ${p.techStack.split(',').map(t => `<span class="tech-tag">${t.trim()}</span>`).join('')}
+                        </div>
+                        <h3 class="project-title">${p.title}</h3>
+                        <p class="project-desc">${p.description}</p>
+                        <div class="project-links">
+                            <span class="project-date"><i class="far fa-calendar-alt"></i> ${p.date || ''}</span>
+                            <a href="${p.githubLink}" target="_blank" class="project-link"><i class="fab fa-github"></i> Repository</a>
+                            ${p.projectLink && p.projectLink !== '#' ? `<a href="${p.projectLink}" target="_blank" class="project-link"><i class="fas fa-external-link-alt"></i> View Project</a>` : ''}
+                        </div>
+                    </div>
+                    <a href="${p.pageLink}" class="project-read-more" title="Project Details">Read More <i class="fas fa-arrow-right"></i></a>
+                `;
+                grid.appendChild(card);
+            });
+
+            // IntersectionObserver entrance animation
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('aos-animate');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1 });
+                document.querySelectorAll('.project-card').forEach(el => observer.observe(el));
+            } else {
+                document.querySelectorAll('.project-card').forEach(el => el.classList.add('aos-animate'));
+            }
+
+            // Search filter
+            window._searchFilter = function(query) {
+                const q = query.toLowerCase().trim();
+                document.querySelectorAll('.project-card').forEach(card => {
+                    const title = card.querySelector('.project-title').textContent.toLowerCase();
+                    const tags = [...card.querySelectorAll('.tech-tag')].map(t => t.textContent.toLowerCase());
+                    const match = !q || title.includes(q) || tags.some(t => t.includes(q));
+                    card.style.display = match ? '' : 'none';
+                });
+            };
+        });
+    </script>
+    <script src="/js/page.js"></script>
+    <script src="/js/include.js"></script>
+
+</body>
+</html>

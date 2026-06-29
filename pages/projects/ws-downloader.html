@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title data-render="page-title">WS Downloader — Wahyusd</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" data-render="page-desc" content="WS Downloader — Multi-platform media downloader built with Python, yt-dlp, and Eel.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="/css/page.css">
+    <link rel="icon" type="image/png" href="/assets/images/profile-photo.png">
+</head>
+<body>
+
+    <div data-include="navbar" data-active="projects"></div>
+
+    <main data-project="ws-downloader">
+
+        <!-- ======= HERO ======= -->
+        <section class="page-hero">
+            <div class="container">
+
+                <!-- Breadcrumb -->
+                <div class="page-breadcrumb">
+                    <a href="/index.html">Home</a>
+                    <span class="page-breadcrumb-sep">/</span>
+                    <a href=".">Projects</a>
+                    <span class="page-breadcrumb-sep">/</span>
+                    <span data-render="breadcrumb-title"></span>
+                </div>
+
+                <!-- Tech tags -->
+                <div class="page-hero-tags" data-render="hero-tags"></div>
+
+                <h1 data-render="hero-title"></h1>
+                <p class="page-hero-desc" data-render="hero-desc"></p>
+
+                <div class="page-hero-actions">
+                    <a data-render="github-link" href="https://github.com/wahyusd/ws-downloader" target="_blank" rel="noopener" class="btn btn--primary">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                    <a href="/index.html#projects" class="btn btn--stroke">
+                        <i class="fas fa-arrow-left"></i> Back to Projects
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ======= CONTENT ======= -->
+        <div class="page-content">
+            <div class="container">
+
+                <!-- Screenshot / Demo -->
+                <div class="page-media">
+                    <img data-render="media-src" src="/assets/images/portfolio/ws-downloader/preview.jpeg" alt="WS Downloader Screenshot">
+                    <div class="media-caption" data-render="media-caption"></div>
+                </div>
+
+                <!-- Overview -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">📖</span> Overview
+                    </h2>
+                    <p>
+                        WS Downloader adalah aplikasi desktop berbasis Python dan Eel yang dirancang untuk mengunduh media dari berbagai platform dengan efisiensi tinggi. Tidak hanya untuk video, aplikasi ini dilengkapi dengan <strong>Image / Manga Browser</strong> internal yang mampu mencegat (intercept) gambar secara real-time saat kamu browsing.
+                    </p>
+                    <p>
+                        Dibangun sepenuhnya dengan vibe coding menggunakan AI sebagai partner — proyek ini dimulai dari pertanyaan sederhana: <em>"Bisakah saya membuat downloader sendiri yang sesuai kebutuhan saya?"</em>
+                    </p>
+                </section>
+
+                <!-- Features -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">✨</span> Features
+                    </h2>
+                    <ul class="feature-list">
+                        <li><strong>Video Downloader</strong> — Mendukung berbagai situs (YouTube, dll.) dengan pilihan format video/audio menggunakan engine yt-dlp.</li>
+                        <li><strong>Instagram Downloader</strong> — Mengambil media dari post Instagram dengan sistem fallback multi-cookie untuk menghindari blokir.</li>
+                        <li><strong>Manga / Image Browser</strong> — Browser internal terintegrasi yang mampu mendeteksi gambar secara otomatis untuk diunduh dalam format PNG asli dengan penomoran urut (001.png, dst).</li>
+                        <li><strong>Threads Downloader</strong> — (Coming Soon)</li>
+                    </ul>
+                </section>
+
+                <!-- Tech Stack -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">🛠</span> Tech Stack
+                    </h2>
+                    <div class="tech-grid" data-render="tech-grid"></div>
+                </section>
+
+                <!-- Requirements -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">📋</span> Requirements
+                    </h2>
+                    <ul class="feature-list">
+                        <li><strong>Python 3.10+</strong> — Gunakan Python versi 3.10 atau yang lebih baru.</li>
+                        <li><strong>FFmpeg</strong> — <code>yt-dlp</code> membutuhkan FFmpeg untuk menggabungkan stream video dan audio resolusi tinggi. Download dan pastikan folder <code>bin</code> telah masuk ke System PATH.</li>
+                        <li><strong>Browser</strong> — Google Chrome atau Microsoft Edge terinstall di sistem untuk me-render UI Eel.</li>
+                        <li><strong>Node.js</strong> — opsional tapi direkomendasikan.</li>
+                    </ul>
+                </section>
+
+                <!-- Installation -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">📦</span> Installation
+                    </h2>
+                    <ol class="steps-list">
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">Clone Repository</div>
+                                <div class="code-block"><pre>git clone https://github.com/wahyusd/ws-downloader.git
+cd ws-downloader</pre></div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">Setup Virtual Environment</div>
+                                <div class="code-block"><pre>python -m venv .venv
+.venv\Scripts\activate</pre></div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">Install Dependencies</div>
+                                <div class="code-block"><pre>pip install -r requirements.txt</pre></div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">Jalankan Aplikasi</div>
+                                <div class="step-desc">Double-click file batch yang sudah disediakan:</div>
+                                <div class="code-block"><pre>launch-win.bat     ← untuk menjalankan
+update.bat         ← untuk update</pre></div>
+                                <div class="step-desc">Atau via terminal (pastikan <code>.venv</code> aktif):</div>
+                                <div class="code-block"><pre>python main.py</pre></div>
+                            </div>
+                        </li>
+                    </ol>
+
+                    <div class="callout">
+                        <span class="callout-icon">💡</span>
+                        <span>Untuk mengunduh dari platform yang membutuhkan login (seperti Instagram), letakkan file cookies <code>.txt</code> format Netscape di folder <code>ui/assets/cookies/</code> dan rename menjadi <code>insta_cookies.txt</code> dan <code>videos_cookies.txt</code>.</span>
+                    </div>
+                </section>
+
+                <!-- How to Use -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">🎮</span> How to Use
+                    </h2>
+
+                    <h3 style="font-size:1.6rem; margin-bottom:1rem; margin-top:1.5rem; color: var(--text-main);">Video / Audio Download</h3>
+                    <p>Buka tab <strong>Video Downloader</strong>, paste URL dari YouTube atau platform lain, pilih format yang diinginkan, lalu klik Download.</p>
+                    <div class="page-media">
+                        <img src="/assets/images/portfolio/ws-downloader/video-downloader.png" alt="Video Downloader Screenshot">
+                        <div class="media-caption">Video Downloader — Main Interface</div>
+                    </div>
+
+                    <h3 style="font-size:1.6rem; margin-bottom:1rem; margin-top:2rem; color: var(--text-main);">Image / Manga Fetcher</h3>
+                    <ol class="steps-list">
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">Buka Browser</div>
+                                <div class="step-desc">Buka tab <strong>Image/Manga Fetcher</strong>, masukkan URL situs target, lalu klik <strong>Open Browser</strong>.</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">Scroll & Deteksi</div>
+                                <div class="step-desc">Saat melakukan scroll di halaman, gambar yang terdeteksi akan diekstrak dan masuk ke antrean di sidebar kanan aplikasi utama.</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">Download</div>
+                                <div class="step-desc">Klik <strong>Download</strong>. File akan disimpan di folder <code>results/images/</code> dengan format PNG asli dan penomoran urut (001.png, 002.png, dst).</div>
+                            </div>
+                        </li>
+                    </ol>
+                    <div class="page-media">
+                        <img src="/assets/images/portfolio/ws-downloader/image-fetcher.jpg" alt="Image/Manga Fetcher Screenshot">
+                        <div class="media-caption">Image/Manga Fetcher — Real-time Image Interception</div>
+                    </div>
+
+                    <h3 style="font-size:1.6rem; margin-bottom:1rem; margin-top:2rem; color: var(--text-main);">Menembus Blokir Situs</h3>
+                    <p>Situs manga bajakan atau versi 18+ umumnya diblokir oleh ISP. Jika browser menampilkan pesan <em>Connection Reset</em> atau tidak bisa dimuat:</p>
+                    <ul class="feature-list">
+                        <li>Download dan instal <a href="https://1.1.1.1/" target="_blank" rel="noopener" style="color: var(--color-primary)">Cloudflare WARP (1.1.1.1)</a>.</li>
+                        <li>Aktifkan WARP di Windows sebelum menekan tombol <strong>Open Browser</strong>. Ini akan merutekan ulang seluruh trafik melewati blokir ISP secara instan.</li>
+                    </ul>
+                </section>
+
+            </div>
+        </div>
+
+    </main>
+
+    <div data-include="footer"></div>
+
+<script src="/js/data.js"></script>
+<script src="/js/project-data.js"></script>
+<script src="/js/page.js"></script>
+<script src="/js/include.js"></script>
+</body>
+</html>

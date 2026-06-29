@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title data-render="page-title">News Center — Wahyusd</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" data-render="page-desc" content="WS News Center — High-performance RSS news aggregator built with Tauri and Vite.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="/css/page.css">
+    <link rel="icon" type="image/png" href="/assets/images/profile-photo.png">
+</head>
+<body>
+
+    <div data-include="navbar" data-active="projects"></div>
+
+    <main data-project="news-center">
+
+        <!-- ======= HERO ======= -->
+        <section class="page-hero">
+            <div class="container">
+
+                <div class="page-breadcrumb">
+                    <a href="/index.html">Home</a>
+                    <span class="page-breadcrumb-sep">/</span>
+                    <a href=".">Projects</a>
+                    <span class="page-breadcrumb-sep">/</span>
+                    <span data-render="breadcrumb-title"></span>
+                </div>
+
+                <div class="page-hero-tags" data-render="hero-tags"></div>
+
+                <h1 data-render="hero-title"></h1>
+                <p class="page-hero-desc" data-render="hero-desc"></p>
+
+                <div class="page-hero-actions">
+                    <a data-render="github-link" href="https://github.com/wahyusd/news-center" target="_blank" rel="noopener" class="btn btn--primary">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                    <a href="/index.html#projects" class="btn btn--stroke">
+                        <i class="fas fa-arrow-left"></i> Back to Projects
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ======= CONTENT ======= -->
+        <div class="page-content">
+            <div class="container">
+
+                <div class="page-media">
+                    <img data-render="media-src" src="/assets/images/portfolio/news-center/main-interface.png" alt="News Center Screenshot">
+                    <div class="media-caption" data-render="media-caption"></div>
+                </div>
+
+                <!-- Overview -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">📖</span> Overview
+                    </h2>
+                    <p>
+                        WS News Center adalah aggregator berita RSS yang dibangun di atas Tauri v2 (Rust) dan Vite. Fokus utamanya adalah kecepatan dan pengalaman membaca yang bersih — tanpa iklan, tanpa gangguan, konten langsung tersedia meski offline.
+                    </p>
+                    <p>
+                        Proyek ini lahir dari kebutuhan pribadi: saya ingin membaca berita dari banyak sumber di satu tempat, tanpa perlu buka banyak tab browser. Pertanyaannya: <em>"Bisakah saya membangun RSS reader sendiri yang cepat dan ringan?"</em>
+                    </p>
+                    <p>
+                        Tersedia dalam 3 platform: Web (browser), Desktop (.exe Windows), dan Android (.apk).
+                    </p>
+                </section>
+
+                <div class="page-media">
+                    <img src="/assets/images/portfolio/news-center/add-rss-preview.png" alt="News Center Screenshot">
+                    <div class="media-caption">WS News Center — How To Add RSS News</div>
+                </div>
+
+                <!-- Features -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">✨</span> Features
+                    </h2>
+                    <ul class="feature-list">
+                        <li><strong>Universal RSS Fetcher</strong> — Mendukung RSS 2.0, Atom, dan fallback rss2json API.</li>
+                        <li><strong>CORS Proxy Chain</strong> — Auto-fallback melalui corsproxy.io, codetabs, allorigins untuk feed yang bermasalah.</li>
+                        <li><strong>Local-First Storage</strong> — Data tersimpan di localStorage (web) / SQLite FTS5 (desktop) — baca offline kapanpun.</li>
+                        <li><strong>Smart Deduplication</strong> — URL normalization + stable djb2 hash mencegah artikel duplikat.</li>
+                        <li><strong>Dynamic Categories</strong> — Chip kategori otomatis diekstrak dari artikel.</li>
+                        <li><strong>Advanced Filtering</strong> — Search, category filter, single-date filter.</li>
+                        <li><strong>Article Reader</strong> — Internal iframe reader dengan Jina AI fetch + DOM cleanup.</li>
+                        <li><strong>Resizable Reader</strong> — Dual drag handles (kiri & kanan) untuk adjust lebar artikel.</li>
+                        <li><strong>Pin Articles</strong> — Pin artikel penting, tetap ada saat cleanup.</li>
+                        <li><strong>Auto Cleanup</strong> — Hapus artikel lama berdasarkan jumlah hari yang dikonfigurasi.</li>
+                        <li><strong>Touch Swipe Refresh</strong> — Mobile support — swipe down untuk refresh.</li>
+                        <li><strong>Dark Theme</strong> — Professional zinc dark palette.</li>
+                    </ul>
+                </section>
+
+                <!-- Tech Stack -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">🛠</span> Tech Stack
+                    </h2>
+                    <p style="margin-bottom:1.2rem;"><strong>Frontend:</strong> HTML5, Tailwind CSS 3.4, Vanilla JS</p>
+                    <p style="margin-bottom:1.2rem;"><strong>Build Tool:</strong> Vite 6 + PostCSS + Autoprefixer</p>
+                    <p style="margin-bottom:1.2rem;"><strong>Desktop:</strong> Tauri v2 (Rust) + SQLite FTS5</p>
+                    <div class="tech-grid" data-render="tech-grid"></div>
+                </section>
+
+                <!-- Quick Start -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">🚀</span> Quick Start
+                    </h2>
+
+                    <h3 style="font-size:1.6rem; margin-bottom:1rem; margin-top:2rem; color: var(--text-main);">Run via Web (Browser)</h3>
+                    <p>Jalankan langsung di browser tanpa perlu Rust atau compilation:</p>
+                    <div class="code-block"><pre>git clone https://github.com/wahyusd/news-center.git
+cd news-center
+npm install
+npm run dev</pre></div>
+                    <p style="margin-top:0.8rem;">Aplikasi akan otomatis terbuka di browser pada <code>http://localhost:1420</code>.</p>
+                    <div class="callout">
+                        <span class="callout-icon">🔌</span>
+                        <span><strong>Dynamic Port:</strong> Jika port 1420 sudah digunakan, Vite akan otomatis mencari port berikutnya yang tersedia (1421, 1422, dst). Cek terminal untuk port yang aktif.</span>
+                    </div>
+
+                    <h3 style="font-size:1.6rem; margin-bottom:1rem; margin-top:2.5rem; color: var(--text-main);">Available Scripts</h3>
+                    <table style="width:100%; max-width:500px; border-collapse:collapse;">
+                        <thead>
+                            <tr style="border-bottom:2px solid var(--border-color);">
+                                <th style="padding:0.6rem 1rem; text-align:left;">Command</th>
+                                <th style="padding:0.6rem 1rem; text-align:left;">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom:1px solid var(--border-color);">
+                                <td style="padding:0.6rem 1rem;"><code>npm run dev</code></td>
+                                <td style="padding:0.6rem 1rem;">Start Vite dev server</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid var(--border-color);">
+                                <td style="padding:0.6rem 1rem;"><code>npm run build</code></td>
+                                <td style="padding:0.6rem 1rem;">Build frontend production</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:0.6rem 1rem;"><code>npm run preview</code></td>
+                                <td style="padding:0.6rem 1rem;">Preview production build</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3 style="font-size:1.6rem; margin-bottom:1rem; margin-top:2.5rem; color: var(--text-main);">Build Desktop (.exe)</h3>
+                    <p><strong>Prerequisites:</strong> Node.js &ge; 20, Rust &ge; 1.75, dan Windows Build Tools (Visual Studio C++).</p>
+                    <div class="code-block"><pre>npm install
+npm run tauri build</pre></div>
+                    <p style="margin-top:0.8rem;">Output: <code>src/backend/target/release/bundle/msi/</code> atau <code>nsis/</code></p>
+
+                    <h3 style="font-size:1.6rem; margin-bottom:1rem; margin-top:2.5rem; color: var(--text-main);">Build Android (.apk)</h3>
+                    <p>Dukungan Android via Tauri v2 (native, bukan Capacitor). Build menggunakan Android Studio atau CLI:</p>
+                    <div class="code-block"><pre># Prerequisites: Android Studio + NDK + Rust Android targets
+npm install
+npm run build
+npm run tauri android init    # pertama kali saja
+npm run tauri android build</pre></div>
+                    <div class="callout">
+                        <span class="callout-icon">📱</span>
+                        <span>Pastikan environment variable <code>ANDROID_HOME</code> dan <code>NDK_HOME</code> sudah diset. Lihat README untuk setup lengkap.</span>
+                    </div>
+                </section>
+
+                <!-- Configuration -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">⚙️</span> Configuration
+                    </h2>
+                    <p>Aplikasi menggunakan port <strong>1420</strong> untuk dev server (<code>vite.config.js</code>) dengan <code>strictPort: false</code> agar auto-fallback jika port sibuk.</p>
+                    <p>Default RSS feed: <strong>Wired</strong> (<code>https://www.wired.com/feed/rss</code>). Tambah feed lain via <strong>Settings → RSS Feeds → Add</strong>.</p>
+                    <p style="margin-top:0.5rem;">Tampilan dark theme menggunakan zinc palette professional (<code>#18181b</code>, <code>#27272a</code>, <code>#3f3f46</code>).</p>
+                </section>
+
+            </div>
+        </div>
+
+    </main>
+
+    <div data-include="footer"></div>
+
+<script src="/js/data.js"></script>
+<script src="/js/project-data.js"></script>
+<script src="/js/page.js"></script>
+<script src="/js/include.js"></script>
+</body>
+</html>
