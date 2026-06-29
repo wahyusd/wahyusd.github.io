@@ -48,6 +48,25 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (btn) btn.closest('.nav-search-item').style.display = 'none';
         if (bar) bar.style.display = 'none';
     }
+
+    // --- Init back to top button ---
+    const goTop = document.getElementById('btn-go-top-sub');
+    const scrollBtn = document.getElementById('btn-scroll-top-sub');
+    if (goTop) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 700) {
+                goTop.classList.add('link-is-visible');
+            } else {
+                goTop.classList.remove('link-is-visible');
+            }
+        });
+    }
+    if (scrollBtn) {
+        scrollBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
 });
 
 /* ===================================================================

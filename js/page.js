@@ -131,8 +131,15 @@ function initPageSearch() {
     if (!navBtn || !bar) return;
 
     navBtn.addEventListener('click', () => {
+        const nav = document.getElementById('page-header-nav-sub');
+        const toggle = document.getElementById('btn-menu-toggle-sub');
+        if (nav && nav.classList.contains('nav-open')) {
+            nav.classList.remove('nav-open');
+            if (toggle) toggle.classList.remove('is-clicked');
+            document.body.classList.remove('menu-is-open-sub');
+        }
         bar.classList.add('active');
-        input.focus();
+        setTimeout(() => input.focus(), 100);
     });
 
     function closeSearch() {
