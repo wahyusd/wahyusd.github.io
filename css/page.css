@@ -92,6 +92,7 @@ p { color: var(--text-muted); }
 .page-header-logo span {
     background: linear-gradient(to right, #fb923c, #c084fc);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -103,8 +104,8 @@ p { color: var(--text-muted); }
 }
 
 .page-header-nav a {
-    font-family: var(--font-heading);
-    font-size: 1.4rem;
+    font-family: var(--font-mono);
+    font-size: 1.3rem;
     font-weight: 500;
     color: var(--text-muted);
     position: relative;
@@ -191,6 +192,7 @@ p { color: var(--text-muted); }
 .page-hero h1 span {
     background: linear-gradient(to right, #fb923c, #c084fc);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 

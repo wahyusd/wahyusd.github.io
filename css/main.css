@@ -196,8 +196,8 @@ p {
 }
 
 .header-nav-list a {
-    font-family: var(--font-heading);
-    font-size: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 1.4rem;
     font-weight: 500;
     color: var(--text-muted);
     position: relative;
@@ -385,6 +385,7 @@ p {
 .hero-content h1 span {
     background: linear-gradient(to right, #fb923c, #c084fc);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -460,6 +461,7 @@ p {
 /* Social media list horizontal styling */
 .hero-social {
     display: flex;
+    flex-wrap: wrap;
     list-style: none;
     gap: 2rem;
     margin-top: 1.5rem;
@@ -1243,6 +1245,11 @@ p {
     
     .header-nav .btn {
         width: 100%;
+    }
+
+    .s-hero {
+        min-height: 0;
+        overflow: hidden;
     }
 
     .hero-container {

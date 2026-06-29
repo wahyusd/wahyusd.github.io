@@ -55,10 +55,10 @@
 
                 <nav class="header-nav" aria-label="Main Navigation">
                     <ul class="header-nav-list">
-                        <li><a class="smoothscroll active-link" href="#hero" id="nav-home" title="Home">Home</a></li>
-                        <li><a class="smoothscroll" href="#projects" id="nav-projects" title="Projects">Projects</a></li>
-                        <li><a class="smoothscroll" href="#learning" id="nav-learning" title="Learning">Learning</a></li>
-                        <li><a :href="'https://mail.google.com/mail/?view=cm&to=' + profile.email" target="_blank" id="nav-contact" title="Send Email via Gmail">Contact</a></li>
+                        <li><a class="smoothscroll active-link" href="#hero" id="nav-home" title="Home">&lt;Home /&gt;</a></li>
+                        <li><a class="smoothscroll" href="#projects" id="nav-projects" title="Projects">&lt;Projects /&gt;</a></li>
+                        <li><a class="smoothscroll" href="#learning" id="nav-learning" title="Learning">&lt;Learning /&gt;</a></li>
+                        <li><a :href="'https://mail.google.com/mail/?view=cm&to=' + profile.email" target="_blank" id="nav-contact" title="Send Email via Gmail">&lt;Contact /&gt;</a></li>
                     </ul>
                     <a :href="profile.cvLink" download class="btn btn--stroke btn--small" id="btn-cv-header" title="Download CV PDF">Download CV</a>
                 </nav>
@@ -168,6 +168,9 @@
                         </div>
                         <a href="https://github.com/wahyusd" target="_blank" class="btn btn--stroke btn--small" id="btn-more-github" title="Visit GitHub Profile">
                             <i class="fab fa-github" aria-hidden="true" style="margin-right: 0.8rem;"></i> See More on GitHub
+                        </a>
+                        <a href="pages/projects/" class="btn btn--stroke btn--small" id="btn-more-projects" title="View All Projects">
+                            <i class="fas fa-code" aria-hidden="true" style="margin-right: 0.8rem;"></i> See All Projects
                         </a>
                     </div>
 
