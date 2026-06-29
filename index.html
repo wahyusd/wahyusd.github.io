@@ -260,7 +260,7 @@
                             data-aos="fade-up"
                             :data-aos-delay="index * 100"
                         >
-                            <a :href="'pages/learning/#' + post.slug" class="learning-home-card-link" :title="post.title"></a>
+                            <a :href="'/pages/learning/#' + post.slug" class="learning-home-card-link" :title="post.title"></a>
                             <div class="learning-home-thumb" v-if="getPostThumbnail(post)">
                                 <img :src="getPostThumbnail(post)" :alt="post.title" loading="lazy">
                                 <div class="learning-home-thumb-overlay"></div>
@@ -276,7 +276,7 @@
                                     <a v-if="post.youtubeLink" :href="post.youtubeLink" target="_blank" class="learning-home-yt" @click.stop title="Watch on YouTube">
                                         <i class="fab fa-youtube"></i> Watch on YouTube
                                     </a>
-                                    <span class="learning-home-read">Read <i class="fas fa-arrow-right"></i></span>
+                                    <a :href="'/pages/learning/#' + post.slug" class="learning-home-read" @click.stop title="Read this post">Read <i class="fas fa-arrow-right"></i></a>
                                 </div>
                             </div>
                         </article>

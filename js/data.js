@@ -37,7 +37,7 @@ const portfolioData = {
             { label: "WS B-Roll Assistant", status: "done"     },
             { label: "News Center",         status: "done"     },
             { label: "EmoTube WS",          status: "done"     },
-            { label: "Portfolio Website",   status: "progress" },
+            { label: "Portfolio Website",   status: "done" },
         ],
 
         exploring: [
