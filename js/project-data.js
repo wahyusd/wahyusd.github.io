@@ -5,7 +5,7 @@
 // Cara tambah project baru:
 //   1. Copy salah satu object { } di bawah
 //   2. Isi data project kamu
-//   3. Upload screenshot ke assets/images/portfolio/
+//   3. Upload screenshot ke images/ folder project page
 //   4. Buat halaman detail di pages/projects/ (optional)
 // =============================================================
 
@@ -18,8 +18,8 @@ portfolioData.portfolios = [
         description: "A versatile multi-platform media downloader and automated image fetcher featuring real-time interception, integrated browser capabilities, and yt-dlp engine support for streamlined media archival.",
         githubLink: "https://github.com/wahyusd/ws-downloader",
         projectLink: null,
-        pageLink: "/pages/projects/ws-downloader.html",
-        mediaLink: "/assets/images/portfolio/ws-downloader/preview.jpeg",
+        pageLink: "/pages/projects/ws-downloader/",
+        mediaLink: "/pages/projects/ws-downloader/images/preview.jpeg",
         mediaType: "image"
     },
     {
@@ -30,8 +30,8 @@ portfolioData.portfolios = [
         description: "An AI-powered desktop companion for video editors that automates transcription, story segmentation, B-Roll recommendations, and YouTube chapter generation using both local and cloud-based LLMs.",
         githubLink: "https://github.com/wahyusd/ws-broll-assistant",
         projectLink: null,
-        pageLink: "/pages/projects/ws-broll-assistant.html",
-        mediaLink: "/assets/images/portfolio/ws-b-roll/preview.jpeg",
+        pageLink: "/pages/projects/ws-broll-assistant/",
+        mediaLink: "/pages/projects/ws-broll-assistant/images/preview.jpeg",
         mediaType: "image"
     },
     {
@@ -42,8 +42,8 @@ portfolioData.portfolios = [
         description: "A high-performance RSS news aggregator and article reader built with Tauri and Vite, featuring offline-first storage and smart deduplication for a clean, distraction-free reading experience.",
         githubLink: "https://github.com/wahyusd/news-center",
         projectLink: null,
-        pageLink: "/pages/projects/news-center.html",
-        mediaLink: "/assets/images/portfolio/news-center/preview.jpeg",
+        pageLink: "/pages/projects/news-center/",
+        mediaLink: "/pages/projects/news-center/images/preview.jpeg",
         mediaType: "image"
     },
     {
@@ -54,8 +54,8 @@ portfolioData.portfolios = [
         description: "An advanced YouTube comment sentiment analyzer featuring a pure statistical NLP pipeline, topic clustering, and interactive word network graphs for deep audience insights.",
         githubLink: "https://github.com/wahyusd/emotube-ws",
         projectLink: null,
-        pageLink: "/pages/projects/emotube-ws.html",
-        mediaLink: "/assets/images/portfolio/emotube-ws/preview.jpeg",
+        pageLink: "/pages/projects/emotube-ws/",
+        mediaLink: "/pages/projects/emotube-ws/images/preview.jpeg",
         mediaType: "image"
     }
 ];
