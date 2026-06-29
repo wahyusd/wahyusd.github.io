@@ -742,6 +742,13 @@ p {
     align-items: flex-end;
 }
 
+.section-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+}
+
 .section-intro h2 {
     font-size: 3.6rem;
     font-weight: 800;
