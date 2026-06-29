@@ -1,3 +1,14 @@
+<!--
+====================================================================
+PROJECT.HTML — Template untuk halaman detail project.
+Cocok untuk: ws-downloader.html, ws-broll-assistant.html, dll.
+- Konten di-populate otomatis dari project-data.js via data-render
+- Navbar highlight: Projects (data-active="projects")
+- Script: data.js, project-data.js, page.js, include.js
+
+Lihat page.html untuk template halaman generik.
+====================================================================
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,7 +35,6 @@
                     <span class="page-breadcrumb-sep">/</span>
                     <span data-render="breadcrumb-title"></span>
                 </div>
-                <!-- Note: saat copy ke /pages/projects/, ganti href="/pages/projects/" menjadi "." -->
 
                 <div class="page-hero-tags" data-render="hero-tags"></div>
 
