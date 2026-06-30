@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return {
                 profile:    portfolioData.profile,
                 socials:    portfolioData.socials,
+                socialChannels: socialChannels,
                 portfolios: [...(portfolioData.portfolios || [])].sort((a, b) => new Date(b.date) - new Date(a.date)),
                 learningPosts: portfolioData.learningPosts || []
             };
@@ -109,7 +110,8 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 initAnimeAnimations();
                 triggerEntranceAnimations();
-                createFloatingParticles();
+                createFloatingParticles('.s-hero');
+                createSocialShapes();
             } catch (e) {
                 // Fallback: tampilkan semua elemen tanpa animasi
                 document.querySelectorAll(
@@ -444,14 +446,13 @@ function triggerEntranceAnimations() {
 
 // =================================================================
 // FLOATING PARTICLES
-// Partikel kecil yang melayang di hero section sebagai dekorasi.
-// Untuk ubah jumlah partikel: ganti angka 12 di loop for
-// Untuk ubah warna: edit bagian backgroundColor di bawah
+// Partikel kecil yang melayang sebagai dekorasi section.
+// Panggil dengan selector CSS untuk section mana pun.
 // =================================================================
 
-function createFloatingParticles() {
-    const heroSection = document.querySelector('.s-hero');
-    if (!heroSection) return;
+function createFloatingParticles(containerSelector = '.s-hero') {
+    const section = document.querySelector(containerSelector);
+    if (!section) return;
 
     for (let i = 0; i < 12; i++) {
         const particle = document.createElement('div');
@@ -465,7 +466,6 @@ function createFloatingParticles() {
         particle.style.left         = `${anime.random(2, 98)}%`;
         particle.style.opacity      = (anime.random(5, 25) / 100).toString();
 
-        // 3 variasi warna partikel: violet terang, ungu dalam, putih redup
         if (i % 3 === 0) {
             particle.style.backgroundColor = '#c084fc';
             particle.style.boxShadow       = '0 0 12px rgba(192, 132, 252, 0.6)';
@@ -477,12 +477,11 @@ function createFloatingParticles() {
             particle.style.boxShadow       = 'none';
         }
 
-        heroSection.appendChild(particle);
+        section.appendChild(particle);
     }
 
-    // Animasi melayang — bergerak random, bolak-balik, loop selamanya
     anime({
-        targets:     '.s-hero .floating-particle',
+        targets:     `${containerSelector} .floating-particle`,
         translateX:  () => anime.random(-60, 60),
         translateY:  () => anime.random(-60, 60),
         opacity:     () => anime.random(0.03, 0.25),
@@ -495,6 +494,48 @@ function createFloatingParticles() {
     });
 }
 
+
+// =================================================================
+// SOCIAL SHAPES — decorative geometric shapes for Connect section
+// Inspired by 404.html but with a unique color palette and feel
+// =================================================================
+
+function createSocialShapes() {
+    const container = document.getElementById('social-shapes');
+    if (!container) return;
+
+    const colors = ['#c084fc', '#22d3ee', '#a855f7', '#06b6d4', '#7c3aed', '#67e8f9'];
+    const types = ['diamond', 'circle', 'ring', 'dot'];
+
+    for (let i = 0; i < 16; i++) {
+        const el = document.createElement('div');
+        const type = types[Math.floor(Math.random() * types.length)];
+        el.className = 'social-shape social-shape-' + type;
+        el.style.left = Math.random() * 100 + '%';
+        el.style.top = Math.random() * 100 + '%';
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        if (type === 'dot') {
+            el.style.background = color;
+        } else {
+            el.style.borderColor = color;
+        }
+        el.style.opacity = (0.06 + Math.random() * 0.14).toString();
+        container.appendChild(el);
+    }
+
+    anime({
+        targets: '#social-shapes .social-shape',
+        translateX: () => anime.random(-100, 100),
+        translateY: () => anime.random(-100, 100),
+        rotate: () => anime.random(-180, 180),
+        scale: () => [1, anime.random(7, 13) / 10],
+        duration: () => anime.random(5000, 9000),
+        delay: () => anime.random(0, 2000),
+        direction: 'alternate',
+        loop: true,
+        easing: 'easeInOutQuad'
+    });
+}
 
 // =================================================================
 // SMOOTH SCROLL

@@ -104,8 +104,12 @@
                         
                         <!-- CTA and Social Links -->
                         <div class="hero-cta">
-                            <a href="#projects" class="btn btn--primary smoothscroll" id="btn-view-works" title="View Portfolio Projects">View My Works</a>
-                            <a :href="profile.cvLink" download class="btn btn--stroke" id="btn-cv-hero" title="Download CV PDF">Get CV</a>
+                            <a href="#social" class="btn btn--primary smoothscroll" id="btn-connect" title="Connect With Me">
+                                <i class="fas fa-handshake" aria-hidden="true" style="margin-right: 0.6rem;"></i> Connect With Me
+                            </a>
+                            <a :href="profile.cvLink" download class="btn btn--stroke" id="btn-cv-hero" title="Download CV PDF">
+                                <i class="fas fa-download" aria-hidden="true" style="margin-right: 0.6rem;"></i> Get CV
+                            </a>
                         </div>
                         
                         <ul class="hero-social" aria-label="Social Media Connections">
@@ -297,6 +301,64 @@
                 </div>
             </section>
 
+            <!-- Social / Connect Section -->
+            <section id="social" class="s-social target-section" aria-label="Social Channels">
+                <div class="social-background-media" aria-hidden="true"></div>
+                <div class="social-glow-blob social-glow-1" aria-hidden="true"></div>
+                <div class="social-glow-blob social-glow-2" aria-hidden="true"></div>
+                <div id="social-shapes" class="social-shapes-container" aria-hidden="true"></div>
+
+                <div class="container">
+                    <div class="section-header" data-aos="fade-up">
+                        <div class="section-intro">
+                            <h2>Let's <span>Connect</span></h2>
+                            <p>Follow my content and join the journey.</p>
+                        </div>
+                    </div>
+
+                    <div class="social-grid-wrapper">
+                        <div class="social-grid">
+                            <div
+                                v-for="(channel, index) in socialChannels"
+                                :key="channel.id"
+                                class="social-card"
+                                data-aos="fade-up"
+                                :data-aos-delay="index * 200"
+                            >
+                                <a :href="channel.url" target="_blank" class="social-card-link" :title="'Visit ' + channel.name"></a>
+                                <div class="social-card-inner">
+                                    <div class="social-card-left">
+                                        <div class="social-card-avatar">
+                                            <div class="social-card-avatar-glow" aria-hidden="true"></div>
+                                            <img :src="channel.photo" :alt="channel.name">
+                                        </div>
+                                        <div class="social-card-handle">
+                                            <i :class="channel.iconClass" aria-hidden="true" style="color: #ff4444;"></i>
+                                            <span>{{ channel.handle }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="social-card-right">
+                                        <h3 class="social-card-title">{{ channel.name }}</h3>
+                                        <p class="social-card-desc">{{ channel.description }}</p>
+                                    </div>
+                                </div>
+                                <div class="social-card-footer">
+                                    <a :href="channel.url + '?sub_confirmation=1'" target="_blank" class="btn btn--primary btn--small" :id="'btn-social-' + channel.id" :title="'Subscribe to ' + channel.name">
+                                        <i :class="channel.iconClass" aria-hidden="true" style="margin-right: 0.6rem;"></i> Subscribe
+                                    </a>
+                                    <a :href="channel.tiktokUrl" target="_blank" class="btn btn--stroke btn--small" :title="'Follow on TikTok'">
+                                        <i class="fab fa-tiktok" aria-hidden="true" style="margin-right: 0.6rem;"></i> Follow
+                                    </a>
+                                    <a v-if="channel.instagramUrl" :href="channel.instagramUrl" target="_blank" class="btn btn--stroke btn--small" :title="'Follow on Instagram'">
+                                        <i class="fab fa-instagram" aria-hidden="true" style="margin-right: 0.6rem;"></i> Follow
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
         </main>
 
         <!-- Back to Top floating arrow -->
@@ -370,6 +432,7 @@
     <script src="js/data.js"></script>
     <script src="js/project-data.js"></script>
     <script src="js/learning-data.js"></script>
+    <script src="js/social-data.js"></script>
     <script src="js/main.js"></script>
 
 </body>
