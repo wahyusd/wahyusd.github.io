@@ -230,7 +230,7 @@ function initLogoTypewriter() {
     const el = document.getElementById('logo-typewriter-text');
     if (!el) return;
 
-    const text = 'Wahyusd'; // ← ganti teks logo di sini jika diperlukan
+    const text = 'WAHYUSD'; // ← ganti teks logo di sini jika diperlukan
 
     let charIndex  = 0;
     let isDeleting = false;

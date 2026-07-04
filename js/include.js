@@ -78,7 +78,7 @@ function initLogoTypewriterSub() {
     const el = document.getElementById('logo-typewriter-sub');
     if (!el) return;
 
-    const text = 'Wahyusd';
+    const text = 'WAHYUSD';
     let charIndex = 0;
     let isDeleting = false;
     const TYPE_SPEED = 110;

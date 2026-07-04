@@ -148,7 +148,7 @@ p {
 }
 
 .header-logo a {
-    font-family: var(--font-heading);
+    font-family: var(--font-mono);
     font-size: 2.2rem;
     font-weight: 800;
     color: var(--text-main);

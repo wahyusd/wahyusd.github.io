@@ -84,7 +84,7 @@ p { color: var(--text-muted); }
 }
 
 .page-header-logo {
-    font-family: var(--font-heading);
+    font-family: var(--font-mono);
     font-size: 2rem;
     font-weight: 800;
 }
