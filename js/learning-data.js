@@ -7,6 +7,16 @@
 
 portfolioData.learningPosts = [
     {
+        title: "Digital Snellen Chart: Uji Penglihatan Digital yang Akurat dan Terjangkau",
+        slug: "snellen-paper",
+        date: "2026-07-20",
+        description: "Studi implementasi chart Snellen digital berbasis web dengan kalibrasi presisi untuk penggunaan pribadi dan edukatif — single-file HTML, 4 jenis chart, kompatibel Display Scaling.",
+        tags: ["Optometry", "Web App", "Health Tech"],
+        youtubeLink: null,
+        thumbnail: "/pages/projects/optometri/assets/preview.jpeg",
+        mdFile: "/pages/learning/snellen-paper.md"
+    },
+    {
         title: "Hello, World! — Template Post",
         slug: "hello-world",
         date: "2026-06-28",

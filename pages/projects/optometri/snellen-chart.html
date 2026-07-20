@@ -1,0 +1,2348 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WS Chart — Snellen Digital</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Outfit:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8f6f0;
+      --panel-bg: rgba(255, 255, 255, 0.8);
+      --panel-border: rgba(0, 0, 0, 0.08);
+      --text: #1a1a1a;
+      --chart-bg: #ffffff;
+      --chart-text: #000000;
+      --accent: #8b5cf6;
+      --accent-hover: #7c3aed;
+      --accent-rgb: 139, 92, 246;
+      --accent2: #f97316;
+      --accent3: #0f766e;
+      --muted: #6b7280;
+      --glass-bg: rgba(255, 255, 255, 0.85);
+      --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .dark-mode {
+      --bg: #0a0a0a;
+      --panel-bg: rgba(20, 20, 20, 0.85);
+      --panel-border: rgba(255, 255, 255, 0.08);
+      --text: #f5f2ec;
+      --chart-bg: #0a0a0a;
+      --chart-text: #ffffff;
+      --accent: #a78bfa;
+      --accent-hover: #c4b5fd;
+      --accent-rgb: 167, 139, 250;
+      --accent2: #fb923c;
+      --accent3: #10b981;
+      --muted: #9ca3af;
+      --glass-bg: rgba(18, 18, 18, 0.85);
+      --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      letter-spacing: -0.01em;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: background 0.3s var(--transition), color 0.3s var(--transition);
+    }
+
+    /* ── FLOATING BUTTONS ── */
+    .floating-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 100;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--glass-bg);
+      border: 1px solid var(--panel-border);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+      transition: var(--transition);
+    }
+
+    .floating-btn:hover {
+      transform: scale(1.08);
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .nav-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--glass-bg);
+      border: 1px solid var(--panel-border);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+      transition: var(--transition);
+      text-decoration: none;
+    }
+
+    .nav-btn:hover {
+      transform: scale(1.08);
+      background: var(--accent3);
+      color: #fff;
+      border-color: var(--accent3);
+    }
+
+    /* ── DRAWER MENU ── */
+    .drawer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 340px;
+      height: 100%;
+      background: var(--glass-bg);
+      border-right: 1px solid var(--panel-border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+      z-index: 999;
+      transform: translateX(-100%);
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .drawer.open {
+      transform: translateX(0);
+    }
+
+    .drawer-header {
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--panel-border);
+    }
+
+    .drawer-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-size: 20px;
+      letter-spacing: 2px;
+      font-weight: bold;
+    }
+
+    .close-btn {
+      background: transparent;
+      border: none;
+      font-size: 28px;
+      color: var(--muted);
+      cursor: pointer;
+      line-height: 1;
+      transition: var(--transition);
+    }
+
+    .close-btn:hover {
+      color: var(--accent);
+      transform: scale(1.1);
+    }
+
+    .drawer-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .drawer-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--panel-border);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--muted);
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--panel-border);
+      padding-bottom: 4px;
+    }
+
+    /* ── CONTROLS ── */
+    .ctrl-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .ctrl-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .slider-display-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--panel-border);
+      padding: 3px;
+      border-radius: 8px;
+    }
+
+    .num-display {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 46px;
+      text-align: center;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      outline: none;
+      -moz-appearance: textfield;
+      appearance: textfield;
+    }
+    .num-display::-webkit-outer-spin-button,
+    .num-display::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    .num-display:focus {
+      background: var(--glass-bg);
+      border-radius: 4px;
+    }
+
+    .step-btn {
+      background: var(--glass-bg);
+      border: 1px solid var(--panel-border);
+      color: var(--text);
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .step-btn:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .ctrl-slider {
+      width: 100%;
+      accent-color: var(--accent);
+      cursor: pointer;
+      height: 6px;
+      border-radius: 3px;
+      outline: none;
+      margin: 8px 0;
+    }
+
+    /* ── RESOLUTION & PRESETS ── */
+    .res-input-group {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .res-input {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      background: var(--glass-bg);
+      border: 1px solid var(--panel-border);
+      color: var(--text);
+      width: 48px;
+      height: 24px;
+      border-radius: 6px;
+      text-align: center;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .res-input:focus {
+      border-color: var(--accent2);
+    }
+
+    .res-sep {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .auto-btn {
+      font-size: 10px;
+      font-weight: 600;
+      background: var(--accent2);
+      border: none;
+      color: #fff;
+      padding: 4px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .auto-btn:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    #ppi-badge {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      background: var(--panel-border);
+      color: var(--muted);
+      padding: 4px 10px;
+      border-radius: 12px;
+      display: inline-block;
+      align-self: flex-start;
+    }
+
+    #ppi-badge.accurate {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent3);
+    }
+
+    #ppi-badge.custom {
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--accent2);
+    }
+
+    .presets-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
+
+    .preset-btn {
+      font-size: 10px;
+      font-weight: 600;
+      background: var(--glass-bg);
+      border: 1px solid var(--panel-border);
+      color: var(--text);
+      padding: 6px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .preset-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .preset-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    /* ── CHARTS & BUTTONS ── */
+    .mode-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
+
+    .mode-btn {
+      background: var(--glass-bg);
+      border: 1px solid var(--panel-border);
+      color: var(--text);
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .mode-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .mode-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .mode-btn[data-mode="astig"] {
+      grid-column: span 2;
+    }
+
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .opt-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .opt-desc {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .toggle-btn {
+      background: var(--glass-bg);
+      border: 1px solid var(--panel-border);
+      color: var(--text);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .toggle-btn:hover {
+      border-color: var(--text);
+    }
+
+    .toggle-btn.on {
+      background: var(--accent2);
+      border-color: var(--accent2);
+      color: #fff;
+    }
+
+    #btn-viewmode.on {
+      background: var(--accent3);
+      border-color: var(--accent3);
+    }
+
+    .actions-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
+
+    .action-btn {
+      background: var(--glass-bg);
+      border: 1px solid var(--panel-border);
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .action-btn:hover {
+      background: var(--text);
+      color: var(--bg);
+    }
+
+    .action-btn.secondary {
+      background: transparent;
+      border-style: dashed;
+      color: var(--muted);
+      grid-column: span 2;
+    }
+
+    .action-btn.secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ── CHART AREA ── */
+    #chart-area {
+      flex: 1;
+      background: var(--chart-bg);
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      overflow: hidden;
+      position: relative;
+      transition: background 0.3s var(--transition);
+      padding: 20px;
+    }
+
+    /* Duochrome / Red-Green: solid equal-luminance split (ISO 10938 / BS 3668) */
+    #chart-area.redgreen {
+      background: linear-gradient(to right,
+          #B83030 0%, #B83030 50%,
+          #207330 50%, #207330 100%) !important;
+    }
+
+    #chart-area.redgreen .chart-char,
+    #chart-area.redgreen .snellen-classic,
+    #chart-area.redgreen .visus-label,
+    #chart-area.redgreen #single-visus-badge,
+    #chart-area.redgreen #single-progress,
+    #chart-area.redgreen #single-dots .dot {
+      color: #000000 !important;
+    }
+
+    #chart-area.redgreen .tumbling-e svg,
+    #chart-area.redgreen .landolt-c svg,
+    #chart-area.redgreen .chart-char svg {
+      fill: #000000 !important;
+    }
+
+    #chart-area.redgreen .landolt-c svg path {
+      stroke: #000000 !important;
+    }
+
+    #chart-area.redgreen .astig-line {
+      stroke: #000000 !important;
+    }
+
+    #chart-area.redgreen .snellen-bar {
+      display: none !important;
+    }
+
+    /* ── ALL-ROWS MODE ── */
+    #snellen-table {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-evenly;
+      flex: 1;
+      height: 100%;
+      width: 100%;
+      padding: 24px 0;
+    }
+
+    .snellen-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5em;
+      width: 100%;
+      padding: 4px 0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .snellen-row:hover {
+      background: rgba(0, 0, 0, 0.03);
+    }
+
+    .dark-mode .snellen-row:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .snellen-row.highlighted {
+      background: rgba(var(--accent-rgb), 0.08);
+      border-left: 4px solid var(--accent);
+      border-right: 4px solid var(--accent);
+    }
+
+    .snellen-row .visus-label {
+      position: absolute;
+      right: 20px;
+      font-size: 11px;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      font-weight: 700;
+      color: var(--muted);
+      opacity: 0.6;
+    }
+
+    /* ── SINGLE-ROW MODE ── */
+    #single-row-view {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      width: 100%;
+      position: relative;
+    }
+
+    #single-visus-badge {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: 4px;
+      color: var(--accent);
+      margin-bottom: 24px;
+      opacity: 0.9;
+    }
+
+    #single-chars {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5em;
+      flex-wrap: wrap;
+      padding: 0 80px;
+    }
+
+    .snellen-bar {
+      width: 75%;
+      max-width: 600px;
+      height: 5px;
+      border-radius: 3px;
+      margin: 6px 0;
+    }
+
+    .bar-green {
+      background-color: #10b981;
+    }
+
+    .bar-red {
+      background-color: #ef4444;
+    }
+
+    .snellen-classic {
+      font-family: 'Rockwell', 'Times New Roman', Times, serif;
+      font-weight: 700;
+    }
+
+    .single-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
+      color: var(--text);
+      width: 48px;
+      height: 80px;
+      border-radius: 12px;
+      font-size: 24px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      z-index: 5;
+      user-select: none;
+      box-shadow: var(--shadow);
+    }
+
+    .single-nav:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .single-nav:disabled {
+      opacity: 0.15;
+      cursor: not-allowed;
+    }
+
+    .single-nav:disabled:hover {
+      background: var(--panel-bg);
+      color: var(--text);
+      border-color: var(--panel-border);
+    }
+
+    #nav-prev {
+      left: 24px;
+    }
+
+    #nav-next {
+      right: 24px;
+    }
+
+    #single-progress {
+      margin-top: 24px;
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    #single-dots {
+      margin-top: 16px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--panel-border);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .dot.active {
+      background: var(--accent);
+      width: 20px;
+      border-radius: 4px;
+    }
+
+    @keyframes fadeInRow {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .row-fade {
+      animation: fadeInRow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ── CHARS ── */
+    .chart-char {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      color: var(--chart-text);
+    }
+
+    .chart-char svg {
+      fill: var(--chart-text);
+    }
+
+    .tumbling-e,
+    .landolt-c {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ── ASTIGMATISM / CLOCK DIAL ── */
+    #astig-view {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      padding: 20px;
+    }
+
+    #astig-view .astig-title {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 4px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      opacity: 0.9;
+    }
+
+    #astig-view .astig-subtitle {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 20px;
+      text-align: center;
+      max-width: 520px;
+      line-height: 1.5;
+    }
+
+    #astig-canvas-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #astig-canvas-wrap svg {
+      display: block;
+    }
+
+    .astig-line {
+      transition: stroke 0.2s, stroke-width 0.2s, opacity 0.2s;
+    }
+
+    .astig-line:hover {
+      stroke: var(--accent);
+      opacity: 1;
+    }
+
+    #astig-result {
+      margin-top: 16px;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      text-align: center;
+      min-height: 52px;
+    }
+
+    #astig-result .axis-label {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    #astig-result .axis-val {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 24px;
+    }
+
+    .astig-controls {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .astig-ctrl-btn {
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--glass-bg);
+      border: 1px solid var(--panel-border);
+      color: var(--text);
+      padding: 6px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .astig-ctrl-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ── STATUS BAR & DETAILS ── */
+    #statusbar {
+      background: var(--panel-bg);
+      height: 32px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 11px;
+      color: var(--muted);
+      flex-shrink: 0;
+      border-top: 1px solid var(--panel-border);
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      z-index: 10;
+    }
+
+    #status-dist {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    #status-visus {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    #status-ppi {
+      color: var(--accent3);
+    }
+
+    #status-res {
+      color: var(--accent2);
+    }
+
+    #status-info {
+      margin-left: auto;
+      opacity: 0.5;
+      font-size: 10px;
+    }
+
+    /* ── FULLSCREEN / PRESENTATION ── */
+    :fullscreen #drawer-toggle,
+    :fullscreen .nav-btn,
+    :fullscreen #statusbar {
+      display: none;
+    }
+
+    :fullscreen #settings-drawer {
+      transform: translateX(-100%) !important;
+    }
+
+    :fullscreen #chart-area {
+      height: 100vh;
+      padding: 40px;
+    }
+
+    /* ── TOOLTIP ── */
+    #tv-tooltip {
+      position: fixed;
+      bottom: 44px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
+      color: var(--text);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      white-space: nowrap;
+      z-index: 999;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      box-shadow: var(--shadow);
+    }
+
+    #tv-tooltip.show {
+      opacity: 1;
+    }
+
+    /* ── MODAL WINDOW ── */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .modal.open {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--bg);
+      border: 1px solid var(--panel-border);
+      box-shadow: var(--shadow);
+      border-radius: 16px;
+      width: 90%;
+      max-width: 460px;
+      overflow: hidden;
+      animation: slideUp 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .modal-header {
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--panel-border);
+    }
+
+    .modal-header h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .modal-body {
+      padding: 20px;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .shortcuts-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    .shortcuts-table th,
+    .shortcuts-table td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid var(--panel-border);
+    }
+
+    .shortcuts-table th {
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      font-size: 10px;
+      letter-spacing: 1px;
+    }
+
+    .shortcuts-table td kbd {
+      background: var(--panel-border);
+      border: 1px solid var(--muted);
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-family: inherit;
+      font-weight: 700;
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    /* ── CUSTOM POPUP ── */
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 3000;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.15s ease;
+    }
+    .popup-overlay.open { display: flex; }
+    .popup-box {
+      background: var(--bg);
+      border: 1px solid var(--panel-border);
+      box-shadow: var(--shadow);
+      border-radius: 14px;
+      width: 90%;
+      max-width: 360px;
+      text-align: center;
+      padding: 24px 20px 18px;
+      animation: slideUp 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .popup-icon {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+    .popup-msg {
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+    .popup-btns {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+    .popup-btn {
+      padding: 8px 22px;
+      border-radius: 8px;
+      border: 1px solid var(--panel-border);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .popup-btn.ok {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+    .popup-btn.ok:hover { opacity: 0.85; }
+    .popup-btn.cancel {
+      background: var(--glass-bg);
+      color: var(--text);
+    }
+    .popup-btn.cancel:hover { background: var(--text); color: var(--bg); }
+    .popup-btns:empty { display: none; }
+
+    /* ── RESPONSIVE: TABLET (≤768px) ── */
+    @media (max-width: 768px) {
+      .drawer { width: 300px; }
+      .modal-content { max-width: 90%; }
+      .floating-btn { top: 12px; left: 12px; width: 40px; height: 40px; font-size: 18px; }
+      .nav-btn { top: 12px; right: 12px; width: 40px; height: 40px; font-size: 18px; }
+      .snellen-row { gap: 1em !important; }
+      .visus-label { font-size: 10px !important; }
+      #statusbar { font-size: 10px; padding: 0 10px; gap: 10px; overflow-x: auto; }
+      #status-info { display: none; }
+    }
+
+    /* ── RESPONSIVE: MOBILE (≤480px) ── */
+    @media (max-width: 480px) {
+      .drawer { width: 100%; border-right: none; }
+      .drawer-content { padding: 10px; }
+      .drawer-card { padding: 12px; }
+      .floating-btn { top: 10px; left: 10px; width: 36px; height: 36px; font-size: 16px; }
+      .floating-btn:hover { transform: none; }
+      .nav-btn { top: 10px; right: 10px; width: 36px; height: 36px; font-size: 16px; }
+
+      /* Chart adjustments */
+      .snellen-row { gap: 0.5em !important; padding: 6px 10px !important; }
+      .visus-label { font-size: 9px !important; min-width: 42px !important; }
+      .chart-char { width: auto !important; }
+      .snellen-bar { height: 3px !important; margin: 2px 10px !important; }
+
+      /* Single row view */
+      #single-row-view { padding: 10px; }
+      #single-visus-badge { font-size: 14px; }
+      #single-chars { gap: 6px; }
+
+      /* Controls */
+      .ctrl-row { flex-direction: column; align-items: stretch !important; gap: 6px; }
+      .ctrl-label { min-width: auto !important; text-align: left !important; }
+      .slider-display-group { width: 100%; justify-content: center; }
+      .num-display { min-width: 50px; font-size: 14px; }
+      .ctrl-slider { width: 100%; }
+      .res-input-group { width: 100%; justify-content: center; }
+      .presets-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+      .preset-btn { font-size: 10px; padding: 6px; }
+      .mode-grid { grid-template-columns: repeat(2, 1fr); }
+      .mode-btn { font-size: 10px; padding: 6px; }
+      .actions-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
+      .action-btn { font-size: 10px; padding: 6px 8px; }
+      .action-btn.secondary { grid-column: span 2; }
+
+      /* Status bar - compact on mobile */
+      #statusbar {
+        height: auto;
+        min-height: 28px;
+        padding: 4px 8px;
+        gap: 6px;
+        flex-wrap: wrap;
+        font-size: 9px;
+      }
+      #status-info { display: none; }
+      #statusbar span { white-space: nowrap; }
+
+      /* TV tooltip - allow wrap on mobile */
+      #tv-tooltip {
+        white-space: normal;
+        max-width: calc(100vw - 40px);
+        font-size: 10px;
+        padding: 8px 12px;
+        bottom: 36px;
+      }
+
+      /* Modal */
+      .modal-content { max-width: 95%; border-radius: 12px; }
+      .modal-header { padding: 12px 16px; }
+      .modal-header h3 { font-size: 13px; }
+      .modal-body { padding: 14px; max-height: 60vh; }
+      .shortcuts-table { font-size: 11px; }
+      .shortcuts-table td kbd { font-size: 9px; padding: 1px 4px; }
+
+      /* Popup */
+      .popup-box { width: 92%; padding: 20px 16px; }
+      .popup-msg { font-size: 12px; }
+
+      /* Mobile-only guidance */
+      .mobile-note {
+        display: block;
+        background: var(--glass-bg);
+        border: 1px dashed var(--accent);
+        border-radius: 8px;
+        padding: 10px;
+        margin-bottom: 12px;
+        font-size: 10px;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+    }
+
+    /* Desktop: hide mobile note */
+    @media (min-width: 481px) {
+      .mobile-note { display: none; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Floating Menu Trigger -->
+  <button id="drawer-toggle" class="floating-btn" title="Buka Pengaturan (Tekan M / S)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="3"></circle>
+      <path
+        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
+      </path>
+    </svg>
+  </button>
+
+  <!-- Navigation to Reading Chart -->
+  <a href="reading-chart.html" class="nav-btn" title="Reading Chart">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path>
+      <path d="M8 7h6"></path>
+      <path d="M8 11h8"></path>
+    </svg>
+  </a>
+
+  <!-- Settings Drawer -->
+  <div id="settings-drawer" class="drawer">
+    <div class="drawer-header">
+      <div class="drawer-logo">
+        <img src="assets/logo.svg" alt="WS Chart" height="28">
+      </div>
+      <button id="drawer-close" class="close-btn" title="Tutup Menu">&times;</button>
+    </div>
+
+    <div class="drawer-content">
+      <!-- Mobile guidance (hidden on desktop) -->
+      <div class="mobile-note">
+        &#128241; <b>Mode HP:</b> Sebisa Mungkin Gunakan HP sebagai pengendali. Chart ditampilkan di layar TV/monitor yang terhubung.
+      </div>
+
+      <!-- SECTION 1: CALIBRATION -->
+      <div class="drawer-card">
+        <div class="card-title">Kalibrasi Layar TV</div>
+
+        <div class="ctrl-row">
+          <label class="ctrl-label">Ukuran Layar</label>
+          <div class="slider-display-group">
+            <button class="step-btn" id="btn-tv-down">&minus;</button>
+            <input type="number" class="num-display" id="tv-display" value="16" min="1" max="200" step="0.1">
+            <button class="step-btn" id="btn-tv-up">+</button>
+          </div>
+        </div>
+        <input type="range" class="ctrl-slider" id="tv-slider" min="5" max="150" step="0.1" value="16">
+
+        <div class="ctrl-row" style="margin-top: 12px;">
+          <label class="ctrl-label">Resolusi<br>(W &times; H)</label>
+          <div class="res-input-group">
+            <input type="number" class="res-input" id="res-w" value="1920" min="320" max="7680" step="1">
+            <span class="res-sep">&times;</span>
+            <input type="number" class="res-input" id="res-h" value="1080" min="240" max="4320" step="1">
+            <button class="auto-btn" id="btn-auto-res" title="Deteksi Otomatis">AUTO</button>
+          </div>
+        </div>
+
+        <div class="badge-row" style="margin-top: 8px;">
+          <span id="ppi-badge">PPI: &mdash;</span>
+        </div>
+      </div>
+
+      <!-- SECTION 2: TESTING DISTANCE -->
+      <div class="drawer-card">
+        <div class="card-title">Jarak Uji Pemeriksaan</div>
+        <div class="ctrl-row">
+          <label class="ctrl-label">Jarak Uji</label>
+          <div class="slider-display-group">
+            <button class="step-btn" id="btn-dist-down">&minus;</button>
+            <input type="number" class="num-display" id="dist-display" value="3.0" min="0.5" max="6" step="0.1">
+            <button class="step-btn" id="btn-dist-up">+</button>
+          </div>
+        </div>
+        <input type="range" class="ctrl-slider" id="dist-slider" min="0.5" max="6" step="0.1" value="3">
+      </div>
+
+      <!-- SECTION 2B: CALIBRATION SCALING -->
+      <div class="drawer-card">
+        <div class="card-title">Kalibrasi Ukuran Huruf</div>
+        <div class="ctrl-row">
+          <label class="ctrl-label">Scaling</label>
+          <div class="slider-display-group">
+            <button class="step-btn" id="btn-scale-down">&minus;</button>
+            <input type="number" class="num-display" id="scale-display" value="1.00" min="0.5" max="2.0" step="0.01">
+            <button class="step-btn" id="btn-scale-up">+</button>
+          </div>
+        </div>
+        <input type="range" class="ctrl-slider" id="scale-slider" min="0.5" max="2.0" step="0.01" value="1">
+
+        <div style="margin-top:12px; padding-top:10px; border-top:1px solid var(--panel-border);">
+          <div style="font-size:11px; font-weight:600; color:var(--text); margin-bottom:8px;">&#129518; Kalkulator Scaling</div>
+          <div style="font-size:10px; color:var(--muted); margin-bottom:8px;">
+            Ukur huruf 20/200 (E besar) dengan penggaris, lalu masukkan di bawah.
+          </div>
+          <div class="ctrl-row">
+            <label class="ctrl-label" style="font-size:10px;">Ukuran terukur (mm)</label>
+            <input type="number" class="res-input" id="calc-measured" value="" placeholder="mm" style="width:60px;" step="0.1" min="1">
+            <button class="auto-btn" id="btn-calc-scale" title="Hitung scaling">HITUNG</button>
+          </div>
+          <div id="calc-result" style="font-size:10px; color:var(--muted); margin-top:6px; display:none;">
+            <span>Teoritis: <b id="calc-theo">—</b> mm &rarr; Scaling: <b id="calc-val">—</b></span>
+            <button class="auto-btn" id="btn-calc-apply" title="Terapkan scaling" style="margin-left:6px; padding:2px 8px; font-size:9px;">TERAPKAN</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 3: PRESETS -->
+      <div class="drawer-card">
+        <div class="card-title">Preset Cepat Layar</div>
+        <div class="presets-grid" id="presets-group">
+          <button class="preset-btn" data-size="13.3" data-res="1920x1080">13.3" FHD</button>
+          <button class="preset-btn" data-size="15.6" data-res="1920x1080">15.6" FHD</button>
+          <button class="preset-btn active" data-size="16" data-res="2880x1620">16.0" WQHD+</button>
+          <button class="preset-btn" data-size="24" data-res="1920x1080">24.0" FHD</button>
+          <button class="preset-btn" data-size="32" data-res="3840x2160">32.0" 4K</button>
+          <button class="preset-btn" data-size="50" data-res="3840x2160">50.0" 4K</button>
+        </div>
+      </div>
+
+      <!-- SECTION 4: CHART MODE -->
+      <div class="drawer-card">
+        <div class="card-title">Pilih Jenis Bagan (Chart)</div>
+        <div class="mode-grid">
+          <button class="mode-btn active" data-mode="snellen">Snellen</button>
+          <button class="mode-btn" data-mode="tumbling">Tumbling E</button>
+          <button class="mode-btn" data-mode="landolt">Landolt C</button>
+          <button class="mode-btn" data-mode="simbol">Simbol Anak</button>
+          <button class="mode-btn" data-mode="astig">Clock Dial</button>
+        </div>
+      </div>
+
+      <!-- SECTION 5: OPTIONS -->
+      <div class="drawer-card">
+        <div class="card-title">Pengaturan Tampilan</div>
+        <div class="options-list">
+          <div class="opt-row">
+            <span class="opt-desc">Tampilan Baris</span>
+            <button class="toggle-btn" id="btn-viewmode">&equiv; Semua Baris</button>
+          </div>
+          <div class="opt-row">
+            <span class="opt-desc">Merah-Hijau (Duochrome)</span>
+            <button class="toggle-btn" id="btn-redgreen">Aktifkan</button>
+          </div>
+          <div class="opt-row">
+            <span class="opt-desc">Sorot Baris (Highlight)</span>
+            <button class="toggle-btn" id="btn-highlight">Aktifkan</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 6: ACTIONS -->
+      <div class="drawer-card">
+        <div class="card-title">Aksi & Bantuan</div>
+        <div class="actions-grid">
+          <button class="action-btn" id="btn-dark">&#127769; Mode Gelap</button>
+          <button class="action-btn" id="btn-fullscreen">&#9711; Fullscreen</button>
+          <button class="action-btn" id="btn-save-default">&#128190; Simpan Default</button>
+          <button class="action-btn" id="btn-reset-default">&#8634; Reset Default</button>
+          <button class="action-btn secondary" id="btn-shortcuts">&#9000; Bantuan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHART AREA -->
+  <div id="chart-area">
+    <button class="single-nav" id="nav-prev" style="display:none;">&#8249;</button>
+    <button class="single-nav" id="nav-next" style="display:none;">&#8250;</button>
+    <div id="snellen-table"></div>
+    <div id="single-row-view">
+      <div id="single-visus-badge">20/20</div>
+      <div id="single-chars"></div>
+      <div id="single-bar" class="snellen-bar" style="display:none;"></div>
+      <span id="single-progress">1 / 11</span>
+      <div id="single-dots"></div>
+    </div>
+    <div id="astig-view">
+      <div class="astig-title">CLOCK DIAL TEST</div>
+      <div class="astig-subtitle">
+        Tutup satu mata, lalu fokus pada lingkaran tengah. Pilih meridian garis yang tampak paling tebal, gelap, atau
+        tajam.
+      </div>
+      <div id="astig-canvas-wrap"></div>
+      <div id="astig-result"></div>
+      <div class="astig-controls">
+        <button class="astig-ctrl-btn" id="astig-reset">Reset Pilihan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATUS BAR -->
+  <div id="statusbar">
+    <span>TV: <span id="status-tv">16"</span></span>
+    <span>Jarak: <span id="status-dist">3.0 m</span></span>
+    <span>Visus: <span id="status-visus">&mdash;</span></span>
+    <span><span id="status-ppi">PPI: &mdash;</span></span>
+    <span>Res: <span id="status-res">1920&times;1080</span></span>
+    <span id="status-info">[M/S] buka menu &bull; [ ] jarak &bull; [&uarr;/&darr;] sorot &bull; [F] fullscreen &bull;
+      [D] gelap &bull; [R] merah-hijau</span>
+  </div>
+
+  <!-- Shortcuts Modal -->
+  <div id="shortcuts-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Panduan Bantuan</h3>
+        <button id="modal-close" class="close-btn" title="Tutup Bantuan">&times;</button>
+      </div>
+      <div class="modal-body">
+        <table class="shortcuts-table">
+          <thead>
+            <tr>
+              <th>Tombol</th>
+              <th>Fungsi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><kbd>M</kbd> / <kbd>S</kbd></td>
+              <td>Buka / tutup menu laci pengaturan</td>
+            </tr>
+            <tr>
+              <td><kbd>&uarr;</kbd> / <kbd>&darr;</kbd></td>
+              <td>Sorot baris atas / bawah (Semua Baris)</td>
+            </tr>
+            <tr>
+              <td><kbd>&larr;</kbd> / <kbd>&rarr;</kbd></td>
+              <td>Pilih baris atas / bawah (Satu Baris)</td>
+            </tr>
+            <tr>
+              <td><kbd>[</kbd> / <kbd>]</kbd></td>
+              <td>Kurangi / tambah jarak tes 0.1 meter</td>
+            </tr>
+            <tr>
+              <td><kbd>V</kbd></td>
+              <td>Ganti mode tampilan (Semua / Satu Baris)</td>
+            </tr>
+            <tr>
+              <td><kbd>R</kbd></td>
+              <td>Filter Merah-Hijau (Duochrome)</td>
+            </tr>
+            <tr>
+              <td><kbd>D</kbd></td>
+              <td>Aktifkan / nonaktifkan Mode Gelap</td>
+            </tr>
+            <tr>
+              <td><kbd>F</kbd></td>
+              <td>Aktifkan / keluar mode Fullscreen</td>
+            </tr>
+            <tr>
+              <td><kbd>Esc</kbd></td>
+              <td>Hilangkan sorotan baris / tutup bantuan</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="margin-top:20px; padding-top:16px; border-top:1px solid var(--panel-border);">
+          <div style="font-size:13px; font-weight:700; color:var(--text); margin-bottom:10px;">&#128207; Panduan Kalibrasi Scaling</div>
+          <div style="font-size:11px; color:var(--muted); line-height:1.7;">
+            <b>Masalah:</b> Ukuran huruf di layar tidak sesuai standar klinis?<br>
+            Penyebab umum: <b>Windows Display Scaling</b> (bukan browser zoom).<br><br>
+            <b>Rumus Standar ISO 10938:</b><br>
+            Tinggi huruf 20/200 (mm) = 60 &times; (jarak &divide; 6) &times; 1.45444<br>
+            Contoh: jarak 3m &rarr; 60 &times; 0.5 &times; 1.45444 = <b>43.63mm</b><br>
+            Contoh: jarak 4m &rarr; 60 &times; 0.667 &times; 1.45444 = <b>58.18mm</b><br><br>
+            <b>Cara Kalibrasi:</b><br>
+            1. Ukur huruf <b>20/200</b> (E besar) dengan penggaris<br>
+            2. Gunakan <b>Kalkulator Scaling</b> di menu pengaturan<br>
+            3. Masukkan ukuran terukur &rarr; dapatkan nilai scaling<br>
+            4. Klik <b>Terapkan</b> untuk mengatur scaling otomatis<br><br>
+            <b>Rumus internal kalkulator:</b><br>
+            new_scaling = current_scaling &times; (teoritis &divide; terukur)<br>
+            Kalkulator otomatis mempertimbangkan scaling yang sedang aktif.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Popup -->
+  <div id="popup-overlay" class="popup-overlay">
+    <div class="popup-box">
+      <div class="popup-icon" id="popup-icon"></div>
+      <div class="popup-msg" id="popup-msg"></div>
+      <div class="popup-btns" id="popup-btns"></div>
+    </div>
+  </div>
+
+  <!-- Tooltip -->
+  <div id="tv-tooltip"></div>
+
+  <script>
+    // ─── DATA ────────────────────────────────────────────────────────────────────
+    const VISUS_ROWS = [
+      { visus: '20/200', factor: 60, chars: ['E'], pediatric: ['APPLE'], gap: '1.5em' },
+      { visus: '20/100', factor: 30, chars: ['F', 'P'], pediatric: ['HOUSE', 'STAR'], gap: '1.5em' },
+      { visus: '20/70', factor: 21, chars: ['T', 'O', 'Z'], pediatric: ['HEART', 'MOON', 'CIRCLE'], gap: '1.5em' },
+      { visus: '20/50', factor: 15, chars: ['L', 'P', 'E', 'D'], pediatric: ['APPLE', 'TRIANGLE', 'SQUARE', 'HOUSE'], gap: '1.5em' },
+      { visus: '20/40', factor: 12, chars: ['P', 'E', 'C', 'F', 'D'], pediatric: ['STAR', 'HEART', 'MOON', 'CIRCLE', 'APPLE'], gap: '1.5em' },
+      { visus: '20/30', factor: 9, chars: ['E', 'D', 'F', 'C', 'Z', 'P'], pediatric: ['TRIANGLE', 'SQUARE', 'HOUSE', 'STAR', 'HEART', 'MOON'], gap: '2.5em', bar: 'green' },
+      { visus: '20/25', factor: 7.5, chars: ['F', 'E', 'L', 'O', 'P', 'Z', 'D'], pediatric: ['CIRCLE', 'APPLE', 'TRIANGLE', 'SQUARE', 'HOUSE', 'STAR', 'HEART'], gap: '2.5em' },
+      { visus: '20/20', factor: 6, chars: ['D', 'E', 'F', 'P', 'O', 'T', 'E', 'C'], pediatric: ['MOON', 'CIRCLE', 'APPLE', 'TRIANGLE', 'SQUARE', 'HOUSE', 'STAR', 'HEART'], gap: '2.5em', bar: 'red' },
+      { visus: '20/15', factor: 4.5, chars: ['L', 'E', 'F', 'O', 'D', 'P', 'C', 'T'], pediatric: ['HEART', 'STAR', 'MOON', 'APPLE', 'CIRCLE', 'TRIANGLE', 'HOUSE', 'SQUARE'], gap: '4em' },
+      { visus: '20/13', factor: 3.9, chars: ['F', 'D', 'P', 'L', 'C', 'T', 'E', 'O'], pediatric: ['SQUARE', 'HEART', 'HOUSE', 'STAR', 'APPLE', 'MOON', 'TRIANGLE', 'CIRCLE'], gap: '4em' },
+      { visus: '20/10', factor: 3, chars: ['P', 'E', 'Z', 'O', 'L', 'C', 'F', 'T', 'D'], pediatric: ['TRIANGLE', 'MOON', 'CIRCLE', 'APPLE', 'SQUARE', 'HEART', 'STAR', 'HOUSE', 'MOON'], gap: '4em' },
+    ];
+
+    const ALL_ROWS_PAGES = [
+      [0],             // Page 1: 20/200 (E)
+      [1],             // Page 2: 20/100 (F P)
+      [2, 3, 4],       // Page 3: 20/70, 20/50, 20/40
+      [5, 6, 7],       // Page 4: 20/30, 20/25, 20/20
+      [8, 9, 10]       // Page 5: 20/15, 20/13, 20/10
+    ];
+    const E_DIRS = [0, 90, 180, 270];
+    const LANDOLT_DIRS = [0, 45, 90, 135, 180, 225, 270, 315];
+    const SYMBOLS = ['APPLE', 'HOUSE', 'STAR', 'HEART', 'MOON', 'CIRCLE', 'SQUARE', 'TRIANGLE'];
+
+    const SNELLEN_PATHS = {
+      'E': 'M0,0 h5 v1 h-4 v1 h4 v1 h-4 v1 h4 v1 h-5 Z',
+      'F': 'M0,0 h5 v1 h-4 v1 h3 v1 h-3 v2 h-1 Z',
+      'P': 'M0,0 h5 v3 h-4 v2 h-1 Z M1,1 h3 v1 h-3 Z',
+      'T': 'M0,0 h5 v1 h-2 v4 h-1 v-4 h-2 Z',
+      'O': 'M0,0 h5 v5 h-5 Z M1,1 v3 h3 v-3 Z',
+      'Z': 'M0,0 h5 v1 L1,4 h4 v1 h-5 v-1 L4,1 h-4 Z',
+      'L': 'M0,0 h1 v4 h4 v1 h-5 Z',
+      'D': 'M0,0 h3 q2,0 2,2 v1 q0,2 -2,2 h-3 Z M1,1 h2 q1,0 1,1 v1 q0,1 -1,1 h-2 Z',
+      'C': 'M5,1 v-1 h-5 v5 h5 v-1 h-4 v-3 Z'
+    };
+
+    const PEDIATRIC_PATHS = {
+      'APPLE': [
+        'M12 6.528V3a1 1 0 0 1 1-1h0',
+        'M18.237 21A15 15 0 0 0 22 11a6 6 0 0 0-10-4.472A6 6 0 0 0 2 11a15.1 15.1 0 0 0 3.763 10 3 3 0 0 0 3.648.648 5.5 5.5 0 0 1 5.178 0A3 3 0 0 0 18.237 21',
+      ],
+      'HOUSE': [
+        'M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8',
+        'M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z',
+      ],
+      'STAR': [
+        'M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z',
+      ],
+      'HEART': [
+        'M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5',
+      ],
+      'MOON': [
+        'M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401',
+      ],
+      'CIRCLE': [
+        'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z',
+      ],
+      'SQUARE': [
+        'M4 4h16v16H4z',
+      ],
+      'TRIANGLE': [
+        'M13.73 4a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z',
+      ],
+    };
+
+    // ─── STATE ───────────────────────────────────────────────────────────────────
+    const state = {
+      tvInch: 16,
+      distance: 3.0,
+      scaling: 1.0,
+      chartMode: 'snellen',
+      viewMode: 'all',
+      redgreen: false,
+      highlight: false,
+      dark: false,
+      highlightedRow: -1,
+      singleRow: 0,
+      allPage: 0,
+      customRes: null,
+      astigSelected: new Set(),
+    };
+
+    // ─── RESOLUTION HELPERS ──────────────────────────────────────────────────────
+    function getFallbackResolution(inch) {
+      if (inch <= 14.5) return [1920, 1080];
+      if (inch <= 15.5) return [1920, 1080];
+      if (inch <= 16.5) return [2880, 1620];
+      if (inch <= 18) return [1920, 1080];
+      if (inch <= 22) return [1920, 1080];
+      if (inch <= 27) return [2560, 1440];
+      if (inch <= 32) return [2560, 1440];
+      if (inch <= 43) return [3840, 2160];
+      if (inch <= 55) return [3840, 2160];
+      return [3840, 2160];
+    }
+    function getResolution() {
+      if (state.customRes) return [state.customRes.w, state.customRes.h];
+      return getFallbackResolution(state.tvInch);
+    }
+    function calcPPI() {
+      const [w, h] = getResolution();
+      return Math.sqrt(w * w + h * h) / state.tvInch;
+    }
+    function letterHeightPx(factor, dist) {
+      const ppi = calcPPI();
+      const mmPerPx = 25.4 / ppi;
+      return (factor * (dist / 6.0) * 1.45444 * state.scaling) / mmPerPx;
+    }
+
+    // ─── UPDATE PPI BADGE ────────────────────────────────────────────────────────
+    function updatePPIBadge() {
+      const ppi = calcPPI().toFixed(1);
+      const [w, h] = getResolution();
+      const badge = document.getElementById('ppi-badge');
+      badge.textContent = w + '\u00d7' + h + ' \u00b7 ' + ppi + ' PPI';
+      badge.className = state.customRes ? 'custom' : 'accurate';
+      document.getElementById('status-ppi').textContent = ppi + ' PPI';
+      document.getElementById('status-res').innerHTML = w + '\u00d7' + h;
+      document.getElementById('res-w').value = w;
+      document.getElementById('res-h').value = h;
+    }
+
+    // ─── CHAR BUILDERS ───────────────────────────────────────────────────────────
+    function makeSnellenSVG(ch, h) {
+      return '<span class="chart-char snellen-classic" style="font-size:' + h + 'px;line-height:1;width:' + h + 'px;text-align:center;">' + ch + '</span>';
+    }
+    function makeTumblingE(px, rot) {
+      return '<span class="tumbling-e" style="width:' + px + 'px;height:' + px + 'px;">' +
+        '<svg width="' + px + '" height="' + px + '" viewBox="0 0 100 100" style="transform:rotate(' + rot + 'deg)">' +
+        '<rect x="10" y="10" width="80" height="20" fill="var(--chart-text)"/>' +
+        '<rect x="10" y="40" width="80" height="20" fill="var(--chart-text)"/>' +
+        '<rect x="10" y="70" width="80" height="20" fill="var(--chart-text)"/>' +
+        '<rect x="10" y="10" width="20" height="80" fill="var(--chart-text)"/>' +
+        '</svg></span>';
+    }
+    function makeLandoltC(px, gapDeg) {
+      var r = px / 2, sw = px * 0.22, ga = 30, s0 = ga / 2, e0 = 360 - ga / 2;
+      var toXY = function (deg, rad) {
+        return [r + rad * Math.cos((deg - 90) * Math.PI / 180), r + rad * Math.sin((deg - 90) * Math.PI / 180)];
+      };
+      var oR = r - sw / 2;
+      var p1 = toXY(s0, oR), p2 = toXY(e0, oR);
+      return '<span class="landolt-c" style="width:' + px + 'px;height:' + px + 'px;transform:rotate(' + gapDeg + 'deg)">' +
+        '<svg width="' + px + '" height="' + px + '" viewBox="0 0 ' + px + ' ' + px + '">' +
+        '<path d="M ' + p1[0] + ' ' + p1[1] + ' A ' + oR + ' ' + oR + ' 0 ' + ((e0 - s0) > 180 ? 1 : 0) + ' 1 ' + p2[0] + ' ' + p2[1] + '"' +
+        ' stroke="var(--chart-text)" stroke-width="' + sw + '" fill="none" stroke-linecap="butt"/>' +
+        '</svg></span>';
+    }
+    function makePediatricSVG(sym, h) {
+      var paths = PEDIATRIC_PATHS[sym];
+      if (!paths || !paths.length) return '';
+      var d = paths.join(' ');
+      return '<span class="chart-char" style="width:' + h + 'px;height:' + h + 'px;display:inline-flex;align-items:center;justify-content:center;">' +
+        '<svg width="' + h + '" height="' + h + '" viewBox="0 0 24 24" fill="var(--chart-text)" style="display:block;">' +
+        '<path d="' + d + '" fill-rule="evenodd"/>' +
+        '</svg></span>';
+    }
+    function buildChars(row, hPx) {
+      var h = Math.max(10, Math.min(hPx, 700));
+      return row.chars.map(function (ch, i) {
+        if (state.chartMode === 'snellen') return makeSnellenSVG(ch, h);
+        if (state.chartMode === 'tumbling') return makeTumblingE(h, E_DIRS[i % 4]);
+        if (state.chartMode === 'landolt') return makeLandoltC(h, LANDOLT_DIRS[i % 8]);
+        var ped = row.pediatric && row.pediatric[i] ? row.pediatric[i] : SYMBOLS[i % SYMBOLS.length];
+        return makePediatricSVG(ped, h);
+      }).join('');
+    }
+
+    // ─── RENDER ALL-ROWS ─────────────────────────────────────────────────────────
+    function renderAll() {
+      var table = document.getElementById('snellen-table');
+      table.innerHTML = '';
+      var pageRows = ALL_ROWS_PAGES[state.allPage];
+      pageRows.forEach(function (idx, i, arr) {
+        var row = VISUS_ROWS[idx];
+        var hPx = letterHeightPx(row.factor, state.distance);
+        var div = document.createElement('div');
+        div.className = 'snellen-row' + (state.highlight && state.highlightedRow === idx ? ' highlighted' : '');
+        div.style.fontSize = hPx + 'px';
+        div.style.gap = row.gap || '1.5em';
+        div.innerHTML = buildChars(row, hPx) + '<span class="visus-label">' + row.visus + '</span>';
+        div.addEventListener('click', function () {
+          state.highlightedRow = state.highlightedRow === idx ? -1 : idx;
+          updateHighlightAll(); updateStatusVisus();
+        });
+        table.appendChild(div);
+
+        if (row.bar) {
+          var barDiv = document.createElement('div');
+          barDiv.className = 'snellen-bar bar-' + row.bar;
+          table.appendChild(barDiv);
+        }
+      });
+
+      var prev = document.getElementById('nav-prev');
+      var next = document.getElementById('nav-next');
+      if (prev && next) {
+        prev.disabled = state.allPage === 0;
+        next.disabled = state.allPage === ALL_ROWS_PAGES.length - 1;
+      }
+    }
+    function updateHighlightAll() {
+      var pageRows = ALL_ROWS_PAGES[state.allPage];
+      document.querySelectorAll('.snellen-row').forEach(function (el, i) {
+        var actualIdx = pageRows[i];
+        el.classList.toggle('highlighted', state.highlight && state.highlightedRow === actualIdx);
+      });
+    }
+
+    // ─── RENDER SINGLE-ROW ───────────────────────────────────────────────────────
+    function renderSingle(animate) {
+      var row = VISUS_ROWS[state.singleRow];
+      var hPx = letterHeightPx(row.factor, state.distance);
+      document.getElementById('single-visus-badge').textContent = row.visus;
+
+      var chEl = document.getElementById('single-chars');
+      chEl.style.fontSize = hPx + 'px';
+      chEl.style.gap = row.gap || '1.5em';
+      chEl.innerHTML = buildChars(row, hPx);
+
+      var barEl = document.getElementById('single-bar');
+      if (row.bar) {
+        barEl.style.display = 'block';
+        barEl.className = 'snellen-bar bar-' + row.bar;
+      } else {
+        barEl.style.display = 'none';
+      }
+
+      if (animate) { chEl.classList.remove('row-fade'); void chEl.offsetWidth; chEl.classList.add('row-fade'); }
+      document.getElementById('nav-prev').disabled = state.singleRow === 0;
+      document.getElementById('nav-next').disabled = state.singleRow === VISUS_ROWS.length - 1;
+      document.getElementById('single-progress').textContent = (state.singleRow + 1) + ' / ' + VISUS_ROWS.length;
+      var dotsEl = document.getElementById('single-dots');
+      dotsEl.innerHTML = '';
+      VISUS_ROWS.forEach(function (_, i) {
+        var d = document.createElement('span');
+        d.className = 'dot' + (i === state.singleRow ? ' active' : '');
+        d.onclick = function () { state.singleRow = i; renderSingle(true); updateStatusVisus(); };
+        dotsEl.appendChild(d);
+      });
+      updateStatusVisus();
+    }
+
+    // ─── ASTIGMATISM / CLOCK DIAL ────────────────────────────────────────────────
+    function renderAstig() {
+      var wrap = document.getElementById('astig-canvas-wrap');
+      var ppi = calcPPI();
+      var mmPerPx = 25.4 / ppi;
+
+      // Garis tipis dan proporsional agar tidak menyerupai balok
+      var lineThickPx = Math.max(2, size * 0.005);
+
+      // Ukuran dial
+      var physWmm = (getResolution()[0] / ppi) * 25.4;
+      var dialMm = physWmm * 0.45;
+      var size = Math.min(Math.round(dialMm / mmPerPx), window.innerWidth - 60, window.innerHeight - 260);
+      size = Math.max(size, 220);
+
+      var cx = size / 2, cy = size / 2, outerR = size / 2 - 30;
+      var innerR = outerR * 0.25; // Pusat kosong sesuai standar optik
+      var outerR_line = outerR * 0.85;
+      var numR = outerR * 0.95;
+
+      var svg = '<svg width="' + size + '" height="' + size + '" viewBox="0 0 ' + size + ' ' + size + '">';
+
+      var clockLabels = {
+        0: '12', 30: '1', 60: '2', 90: '3', 120: '4', 150: '5',
+        180: '6', 210: '7', 240: '8', 270: '9', 300: '10', 330: '11'
+      };
+
+      // Merender 24 garis radial (mewakili 12 meridian)
+      for (var i = 0; i < 24; i++) {
+        var angleDeg = i * 15 - 90; // 0 o'clock di atas (-90 deg)
+        var angleRad = angleDeg * Math.PI / 180;
+        var meridianIdx = i % 12; // 0 ke 11 meridian interaktif
+
+        var x1 = cx + innerR * Math.cos(angleRad);
+        var y1 = cy + innerR * Math.sin(angleRad);
+        var x2 = cx + outerR_line * Math.cos(angleRad);
+        var y2 = cy + outerR_line * Math.sin(angleRad);
+
+        var isSelected = state.astigSelected.has(meridianIdx);
+
+        // Pola putus-putus proporsional terhadap ukuran layar
+        var dashLen = Math.max(6, size * 0.045);
+        var gapLen = Math.max(4, size * 0.025);
+
+        svg += '<line class="astig-line" data-meridian="' + meridianIdx + '" ' +
+          'x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" ' +
+          'stroke="' + (isSelected ? 'var(--accent)' : 'var(--chart-text)') + '" ' +
+          'stroke-width="' + (isSelected ? lineThickPx * 1.5 : lineThickPx) + '" ' +
+          'stroke-dasharray="' + dashLen + ',' + gapLen + '" ' +
+          'stroke-linecap="butt" opacity="' + (isSelected ? 1.0 : 0.8) + '" ' +
+          'style="cursor:pointer; transition: stroke 0.2s, stroke-width 0.2s;"/>';
+
+        // Merender angka penanda jam saja (tiap 30 derajat / indeks genap)
+        if (i % 2 === 0) {
+          var labelAngle = (i * 15) % 360;
+          var label = clockLabels[labelAngle];
+          if (label) {
+            var lx = cx + numR * Math.cos(angleRad);
+            var ly = cy + numR * Math.sin(angleRad);
+            svg += '<text x="' + lx + '" y="' + ly + '" text-anchor="middle" dominant-baseline="central" ' +
+              'font-family="\'DM Sans\', sans-serif" font-size="13" font-weight="700" ' +
+              'fill="var(--chart-text)" opacity="' + (isSelected ? 1.0 : 0.65) + '">' + label + '</text>';
+          }
+        }
+      }
+
+      svg += '</svg>';
+      wrap.innerHTML = svg;
+
+      // Handler klik meridian
+      wrap.querySelectorAll('.astig-line').forEach(function (line) {
+        line.addEventListener('click', function () {
+          var meridianIdx = parseInt(this.getAttribute('data-meridian'));
+          if (state.astigSelected.has(meridianIdx)) {
+            state.astigSelected.delete(meridianIdx);
+          } else {
+            state.astigSelected.add(meridianIdx);
+          }
+          renderAstig();
+          updateAstigResult();
+        });
+      });
+
+      updateAstigResult();
+    }
+
+    function updateAstigResult() {
+      var el = document.getElementById('astig-result');
+      if (state.astigSelected.size === 0) {
+        el.innerHTML = '<span style="color:var(--muted)">Klik garis meridian yang tampak lebih tebal/gelap</span>';
+        return;
+      }
+
+      // Menghitung rata-rata sirkular poros silinder astigmatisme (Rule of 30 & Statistika Sirkular)
+      var sinSum = 0, cosSum = 0;
+      state.astigSelected.forEach(function (m) {
+        // Gandakan sudut agar orientasi 180° berputar penuh 360°
+        var phi = 2 * (m * 15) * Math.PI / 180;
+        sinSum += Math.sin(phi);
+        cosSum += Math.cos(phi);
+      });
+
+      var phiAvg = Math.atan2(sinSum, cosSum) * 180 / Math.PI;
+      if (phiAvg < 0) phiAvg += 360;
+
+      var axisDeg = Math.round(phiAvg / 2);
+      if (axisDeg === 0) axisDeg = 180; // Normalkan 0 derajat menjadi 180 derajat klinis
+
+      el.innerHTML =
+        '<span class="axis-label">Perkiraan Axis Silinder:</span><br>' +
+        '<span class="axis-val">' + axisDeg + '&deg;</span>';
+    }
+
+    // ─── VIEW MODE ───────────────────────────────────────────────────────────────
+    function setViewMode(mode) {
+      state.viewMode = mode;
+      var allEl = document.getElementById('snellen-table');
+      var sinEl = document.getElementById('single-row-view');
+      var astEl = document.getElementById('astig-view');
+      var btnV = document.getElementById('btn-viewmode');
+      var btnHL = document.getElementById('btn-highlight');
+
+      allEl.style.display = 'none';
+      sinEl.style.display = 'none';
+      astEl.style.display = 'none';
+
+      var navP = document.getElementById('nav-prev');
+      var navN = document.getElementById('nav-next');
+      if (navP) navP.style.display = (mode === 'astig') ? 'none' : 'flex';
+      if (navN) navN.style.display = (mode === 'astig') ? 'none' : 'flex';
+
+      if (state.chartMode === 'astig') {
+        astEl.style.display = 'flex';
+        btnV.textContent = '\u25A3 Clock Dial';
+        btnV.classList.add('on');
+        btnHL.closest('.opt-row').style.display = 'none';
+        renderAstig();
+      } else if (mode === 'all') {
+        allEl.style.display = 'flex';
+        btnV.textContent = '\u2261 Semua Baris';
+        btnV.classList.remove('on');
+        btnHL.closest('.opt-row').style.display = '';
+        renderAll();
+      } else {
+        sinEl.style.display = 'flex';
+        btnV.textContent = '\u25A3 Satu Baris';
+        btnV.classList.add('on');
+        btnHL.closest('.opt-row').style.display = 'none';
+        if (state.highlightedRow >= 0) state.singleRow = state.highlightedRow;
+        renderSingle(false);
+      }
+    }
+
+    // ─── STATUS ──────────────────────────────────────────────────────────────────
+    function updateStatusVisus() {
+      var lbl = '\u2014';
+      if (state.chartMode === 'astig') lbl = 'CLOCK DIAL';
+      else if (state.viewMode === 'single') lbl = VISUS_ROWS[state.singleRow].visus;
+      else if (state.highlightedRow >= 0) lbl = VISUS_ROWS[state.highlightedRow].visus;
+      document.getElementById('status-visus').textContent = lbl;
+    }
+
+    // ─── TV SIZE ─────────────────────────────────────────────────────────────────
+    var tooltipTimer;
+    function showTooltip(inch) {
+      var ppi = calcPPI().toFixed(1);
+      var res = getResolution();
+      var tt = document.getElementById('tv-tooltip');
+      var accInfo = state.scaling === 1.0 ? 'Akurasi: \u00b10.5mm (standar)' : 'Akurasi: dikalibrasi (scaling ' + state.scaling.toFixed(2) + ')';
+      tt.textContent = 'TV ' + inch + '" \u00b7 Resolusi ' + res[0] + '\u00d7' + res[1] + ' \u00b7 PPI ' + ppi + ' \u00b7 ' + accInfo;
+      tt.classList.add('show');
+      clearTimeout(tooltipTimer);
+      tooltipTimer = setTimeout(function () { tt.classList.remove('show'); }, 2500);
+    }
+    function setTV(inch) {
+      state.tvInch = Math.round(inch * 10) / 10;
+      document.getElementById('tv-display').value = state.tvInch;
+      document.getElementById('tv-slider').value = state.tvInch;
+      document.getElementById('status-tv').textContent = state.tvInch + '"';
+      updatePPIBadge();
+      showTooltip(state.tvInch);
+      refreshChart();
+    }
+
+    // ─── DISTANCE ────────────────────────────────────────────────────────────────
+    function setDist(val) {
+      state.distance = Math.round(val * 10) / 10;
+      document.getElementById('dist-display').value = state.distance.toFixed(1);
+      document.getElementById('dist-slider').value = state.distance;
+      document.getElementById('status-dist').textContent = state.distance.toFixed(1) + ' m';
+      refreshChart();
+    }
+
+    function refreshChart() {
+      if (state.chartMode === 'astig') renderAstig();
+      else if (state.viewMode === 'all') renderAll();
+      else renderSingle(false);
+    }
+
+    // ─── CUSTOM RESOLUTION ───────────────────────────────────────────────────────
+    function applyCustomResolution() {
+      var w = parseInt(document.getElementById('res-w').value);
+      var h = parseInt(document.getElementById('res-h').value);
+      if (w > 0 && h > 0) {
+        state.customRes = { w: w, h: h };
+        updatePPIBadge();
+        refreshChart();
+      }
+    }
+    function autoDetectResolution() {
+      var w = window.screen.width;
+      var h = window.screen.height;
+      var dpr = window.devicePixelRatio || 1;
+      var realW = Math.round(w * dpr);
+      var realH = Math.round(h * dpr);
+      document.getElementById('res-w').value = realW;
+      document.getElementById('res-h').value = realH;
+      state.customRes = { w: realW, h: realH };
+      updatePPIBadge();
+      refreshChart();
+    }
+
+    // ─── PRESETS ─────────────────────────────────────────────────────────────────
+    function setPreset(inch, resStr) {
+      var parts = resStr.split('x');
+      var w = parseInt(parts[0]), h = parseInt(parts[1]);
+      state.tvInch = inch;
+      state.customRes = { w: w, h: h };
+      document.getElementById('tv-display').textContent = inch + '"';
+      document.getElementById('tv-slider').value = inch;
+      document.getElementById('status-tv').textContent = inch + '"';
+      document.getElementById('res-w').value = w;
+      document.getElementById('res-h').value = h;
+      updatePPIBadge();
+      showTooltip(inch);
+      document.querySelectorAll('.preset-btn').forEach(function (b) {
+        b.classList.toggle('active', parseFloat(b.dataset.size) === inch);
+      });
+      refreshChart();
+    }
+
+    // ─── DRAWER & MODAL CONTROLS ─────────────────────────────────────────────────
+    const drawer = document.getElementById('settings-drawer');
+    const modal = document.getElementById('shortcuts-modal');
+
+    function toggleDrawer() {
+      drawer.classList.toggle('open');
+    }
+    function closeDrawer() {
+      drawer.classList.remove('open');
+    }
+    function openModal() {
+      modal.classList.add('open');
+    }
+    function closeModal() {
+      modal.classList.remove('open');
+    }
+
+    document.getElementById('drawer-toggle').onclick = function (e) {
+      e.stopPropagation();
+      toggleDrawer();
+    };
+    document.getElementById('drawer-close').onclick = closeDrawer;
+    document.getElementById('btn-shortcuts').onclick = openModal;
+    document.getElementById('modal-close').onclick = closeModal;
+
+    // Tutup modal ketika klik di luar modal
+    window.onclick = function (e) {
+      if (e.target === modal) {
+        closeModal();
+      }
+    };
+    // Tutup laci ketika klik di luar laci (tapi bukan tombol toggle)
+    document.addEventListener('click', function (e) {
+      const toggleBtn = document.getElementById('drawer-toggle');
+      if (drawer.classList.contains('open') &&
+        !drawer.contains(e.target) &&
+        e.target !== toggleBtn &&
+        !toggleBtn.contains(e.target)) {
+        closeDrawer();
+      }
+    });
+
+    // ─── CONTROLS ────────────────────────────────────────────────────────────────
+    document.getElementById('btn-tv-up').onclick = function () { setTV(Math.min(150, state.tvInch + 1)); };
+    document.getElementById('btn-tv-down').onclick = function () { setTV(Math.max(5, state.tvInch - 1)); };
+    document.getElementById('tv-slider').oninput = function (e) { setTV(parseFloat(e.target.value)); };
+    document.getElementById('tv-display').addEventListener('change', function () { setTV(parseFloat(this.value)); });
+    document.getElementById('tv-display').addEventListener('keydown', function (e) { if (e.key === 'Enter') setTV(parseFloat(this.value)); });
+
+    document.getElementById('btn-dist-up').onclick = function () { setDist(Math.min(6, state.distance + 0.1)); };
+    document.getElementById('btn-dist-down').onclick = function () { setDist(Math.max(0.5, state.distance - 0.1)); };
+    document.getElementById('dist-slider').oninput = function (e) { setDist(parseFloat(e.target.value)); };
+    document.getElementById('dist-display').addEventListener('change', function () { setDist(parseFloat(this.value)); });
+    document.getElementById('dist-display').addEventListener('keydown', function (e) { if (e.key === 'Enter') setDist(parseFloat(this.value)); });
+
+    function setScaling(val) {
+      state.scaling = Math.round(val * 100) / 100;
+      document.getElementById('scale-display').value = state.scaling.toFixed(2);
+      document.getElementById('scale-slider').value = state.scaling;
+      refreshChart();
+    }
+    document.getElementById('btn-scale-up').onclick = function () { setScaling(Math.min(2.0, state.scaling + 0.01)); };
+    document.getElementById('btn-scale-down').onclick = function () { setScaling(Math.max(0.5, state.scaling - 0.01)); };
+    document.getElementById('scale-slider').oninput = function (e) { setScaling(parseFloat(e.target.value)); };
+    document.getElementById('scale-display').addEventListener('change', function () { setScaling(parseFloat(this.value)); });
+    document.getElementById('scale-display').addEventListener('keydown', function (e) { if (e.key === 'Enter') setScaling(parseFloat(this.value)); });
+
+    function calcTheoreticalHeight() {
+      return 60 * (state.distance / 6.0) * 1.45444;
+    }
+    var lastCalcScaling = 1.0;
+    document.getElementById('btn-calc-scale').onclick = function () {
+      var measured = parseFloat(document.getElementById('calc-measured').value);
+      if (!measured || measured <= 0) return;
+      var theo = calcTheoreticalHeight();
+      lastCalcScaling = Math.round((state.scaling * theo / measured) * 100) / 100;
+      lastCalcScaling = Math.max(0.5, Math.min(2.0, lastCalcScaling));
+      document.getElementById('calc-theo').textContent = theo.toFixed(2);
+      document.getElementById('calc-val').textContent = lastCalcScaling.toFixed(2);
+      document.getElementById('calc-result').style.display = 'block';
+    };
+    document.getElementById('btn-calc-apply').onclick = function () {
+      setScaling(lastCalcScaling);
+    };
+
+    document.getElementById('res-w').addEventListener('change', applyCustomResolution);
+    document.getElementById('res-h').addEventListener('change', applyCustomResolution);
+    document.getElementById('btn-auto-res').onclick = autoDetectResolution;
+
+    document.querySelectorAll('.preset-btn').forEach(function (btn) {
+      btn.onclick = function () {
+        setPreset(parseFloat(btn.dataset.size), btn.dataset.res);
+      };
+    });
+
+    document.querySelectorAll('.mode-btn').forEach(function (btn) {
+      btn.onclick = function () {
+        state.chartMode = btn.dataset.mode;
+        document.querySelectorAll('.mode-btn').forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        if (state.chartMode === 'astig') {
+          state.viewMode = 'astig';
+          setViewMode('astig');
+        } else {
+          if (state.viewMode === 'astig') state.viewMode = 'all';
+          setViewMode(state.viewMode);
+        }
+        updateStatusVisus();
+      };
+    });
+
+    document.getElementById('btn-viewmode').onclick = function () {
+      if (state.chartMode === 'astig') return;
+      setViewMode(state.viewMode === 'all' ? 'single' : 'all');
+    };
+
+    document.getElementById('btn-redgreen').onclick = function () {
+      state.redgreen = !state.redgreen;
+      this.classList.toggle('on', state.redgreen);
+      this.textContent = state.redgreen ? 'Aktif' : 'Aktifkan';
+      document.getElementById('chart-area').classList.toggle('redgreen', state.redgreen);
+    };
+    document.getElementById('btn-highlight').onclick = function () {
+      state.highlight = !state.highlight;
+      this.classList.toggle('on', state.highlight);
+      this.textContent = state.highlight ? 'Aktif' : 'Aktifkan';
+      updateHighlightAll();
+    };
+    document.getElementById('btn-dark').onclick = function () {
+      state.dark = !state.dark;
+      document.body.classList.toggle('dark-mode', state.dark);
+      this.innerHTML = state.dark ? '&#9728; Mode Terang' : '&#127769; Mode Gelap';
+      this.style.background = state.dark ? 'var(--accent)' : '';
+      this.style.color = state.dark ? '#fff' : '';
+      this.style.borderColor = state.dark ? 'var(--accent)' : '';
+      refreshChart();
+    };
+    document.getElementById('btn-fullscreen').onclick = function () {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    };
+    // Sinkronisasi teks tombol fullscreen
+    document.addEventListener('fullscreenchange', function () {
+      var btn = document.getElementById('btn-fullscreen');
+      var isFS = !!document.fullscreenElement;
+      btn.innerHTML = isFS ? '&#9711; Keluar Full' : '&#9711; Fullscreen';
+      btn.style.background = isFS ? 'var(--accent)' : '';
+      btn.style.color = isFS ? '#fff' : '';
+      btn.style.borderColor = isFS ? 'var(--accent)' : '';
+    });
+    document.getElementById('nav-prev').onclick = function () {
+      if (state.viewMode === 'all') {
+        if (state.allPage > 0) { state.allPage--; renderAll(); }
+      } else if (state.viewMode === 'single') {
+        if (state.singleRow > 0) { state.singleRow--; renderSingle(true); }
+      }
+    };
+    document.getElementById('nav-next').onclick = function () {
+      if (state.viewMode === 'all') {
+        if (state.allPage < ALL_ROWS_PAGES.length - 1) { state.allPage++; renderAll(); }
+      } else if (state.viewMode === 'single') {
+        if (state.singleRow < VISUS_ROWS.length - 1) { state.singleRow++; renderSingle(true); }
+      }
+    };
+
+    // astigmatism controls
+    document.getElementById('astig-reset').onclick = function () {
+      state.astigSelected.clear();
+      renderAstig();
+    };
+
+    // ─── KEYBOARD ────────────────────────────────────────────────────────────────
+    document.addEventListener('keydown', function (e) {
+      // Arrow key navigasi hanya untuk mode non-astigmatism
+      if (state.chartMode !== 'astig') {
+        if (state.viewMode === 'all') {
+          if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            state.highlightedRow = Math.max(0, state.highlightedRow <= 0 ? 0 : state.highlightedRow - 1);
+            state.highlight = true;
+            document.getElementById('btn-highlight').classList.add('on');
+            document.getElementById('btn-highlight').textContent = 'Aktif';
+            if (!ALL_ROWS_PAGES[state.allPage].includes(state.highlightedRow)) {
+              state.allPage = Math.max(0, state.allPage - 1);
+              renderAll();
+            } else {
+              updateHighlightAll();
+            }
+            updateStatusVisus();
+          }
+          if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            state.highlightedRow = Math.min(VISUS_ROWS.length - 1, state.highlightedRow < 0 ? 0 : state.highlightedRow + 1);
+            state.highlight = true;
+            document.getElementById('btn-highlight').classList.add('on');
+            document.getElementById('btn-highlight').textContent = 'Aktif';
+            if (!ALL_ROWS_PAGES[state.allPage].includes(state.highlightedRow)) {
+              state.allPage = Math.min(ALL_ROWS_PAGES.length - 1, state.allPage + 1);
+              renderAll();
+            } else {
+              updateHighlightAll();
+            }
+            updateStatusVisus();
+          }
+          if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            if (state.allPage > 0) { state.allPage--; renderAll(); }
+          }
+          if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            if (state.allPage < ALL_ROWS_PAGES.length - 1) { state.allPage++; renderAll(); }
+          }
+        } else {
+          if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+            e.preventDefault();
+            if (state.singleRow > 0) { state.singleRow--; renderSingle(true); }
+          }
+          if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+            e.preventDefault();
+            if (state.singleRow < VISUS_ROWS.length - 1) { state.singleRow++; renderSingle(true); }
+          }
+        }
+      }
+      // Global keyboard shortcuts
+      switch (e.key) {
+        case '[': setDist(Math.max(0.5, state.distance - 0.1)); break;
+        case ']': setDist(Math.min(6, state.distance + 0.1)); break;
+        case 'f': case 'F': document.getElementById('btn-fullscreen').click(); break;
+        case 'd': case 'D': document.getElementById('btn-dark').click(); break;
+        case 'r': case 'R': document.getElementById('btn-redgreen').click(); break;
+        case 'v': case 'V': document.getElementById('btn-viewmode').click(); break;
+        case 'm': case 'M':
+        case 's': case 'S':
+          toggleDrawer();
+          break;
+        case 'Escape':
+          closeDrawer();
+          closeModal();
+          state.highlightedRow = -1;
+          updateHighlightAll(); updateStatusVisus();
+          break;
+      }
+    });
+
+    // ─── CUSTOM POPUP ─────────────────────────────────────────────────────────────
+    function showAlert(msg, icon) {
+      icon = icon || '\u2705';
+      return new Promise(function (resolve) {
+        var overlay = document.getElementById('popup-overlay');
+        document.getElementById('popup-icon').textContent = icon;
+        document.getElementById('popup-msg').innerHTML = msg;
+        document.getElementById('popup-btns').innerHTML = '<button class="popup-btn ok" id="popup-ok">OK</button>';
+        overlay.classList.add('open');
+        document.getElementById('popup-ok').onclick = function () {
+          overlay.classList.remove('open');
+          resolve();
+        };
+      });
+    }
+
+    function showConfirm(msg, icon) {
+      icon = icon || '\u2753';
+      return new Promise(function (resolve) {
+        var overlay = document.getElementById('popup-overlay');
+        document.getElementById('popup-icon').textContent = icon;
+        document.getElementById('popup-msg').innerHTML = msg;
+        document.getElementById('popup-btns').innerHTML =
+          '<button class="popup-btn cancel" id="popup-cancel">Batal</button>' +
+          '<button class="popup-btn ok" id="popup-ok">OK</button>';
+        overlay.classList.add('open');
+        document.getElementById('popup-ok').onclick = function () {
+          overlay.classList.remove('open');
+          resolve(true);
+        };
+        document.getElementById('popup-cancel').onclick = function () {
+          overlay.classList.remove('open');
+          resolve(false);
+        };
+      });
+    }
+
+    // ─── LOCAL STORAGE DEFAULTS ─────────────────────────────────────────────────────
+    var STORAGE_KEY = 'wschart_defaults';
+
+    function collectCurrentSettings() {
+      return {
+        tvInch: state.tvInch,
+        customW: state.customRes ? state.customRes.w : null,
+        customH: state.customRes ? state.customRes.h : null,
+        distance: state.distance,
+        scaling: state.scaling,
+        chartMode: state.chartMode,
+      };
+    }
+
+    function applySettings(settings) {
+      if (settings.tvInch != null) {
+        var w = settings.customW, h = settings.customH;
+        if (w && h) {
+          setPreset(settings.tvInch, w + 'x' + h);
+        } else {
+          var res = getFallbackResolution(settings.tvInch);
+          setPreset(settings.tvInch, res[0] + 'x' + res[1]);
+        }
+      }
+      if (settings.distance != null) setDist(settings.distance);
+      if (settings.scaling != null) setScaling(settings.scaling);
+      if (settings.chartMode != null) {
+        state.chartMode = settings.chartMode;
+        document.querySelectorAll('.mode-btn').forEach(function (b) {
+          b.classList.toggle('active', b.dataset.mode === state.chartMode);
+        });
+        if (state.chartMode === 'astig') {
+          state.viewMode = 'astig';
+          setViewMode('astig');
+        } else {
+          if (state.viewMode === 'astig') {
+            state.viewMode = 'all';
+            setViewMode('all');
+          }
+        }
+        refreshChart();
+      }
+    }
+
+    function saveDefault() {
+      try {
+        var data = collectCurrentSettings();
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        showAlert('Pengaturan berhasil disimpan sebagai default!', '\u2705');
+      } catch (e) {
+        showAlert('Gagal menyimpan: ' + e.message, '\u26A0\uFE0F');
+      }
+    }
+
+    function loadDefault() {
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return false;
+        var data = JSON.parse(raw);
+        applySettings(data);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function resetDefault() {
+      showConfirm('Reset semua pengaturan ke default pabrik?', '\u2753').then(function (yes) {
+        if (yes) {
+          localStorage.removeItem(STORAGE_KEY);
+          location.reload();
+        }
+      });
+    }
+
+    document.getElementById('btn-save-default').onclick = saveDefault;
+    document.getElementById('btn-reset-default').onclick = resetDefault;
+
+    // ─── INIT ────────────────────────────────────────────────────────────────────
+    loadDefault();
+    setTV(state.tvInch);
+    updatePPIBadge();
+    renderAll();
+  </script>
+</body>
+
+</html>

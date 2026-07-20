@@ -114,8 +114,24 @@
             width: 100%;
         }
         .learning-card-horizontal .project-read-more {
-            bottom: 1.5rem;
-            right: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.2rem 2rem;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            color: #0d0911;
+            border-radius: 0 14px 14px 0;
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            font-weight: 700;
+            gap: 0.6rem;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+        .learning-card-horizontal .project-read-more:hover {
+            background: var(--text-main);
+            box-shadow: 0 0 20px rgba(192, 132, 252, 0.4);
         }
 
         @media screen and (max-width: 700px) {

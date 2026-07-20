@@ -29,6 +29,7 @@
     <link rel="stylesheet" href="css/main.css">
     
     <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/profile-photo.png">
     <link rel="apple-touch-icon" href="/assets/images/profile-photo.png">
 </head>
@@ -221,18 +222,14 @@
                                 <p class="project-desc">{{ portfolio.description }}</p>
                                 
                                 <div class="project-links">
-                                    <span class="project-date"><i class="far fa-calendar-alt"></i> {{ portfolio.date }}</span>
-                                    <a :href="portfolio.githubLink" target="_blank" class="project-link" :id="'project-git-' + index" title="Source Code Repository">
-                                        <i class="fab fa-github" aria-hidden="true"></i> Repository
-                                    </a>
-                                    <a v-if="portfolio.projectLink && portfolio.projectLink !== '#'" :href="portfolio.projectLink" target="_blank" class="project-link" :id="'project-live-' + index" title="Live Application Demo">
-                                        <i class="fas fa-external-link-alt" aria-hidden="true"></i> View Project
-                                    </a>
+                                    <span class="project-date">{{ portfolio.date }}</span>
+                                    <div class="project-actions">
+                                        <a :href="portfolio.githubLink" target="_blank" class="project-git-inline" :id="'project-git-' + index" title="Source Code Repository"><i class="fab fa-github" aria-hidden="true"></i></a>
+                                        <a v-if="portfolio.projectLink" :href="portfolio.projectLink" target="_blank" class="project-git-inline" :id="'project-live-' + index" title="Live Application Demo"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                                        <a :href="portfolio.projectLink || portfolio.pageLink" class="project-read-more" :id="'project-read-more-' + index" :title="portfolio.projectLink ? 'Visit Live Project' : 'Project Details Page'">{{ portfolio.projectLink ? 'Visit' : 'Read More' }} <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                                    </div>
                                 </div>
                             </div>
-                            <a :href="portfolio.pageLink" class="project-read-more" :id="'project-read-more-' + index" title="Project Details Page">
-                                Read More <i class="fas fa-arrow-right" aria-hidden="true"></i>
-                            </a>
                         </article>
                     </div>
 

@@ -90,12 +90,14 @@
                         <h3 class="project-title">${p.title}</h3>
                         <p class="project-desc">${p.description}</p>
                         <div class="project-links">
-                            <span class="project-date"><i class="far fa-calendar-alt"></i> ${p.date || ''}</span>
-                            <a href="${p.githubLink}" target="_blank" class="project-link"><i class="fab fa-github"></i> Repository</a>
-                            ${p.projectLink && p.projectLink !== '#' ? `<a href="${p.projectLink}" target="_blank" class="project-link"><i class="fas fa-external-link-alt"></i> View Project</a>` : ''}
+                            <span class="project-date">${p.date || ''}</span>
+                            <div class="project-actions">
+                                <a href="${p.githubLink}" target="_blank" class="project-git-inline" title="Source Code Repository"><i class="fab fa-github"></i></a>
+                                ${p.projectLink ? `<a href="${p.projectLink}" target="_blank" class="project-git-inline" title="Live Application Demo"><i class="fas fa-external-link-alt"></i></a>` : ''}
+                                <a href="${p.projectLink || p.pageLink}" class="project-read-more" title="${p.projectLink ? 'Visit Live Project' : 'Project Details Page'}">${p.projectLink ? 'Visit' : 'Read More'} <i class="fas fa-arrow-right"></i></a>
+                            </div>
                         </div>
                     </div>
-                    <a href="${p.pageLink}" class="project-read-more" title="Project Details">Read More <i class="fas fa-arrow-right"></i></a>
                 `;
                 grid.appendChild(card);
             });

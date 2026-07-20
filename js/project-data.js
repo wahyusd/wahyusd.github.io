@@ -11,6 +11,18 @@
 
 portfolioData.portfolios = [
     {
+        id: "optometri",
+        title: "WS Chart — Digital Snellen & Reading Chart",
+        date: "2026-07-20",
+        techStack: "HTML5, CSS3, JavaScript, SVG, localStorage",
+        description: "A standalone single-file web app for clinical-grade digital vision testing — supporting Snellen, Tumbling E, Landolt C, Pediatric symbols, Astigmatism Clock Dial, and an educational Reading Chart with presbiopia info, complete with Display Scaling calibration.",
+        githubLink: "https://github.com/wahyusd/optometri",
+        projectLink: "/pages/projects/optometri/snellen-chart.html",
+        pageLink: "/pages/projects/optometri/snellen-chart.html",
+        mediaLink: "/pages/projects/optometri/assets/preview.jpeg",
+        mediaType: "image"
+    },
+    {
         id: "ws-downloader",
         title: "WS Downloader",
         date: "2026-04-11",

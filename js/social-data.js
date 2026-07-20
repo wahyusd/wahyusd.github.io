@@ -7,7 +7,7 @@
 const socialChannels = [
     {
         id: "wahyusd",
-        name: "Wahyu SD",
+        name: "Wahyusp",
         platform: "YouTube",
         photo: "/assets/images/yt-wahyusd-profile.png",
         description: "Building AI projects, sharing experiments, and documenting the journey of learning in public. From vibe coding to production — every video is a step forward.",

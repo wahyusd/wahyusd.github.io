@@ -37,8 +37,19 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://wahyusd.github.io/pages/projects/optometri/snellen-chart.html</loc>
+    <lastmod>2026-07-20</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+    <loc>https://wahyusd.github.io/pages/projects/optometri/reading-chart.html</loc>
+    <lastmod>2026-07-20</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
     <loc>https://wahyusd.github.io/pages/learning/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
