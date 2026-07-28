@@ -32,12 +32,18 @@ const portfolioData = {
             "Vibe coding isn't a shortcut — it's a different way of thinking through problems.",
         ],
 
+        //------
+        // Staus done - Hijau
+        // Status progress - Kuning
+        // Status paused - merah
+        //------
+
         building: [
-            { label: "WS Downloader",      status: "done"     },
             { label: "WS B-Roll Assistant", status: "done"     },
             { label: "News Center",         status: "done"     },
             { label: "EmoTube WS",          status: "done"     },
             { label: "Portfolio Website",   status: "done" },
+            { label: "WS Pustaka - Ringkasan Buku",      status: "progress"     },
         ],
 
         exploring: [
