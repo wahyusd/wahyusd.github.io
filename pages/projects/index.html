@@ -93,8 +93,8 @@
                             <span class="project-date">${p.date || ''}</span>
                             <div class="project-actions">
                                 <a href="${p.githubLink}" target="_blank" class="project-git-inline" title="Source Code Repository"><i class="fab fa-github"></i></a>
-                                ${p.projectLink ? `<a href="${p.projectLink}" target="_blank" class="project-git-inline" title="Live Application Demo"><i class="fas fa-external-link-alt"></i></a>` : ''}
-                                <a href="${p.projectLink || p.pageLink}" class="project-read-more" title="${p.projectLink ? 'Visit Live Project' : 'Project Details Page'}">${p.projectLink ? 'Visit' : 'Read More'} <i class="fas fa-arrow-right"></i></a>
+                                ${p.projectLink ? `<a href="${p.projectLink}" target="_blank" class="project-view-app" title="View Live Application"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="24px"><path d="M40-160v-640l240 40v560L40-160Zm320-40v-560h240v560H360Zm560 40-240-40v-560l240-40v640Zm-800-95 80-13v-424l-80-14v451Zm320-25h80v-400h-80v400Zm400 26v-452l-80 14v424l80 14Zm-720-1 80-13-80 13Zm320-25h80-80Zm400 26-80-14 80 14Z"/></svg> View App</a>` : ''}
+                                <a href="${p.pageLink || p.projectLink}" class="project-read-more" title="Project Details Page">Read More <i class="fas fa-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>

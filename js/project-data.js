@@ -17,8 +17,8 @@ portfolioData.portfolios = [
         techStack: "HTML5, CSS3, JavaScript, SVG, localStorage",
         description: "A standalone single-file web app for clinical-grade digital vision testing — supporting Snellen, Tumbling E, Landolt C, Pediatric symbols, Astigmatism Clock Dial, and an educational Reading Chart with presbiopia info, complete with Display Scaling calibration.",
         githubLink: "https://github.com/wahyusd/wahyusd.github.io/tree/main/pages/projects/optometri",
-        projectLink: "/pages/projects/optometri/snellen-chart.html",
-        pageLink: "/pages/projects/optometri/snellen-chart.html",
+        projectLink: "https://wahyusd.github.io/pages/projects/optometri/snellen-chart.html",
+        pageLink: "/pages/projects/optometri/",
         mediaLink: "/pages/projects/optometri/assets/preview.jpeg",
         mediaType: "image"
     },

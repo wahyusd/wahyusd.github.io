@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title data-render="page-title">WS Chart — Wahyusd</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" data-render="page-desc" content="WS Chart — Digital Snellen & Reading Chart for clinical-grade vision testing with calibration support.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="/css/page.css">
+    <link rel="icon" type="image/png" href="/assets/images/profile-photo.png">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        /* Paper-specific styles */
+        .paper-callout {
+            display: flex;
+            gap: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            padding: 1.6rem 2rem;
+            margin: 2rem 0;
+            font-size: 1.45rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+        .paper-callout-icon { font-size: 1.8rem; flex-shrink: 0; margin-top: 0.1rem; }
+        .paper-callout.info { background-color: rgba(96, 165, 250, 0.06); border: 1px solid rgba(96, 165, 250, 0.15); border-left: 3px solid #60a5fa; }
+        .paper-callout.note { background-color: rgba(192, 132, 252, 0.05); border: 1px solid rgba(192, 132, 252, 0.15); border-left: 3px solid var(--color-primary); }
+        .paper-callout.tip { background-color: rgba(52, 211, 153, 0.06); border: 1px solid rgba(52, 211, 153, 0.15); border-left: 3px solid #34d399; }
+        .paper-callout.warning { background-color: rgba(251, 191, 36, 0.06); border: 1px solid rgba(251, 191, 36, 0.15); border-left: 3px solid #fbbf24; }
+        .paper-callout.important { background-color: rgba(244, 114, 182, 0.06); border: 1px solid rgba(244, 114, 182, 0.15); border-left: 3px solid #f472b6; }
+        .paper-callout p { margin: 0.4rem 0; }
+        .paper-callout p:first-child { margin-top: 0; }
+        .paper-callout p:last-child { margin-bottom: 0; }
+        .paper-callout strong { color: var(--text-main); }
+        .paper-callout code { font-family: var(--font-mono); font-size: 1.3rem; background: rgba(255,255,255,0.06); padding: 0.15rem 0.5rem; border-radius: 4px; color: #a5b4fc; }
+
+        .paper-table-wrapper { overflow-x: auto; margin: 2rem 0; border-radius: 10px; border: 1px solid var(--border-color); }
+        .paper-table { width: 100%; border-collapse: collapse; font-size: 1.4rem; }
+        .paper-table th { background-color: rgba(192, 132, 252, 0.08); color: var(--text-main); font-family: var(--font-heading); font-weight: 600; text-align: left; padding: 1.2rem 1.6rem; border-bottom: 1px solid var(--border-color); white-space: nowrap; }
+        .paper-table td { padding: 1rem 1.6rem; border-bottom: 1px solid rgba(255,255,255,0.04); color: var(--text-muted); vertical-align: top; }
+        .paper-table tr:last-child td { border-bottom: none; }
+        .paper-table td code { font-family: var(--font-mono); font-size: 1.2rem; background: rgba(255,255,255,0.06); padding: 0.15rem 0.5rem; border-radius: 4px; color: #a5b4fc; }
+        .paper-table td strong { color: var(--text-main); }
+
+        .mermaid { margin: 2.5rem 0; text-align: center; }
+        .mermaid svg { max-width: 100%; height: auto; }
+
+        .paper-figcaption { text-align: center; font-size: 1.25rem; color: var(--text-dim); font-family: var(--font-mono); margin-top: -1rem; margin-bottom: 2rem; }
+        .paper-figcaption em { font-style: italic; }
+
+        .paper-list { list-style: none; padding: 0; margin: 1rem 0 2rem; display: flex; flex-direction: column; gap: 0.6rem; }
+        .paper-list li { font-size: 1.45rem; color: var(--text-muted); line-height: 1.6; padding-left: 2rem; position: relative; }
+        .paper-list li::before { content: '—'; position: absolute; left: 0; color: var(--color-primary); font-weight: 600; }
+        .paper-list li strong { color: var(--text-main); }
+
+        .paper-ol { list-style: none; padding: 0; margin: 1rem 0 2rem; counter-reset: paper-ol; display: flex; flex-direction: column; gap: 0.8rem; }
+        .paper-ol li { font-size: 1.45rem; color: var(--text-muted); line-height: 1.6; padding-left: 3.5rem; position: relative; counter-increment: paper-ol; }
+        .paper-ol li::before { content: counter(paper-ol); position: absolute; left: 0; width: 2.4rem; height: 2.4rem; border-radius: 50%; background-color: rgba(192, 132, 252, 0.1); border: 1px solid rgba(192, 132, 252, 0.3); color: var(--color-primary); font-family: var(--font-mono); font-size: 1.2rem; font-weight: 600; display: flex; align-items: center; justify-content: center; top: 0.1rem; }
+
+        .paper-blockquote { background-color: rgba(192, 132, 252, 0.04); border-left: 3px solid var(--color-primary); border-radius: 0 8px 8px 0; padding: 1.4rem 1.8rem; margin: 1.5rem 0; font-size: 1.4rem; color: var(--text-muted); line-height: 1.7; }
+        .paper-blockquote strong { color: var(--text-main); }
+        .paper-blockquote em { color: var(--text-muted); }
+        .paper-blockquote p { margin: 0.3rem 0; }
+        .paper-blockquote p:first-child { margin-top: 0; }
+        .paper-blockquote p:last-child { margin-bottom: 0; }
+
+        .paper-hr { border: none; border-top: 1px solid var(--border-color); margin: 4rem 0; }
+
+        .page-section ul.paper-list li::before { content: '—'; }
+    </style>
+</head>
+<body>
+
+    <div data-include="navbar" data-active="projects"></div>
+
+    <main data-project="optometri">
+
+        <!-- ======= HERO ======= -->
+        <section class="page-hero">
+            <div class="container">
+
+                <!-- Breadcrumb -->
+                <div class="page-breadcrumb">
+                    <a href="/">Home</a>
+                    <span class="page-breadcrumb-sep">/</span>
+                    <a href="/pages/projects/">Projects</a>
+                    <span class="page-breadcrumb-sep">/</span>
+                    <span data-render="breadcrumb-title"></span>
+                </div>
+
+                <!-- Tech tags -->
+                <div class="page-hero-tags" data-render="hero-tags"></div>
+
+                <h1 data-render="hero-title"></h1>
+                <p class="page-hero-desc" data-render="hero-desc"></p>
+
+                <div class="page-hero-actions">
+                    <a href="./snellen-chart.html" target="_blank" class="btn btn--primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="24px"><path d="M40-160v-640l240 40v560L40-160Zm320-40v-560h240v560H360Zm560 40-240-40v-560l240-40v640Zm-800-95 80-13v-424l-80-14v451Zm320-25h80v-400h-80v400Zm400 26v-452l-80 14v424l80 14Zm-720-1 80-13-80 13Zm320-25h80-80Zm400 26-80-14 80 14Z"/></svg> View App
+                    </a>
+                    <a data-render="github-link" href="https://github.com/wahyusd/wahyusd.github.io/tree/main/pages/projects/optometri" target="_blank" rel="noopener" class="btn btn--stroke">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                    <a href="/pages/projects/" class="btn btn--stroke">
+                        <i class="fas fa-arrow-left"></i> Back to Projects
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ======= CONTENT ======= -->
+        <div class="page-content">
+            <div class="container">
+
+                <!-- Screenshot -->
+                <div class="page-media">
+                    <img data-render="media-src" src="./assets/preview.jpeg" alt="WS Chart Screenshot">
+                    <div class="media-caption" data-render="media-caption"></div>
+                </div>
+
+                <!-- Overview / Abstrak -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">📖</span> Overview
+                    </h2>
+                    <p>
+                        Digital Snellen Chart adalah aplikasi web mandiri (<em>single-file HTML</em>) yang menyediakan uji penglihatan jarak dekat dan jauh dengan tingkat akurasi klinis. Aplikasi ini mendukung empat jenis chart — Tumbling E, Landolt C, Pediatric Symbol, dan Reading Chart — dilengkapi dengan sistem kalibrasi yang mengkompensasi perbedaan perangkat seperti ukuran layar, resolusi, dan Display Scaling pada Windows.
+                    </p>
+
+                    <div class="paper-callout info">
+                        <span class="paper-callout-icon">ℹ️</span>
+                        <div>
+                            <p><strong>Ringkasan</strong></p>
+                            <p><strong>Pengembang:</strong> Wahyu Saputra (pengalaman optik sejak 2017)</p>
+                            <p><strong>Stack:</strong> HTML + CSS + JavaScript (tanpa framework)</p>
+                            <p><strong>Deployment:</strong> GitHub Pages</p>
+                            <p><strong>Target:</strong> Penggunaan pribadi, edukasi, dan uji coba kasar</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Pendahuluan -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">✨</span> Pendahuluan
+                    </h2>
+                    <p>
+                        Uji penglihatan menggunakan chart Snellen adalah prosedur standar dalam praktik optometri dan oftalmologi. Secara tradisional, chart cetak dipasang pada jarak tertentu dari pasien. Namun, di era digital, muncul kebutuhan untuk memiliki chart yang dapat ditampilkan pada layar — baik TV monitor maupun perangkat mobile — dengan ukuran yang tetap akurat secara klinis.
+                    </p>
+
+                    <div class="paper-callout note">
+                        <span class="paper-callout-icon">📝</span>
+                        <div>
+                            <p><strong>Konteks</strong></p>
+                            <p>Project ini lahir dari kebutuhan pribadi Saya sebagai praktisi optik sejak 2017, sekaligus menjadi bagian dari serial <em>vibe coding</em> — pendekatan pengembangan di mana AI agent membantu mewujudkan ide menjadi kode secara iteratif.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Masalah & Kebutuhan -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">🔍</span> Masalah &amp; Kebutuhan
+                    </h2>
+                    <h3 style="font-size:1.7rem; margin-bottom:1.2rem; margin-top:2rem; color:var(--text-main);">Mengapa Membuat dari Nol?</h3>
+                    <p>
+                        Beberapa alasan mendasari mengapa chart Snellen digital yang sudah ada di pasaran belum memenuhi kebutuhan:
+                    </p>
+
+                    <div class="paper-table-wrapper">
+                        <table class="paper-table">
+                            <thead><tr><th>No</th><th>Masalah</th><th>Penjelasan</th></tr></thead>
+                            <tbody>
+                                <tr><td>1</td><td><strong>Asal-usul tidak jelas</strong></td><td>Banyak aplikasi chart digital yang tidak diketahui sumber kodenya, sehingga sulit memastikan akurasi dan legalitas</td></tr>
+                                <tr><td>2</td><td><strong>Kurangnya kalibrasi</strong></td><td>Jarang ada aplikasi yang menyediakan mekanisme kompensasi terhadap Display Scaling Windows</td></tr>
+                                <tr><td>3</td><td><strong>Tidak fleksibel</strong></td><td>Sedikit yang mendukung beberapa jenis chart sekaligus (Tumbling E, Landolt C, Pediatric, Reading)</td></tr>
+                                <tr><td>4</td><td><strong>Ketergantungan framework</strong></td><td>Banyak solusi menggunakan framework berat yang tidak praktis untuk deployment sederhana</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="paper-callout warning">
+                        <span class="paper-callout-icon">⚠️</span>
+                        <div>
+                            <p><strong>Risiko Penggunaan</strong></p>
+                            <p>Menggunakan aplikasi dengan sumber kode yang tidak diketahui berisiko terhadap akurasi ukuran huruf yang ditampilkan — krusial dalam konteks pengukuran klinis.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Solusi yang Dirancang -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">💡</span> Solusi yang Dirancang
+                    </h2>
+                    <h3 style="font-size:1.7rem; margin-bottom:1.2rem; margin-top:2rem; color:var(--text-main);">Fitur Utama</h3>
+
+                    <div class="mermaid">
+mindmap
+  root((Digital Snellen Chart))
+    Chart Types
+      Tumbling E
+      Landolt C
+      Pediatric Symbol
+        8 SVG Icons
+      Reading Chart
+        N36 to N5
+        Presbiopia Education
+    Calibration
+      Display Scaling Calculator
+      TV Size Input
+      Resolution / PPI
+      Custom Resolution
+    UI/UX
+      Dark / Light Mode
+      Fullscreen Mode
+      Save Default Settings
+      Keyboard Shortcuts
+    Navigation
+      Snellen ↔ Reading
+      Mobile Responsive
+                    </div>
+                    <div class="paper-figcaption"><em>Gambar 1 — Mindmap fitur utama Digital Snellen Chart</em></div>
+
+                    <h3 style="font-size:1.7rem; margin-bottom:1.2rem; margin-top:2rem; color:var(--text-main);">Perbandingan dengan Solusi Lain</h3>
+
+                    <div class="paper-table-wrapper">
+                        <table class="paper-table">
+                            <thead><tr><th>Aspek</th><th>Chart Cetak</th><th>App Umum</th><th><strong>Digital Snellen</strong></th></tr></thead>
+                            <tbody>
+                                <tr><td>Akurasi ukuran</td><td>✅ Standar</td><td>⚠️ Bergantung perangkat</td><td>✅ + Kalibrasi</td></tr>
+                                <tr><td>Compensasi Scaling</td><td>❌</td><td>❌</td><td>✅</td></tr>
+                                <tr><td>Multiple chart types</td><td>❌</td><td>⚠️</td><td>✅ 4 jenis</td></tr>
+                                <tr><td>Pediatric symbols</td><td>❌</td><td>⚠️</td><td>✅ 8 simbol SVG</td></tr>
+                                <tr><td>Reading chart edukatif</td><td>❌</td><td>❌</td><td>✅ + presbiopia info</td></tr>
+                                <tr><td>Offline / no install</td><td>✅</td><td>⚠️</td><td>✅ Single HTML file</td></tr>
+                                <tr><td>Open source</td><td>❌</td><td>⚠️</td><td>✅ GitHub Pages</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Arsitektur & Alur Kerja -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">⚙️</span> Arsitektur &amp; Alur Kerja
+                    </h2>
+                    <h3 style="font-size:1.7rem; margin-bottom:1.2rem; margin-top:2rem; color:var(--text-main);">Alur Render Chart</h3>
+
+                    <div class="mermaid">
+flowchart TD
+    A["User membuka halaman"] --> B["Load settings dari localStorage"]
+    B --> C{"Ada saved settings?"}
+    C -->|Ya| D["Apply saved settings"]
+    C -->|Tidak| E["Apply default settings"]
+    D --> F["Hitung PPI dari resolusi dan ukuran TV"]
+    E --> F
+    F --> G["Hitung letter height px"]
+    G --> H{"Display Scaling berbeda dari 1.0?"}
+    H -->|Ya| I["Multiply height dengan scaling factor"]
+    H -->|Tidak| J["Render tanpa scaling"]
+    I --> K["Render huruf atau simbol ke layar"]
+    J --> K
+    K --> L["Tampilkan tooltip info"]
+    L --> M["User navigasi atau ubah pengaturan"]
+    M --> G
+
+    style A fill:#e0f2fe,stroke:#0284c7
+    style K fill:#d1fae5,stroke:#059669
+    style L fill:#fef3c7,stroke:#d97706
+                    </div>
+                    <div class="paper-figcaption"><em>Gambar 2 — Alur kerja rendering chart dari loading hingga tampilan</em></div>
+
+                    <h3 style="font-size:1.7rem; margin-bottom:1.2rem; margin-top:2rem; color:var(--text-main);">Alur Kalibrasi Display Scaling</h3>
+
+                    <div class="mermaid">
+flowchart LR
+    A["Mengukur huruf 20/200 dengan penggaris"] --> B["Masukkan nilai terukur ke kalkulator"]
+    B --> C["Rumus: new_scaling = current x theoretical / measured"]
+    C --> D["Scaling baru diterapkan"]
+    D --> E["Huruf kembali diukur untuk validasi"]
+
+    style A fill:#fef3c7,stroke:#d97706
+    style C fill:#ede9fe,stroke:#7c3aed
+    style E fill:#d1fae5,stroke:#059669
+                    </div>
+                    <div class="paper-figcaption"><em>Gambar 3 — Alur kalibrasi Display Scaling menggunakan kalkulator bawaan</em></div>
+                </section>
+
+                <!-- Aspek Klinis -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">🏥</span> Aspek Klinis: Rumus &amp; Kalibrasi
+                    </h2>
+                    <h3 style="font-size:1.7rem; margin-bottom:1.2rem; margin-top:2rem; color:var(--text-main);">Rumus Tinggi Huruf</h3>
+                    <p>
+                        Rumus utama yang digunakan untuk menghitung tinggi huruf dalam satuan milimeter:
+                    </p>
+
+                    <div class="code-block"><pre>height_mm = factor × (distance_m / 6.0) × 1.45444 × scaling</pre></div>
+
+                    <p>Di mana:</p>
+                    <ul class="paper-list">
+                        <li><strong>factor</strong> = nilai yang merepresentasikan ukuran huruf (misal: 60 untuk 20/200, 7.5 untuk 20/20)</li>
+                        <li><strong>distance_m</strong> = jarak penglihatan dalam meter</li>
+                        <li><strong>1.45444</strong> = konstanta konversi sudut visual ke ukuran linear</li>
+                        <li><strong>scaling</strong> = faktor kompensasi Display Scaling</li>
+                    </ul>
+
+                    <div class="paper-callout tip">
+                        <span class="paper-callout-icon">💡</span>
+                        <div>
+                            <p><strong>Konversi ke Piksel</strong></p>
+                            <p>Setelah mendapatkan <code>height_mm</code>, konversi ke piksel menggunakan:</p>
+                            <div class="code-block" style="margin:0.8rem 0;"><pre>height_px = height_mm / (25.4 / PPI)</pre></div>
+                            <p>Di mana <strong>PPI</strong> (Pixels Per Inch) dihitung dari resolusi layar dan ukuran TV.</p>
+                        </div>
+                    </div>
+
+                    <h3 style="font-size:1.7rem; margin-bottom:1.2rem; margin-top:2rem; color:var(--text-main);">Mengapa Scaling Factor Diperlukan?</h3>
+
+                    <div class="mermaid">
+flowchart TD
+    A["Windows Display Scaling 125% / 150% / 175%"] --> B["OS mengubah ukuran render"]
+    B --> C["Ukuran huruf di layar tidak sama dengan ukuran fisik yang diharapkan"]
+    C --> D["Pengukuran dengan penggaris: mismatch"]
+    D --> E["Kalkulator Scaling menghitung koreksi factor"]
+    E --> F["Scaling factor diterapkan ke rumus"]
+    F --> G["Ukuran huruf fisik sesuai standar klinis"]
+
+    style A fill:#fef3c7,stroke:#d97706
+    style D fill:#fee2e2,stroke:#dc2626
+    style G fill:#d1fae5,stroke:#059669
+                    </div>
+                    <div class="paper-figcaption"><em>Gambar 4 — Mengapa Display Scaling Windows menjadi masalah dan bagaimana kalibrasi mengatasinya</em></div>
+
+                    <div class="paper-callout important">
+                        <span class="paper-callout-icon">❗</span>
+                        <div>
+                            <p><strong>Standar ISO 10938</strong></p>
+                            <p>Rumus yang digunakan merujuk pada pendekatan standar ISO 10938 untuk chart penglihatan. Kalkulator internal secara otomatis mempertimbangkan scaling yang sedang aktif, sehingga pengguna tidak perlu menghitung manual.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Reading Chart & Presbiopia -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">📚</span> Reading Chart &amp; Presbiopia
+                    </h2>
+                    <h3 style="font-size:1.7rem; margin-bottom:1.2rem; margin-top:2rem; color:var(--text-main);">Apa itu Presbiopia?</h3>
+                    <p>
+                        Presbiopia adalah penurunan kemampuan akomodasi mata akibat penuaan lensa. Kondisi ini dialami oleh hampir semua manusia mulai usia <strong>40 tahun ke atas</strong>.
+                    </p>
+
+                    <div class="paper-callout info">
+                        <span class="paper-callout-icon">ℹ️</span>
+                        <div>
+                            <p><strong>Fakta Klinis</strong></p>
+                            <ul class="paper-list" style="margin-top:0.5rem;">
+                                <li>Lensa mata kehilangan kelenturan seiring waktu</li>
+                                <li>Gejala: kesulitan membaca huruf kecil, harus menjauhkan bacaan</li>
+                                <li><strong>Bukan penyakit</strong> — bagian natural dari penuaan</li>
+                                <li>Solusi: kacamata plus, lensa bifocal, atau progressive</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h3 style="font-size:1.7rem; margin-bottom:1.2rem; margin-top:2rem; color:var(--text-main);">Konten Edukatif dalam Reading Chart</h3>
+                    <p>
+                        Reading chart ini tidak hanya menguji penglihatan, tetapi juga menyampaikan edukasi kepada pasien:
+                    </p>
+
+                    <div class="mermaid">
+mindmap
+  root((Reading Chart N36 to N5))
+    N36 Presbiopia
+      Penjelasan kondisi
+      Usia 40+
+      Solusi kacamata plus
+    N28 Lensa Kacamata
+      Bifocal vs Progressive
+      Garis batas vs transisi halus
+    N24 Fitur Lensa
+      Photochromic
+      Anti-Blue Light
+    N20 Mata Lelah
+      Asthenopia
+      Gejala &amp; penyebab
+      Solusi 20-20-20 rule
+    N16-N5 Topik Kesehatan
+      Miopia
+      Hipermetropia
+      Astigmatisme
+      Nutrisi mata
+      Pemeriksaan rutin
+                    </div>
+                    <div class="paper-figcaption"><em>Gambar 5 — Struktur edukasi yang terintegrasi dalam setiap baris reading chart</em></div>
+
+                    <h3 style="font-size:1.7rem; margin-bottom:1.2rem; margin-top:2rem; color:var(--text-main);">Mengapa Jarak 30cm?</h3>
+                    <p>
+                        Jarak baku reading chart diatur ke <strong>30cm</strong> karena:
+                    </p>
+                    <ul class="paper-list">
+                        <li>Jarak membaca normal saat menggunakan lensa multifokal atau lensa plus adalah <strong>30–40cm</strong></li>
+                        <li>Pengguna dapat menyesuaikan jarak (10–80cm) sesuai kebutuhan</li>
+                        <li>Semua kalkulasi ukuran huruf otomatis menyesuaikan berdasarkan jarak yang diatur</li>
+                    </ul>
+                </section>
+
+                <!-- Implementasi Teknis -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">🛠</span> Implementasi Teknis
+                    </h2>
+                    <h3 style="font-size:1.7rem; margin-bottom:1.2rem; margin-top:2rem; color:var(--text-main);">Single-File Architecture</h3>
+                    <p>
+                        Seluruh aplikasi — HTML, CSS, dan JavaScript — dikemas dalam <strong>satu file HTML</strong> saja.
+                    </p>
+
+                    <div class="paper-callout note">
+                        <span class="paper-callout-icon">📝</span>
+                        <div>
+                            <p><strong>Filosofi Single-File</strong></p>
+                            <p>Meskipun awalnya tidak direncanakan, pendekatan single-file terbukti memiliki keuntungan:</p>
+                            <ul class="paper-list" style="margin-top:0.5rem;">
+                                <li><strong>Deployment instan</strong> — cukup upload satu file ke GitHub Pages</li>
+                                <li><strong>Tidak ada build process</strong> — langsung bisa dibuka di browser</li>
+                                <li><strong>Portabilitas</strong> — bisa dibuka offline, dikirim via USB, atau ditanam di sistem klinik</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h3 style="font-size:1.7rem; margin-bottom:1.2rem; margin-top:2rem; color:var(--text-main);">SVG Pediatric Symbols</h3>
+                    <p>
+                        Delapan simbol pediatric dipilih melalui riset elaborasi menggunakan AI:
+                    </p>
+
+                    <div class="paper-table-wrapper">
+                        <table class="paper-table">
+                            <thead><tr><th>No</th><th>Simbol</th><th>Asal SVG</th><th>Keterangan</th></tr></thead>
+                            <tbody>
+                                <tr><td>1</td><td>🍎 Apel</td><td>Lucide Icons</td><td>Path ganda (body + leaf)</td></tr>
+                                <tr><td>2</td><td>🏠 Rumah</td><td>Lucide Icons</td><td>Path ganda (body + chimney)</td></tr>
+                                <tr><td>3</td><td>⭐ Bintang</td><td>Lucide Icons</td><td>5-point star</td></tr>
+                                <tr><td>4</td><td>❤️ Hati</td><td>Lucide Icons</td><td>Heart shape</td></tr>
+                                <tr><td>5</td><td>🌙 Bulan</td><td>Lucide Icons</td><td>Crescent moon</td></tr>
+                                <tr><td>6</td><td>⭕ Lingkaran</td><td>Lucide Icons</td><td>Circle</td></tr>
+                                <tr><td>7</td><td>🟥 Persegi</td><td>Lucide Icons</td><td>Square</td></tr>
+                                <tr><td>8</td><td>🔺 Segitiga</td><td>Lucide Icons</td><td>Triangle</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="paper-callout note">
+                        <span class="paper-callout-icon">📝</span>
+                        <div>
+                            <p><strong>Pendekatan SVG</strong></p>
+                            <p>Setiap simbol menggunakan viewBox <code>24×24</code> dari referensi Lucide. Fungsi <code>makePediatricSVG()</code> mendukung array path (beberapa ikon memiliki path ganda) yang digabung dengan <code>fill-rule="evenodd"</code>.</p>
+                        </div>
+                    </div>
+
+                    <h3 style="font-size:1.7rem; margin-bottom:1.2rem; margin-top:2rem; color:var(--text-main);">Tantangan Teknis</h3>
+
+                    <div class="paper-table-wrapper">
+                        <table class="paper-table">
+                            <thead><tr><th>Tantangan</th><th>Solusi</th></tr></thead>
+                            <tbody>
+                                <tr><td><strong>Ukuran kode sangat besar</strong> (single-file)</td><td>Dikelola dengan struktur section yang jelas dalam HTML</td></tr>
+                                <tr><td><strong>Akurasi antar perangkat</strong></td><td>Sistem kalibrasi scaling + kalkulator bawaan</td></tr>
+                                <tr><td><strong>Reading chart di mobile</strong></td><td>Responsive design khusus, scrolling body, fixed nav buttons</td></tr>
+                                <tr><td><strong>11 paragraf edukatif panjang</strong></td><td>Layout single-row view dengan word-wrap dan overflow handling</td></tr>
+                                <tr><td><strong>Simbol pediatric acak muncul berurutan</strong></td><td>Predefined array per baris (bukan random)</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- UX & Responsive Design -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">📱</span> UX &amp; Responsive Design
+                    </h2>
+                    <h3 style="font-size:1.7rem; margin-bottom:1.2rem; margin-top:2rem; color:var(--text-main);">Breakpoint Strategy</h3>
+
+                    <div class="mermaid">
+flowchart LR
+    A["Desktop - lebih dari 768px"] -->|"Drawer sidebar"| B["Tablet - 481 sampai 768px"]
+    B -->|"Drawer overlay"| C["Mobile - kurang dari 480px"]
+    C -->|"Stacked layout"| D["Fullscreen - Any size"]
+
+    style A fill:#dbeafe,stroke:#2563eb
+    style B fill:#e0e7ff,stroke:#4f46e5
+    style C fill:#fce7f3,stroke:#db2777
+    style D fill:#d1fae5,stroke:#059669
+                    </div>
+                    <div class="paper-figcaption"><em>Gambar 6 — Strategi breakpoint responsive design</em></div>
+
+                    <h3 style="font-size:1.7rem; margin-bottom:1.2rem; margin-top:2rem; color:var(--text-main);">Navigasi Antar Chart</h3>
+
+                    <div class="mermaid">
+flowchart TD
+    A["snellen-chart.html"] -->|"Book icon - top-right"| B["reading-chart.html"]
+    B -->|"External link icon - top-right"| A
+
+    style A fill:#ede9fe,stroke:#7c3aed
+    style B fill:#ccfbf1,stroke:#14b8a6
+                    </div>
+                    <div class="paper-figcaption"><em>Gambar 7 — Navigasi antara Snellen Chart dan Reading Chart</em></div>
+
+                    <div class="paper-callout tip">
+                        <span class="paper-callout-icon">💡</span>
+                        <div>
+                            <p><strong>UX Navigation</strong></p>
+                            <p>Tombol navigasi ditempatkan di pojok kanan atas dengan posisi fixed, disembunyikan saat mode fullscreen untuk tidak mengganggu fokus pengguna saat uji penglihatan.</p>
+                        </div>
+                    </div>
+
+                    <h3 style="font-size:1.7rem; margin-bottom:1.2rem; margin-top:2rem; color:var(--text-main);">Mobile-First Considerations</h3>
+                    <ul class="paper-list">
+                        <li><strong>Reading chart</strong> memang dirancang untuk dibaca jarak dekat — <strong>mobile adalah platform utama</strong>, bukan TV lebar</li>
+                        <li><strong>Tombol prev/next</strong> menggunakan <code>position: fixed</code> agar tetap terlihat saat scrolling konten panjang</li>
+                        <li><strong>Tooltip info</strong> diizinkan wrap di mobile agar tidak keluar layar</li>
+                        <li><strong>Statusbar</strong> menggunakan <code>position: sticky; bottom: 0</code> agar selalu terlihat</li>
+                    </ul>
+                </section>
+
+                <!-- Kesimpulan -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">✅</span> Kesimpulan
+                    </h2>
+                    <p>
+                        Digital Snellen Chart berhasil dibangun sebagai aplikasi web mandiri yang:
+                    </p>
+                    <ol class="paper-ol">
+                        <li>✅ Menyediakan <strong>empat jenis chart</strong> penglihatan dalam satu platform</li>
+                        <li>✅ Memiliki <strong>sistem kalibrasi</strong> yang mengkompensasi Display Scaling</li>
+                        <li>✅ Mendukung <strong>pediatric symbols</strong> dengan 8 ikon SVG yang konsisten</li>
+                        <li>✅ Menyertakan <strong>reading chart edukatif</strong> dengan informasi presbiopia dan lensa</li>
+                        <li>✅ Berjalan <strong>offline</strong> sebagai single-file HTML tanpa dependensi</li>
+                        <li>✅ <strong>Responsive</strong> untuk desktop, tablet, dan mobile</li>
+                    </ol>
+
+                    <div class="paper-callout note">
+                        <span class="paper-callout-icon">📝</span>
+                        <div>
+                            <p><strong>Status Saat Ini</strong></p>
+                            <p>Project ini masih dalam tahap <strong>uji coba pribadi</strong> dan belum divalidasi secara klinis. Rencana ke depan adalah mengunggah ke <strong>GitHub Pages</strong> sebagai open source agar dapat dimanfaatkan lebih luas.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Referensi -->
+                <section class="page-section">
+                    <h2 class="page-section-title">
+                        <span class="section-icon">📋</span> Referensi
+                    </h2>
+                    <ul class="paper-list">
+                        <li>ISO 10938:2017 — Charts for the assessment of visual acuity for distant vision</li>
+                        <li>Lucide Icons — <a href="https://lucide.dev" target="_blank" rel="noopener" style="color:var(--color-primary);">https://lucide.dev</a></li>
+                        <li>Plus Jakarta Sans — Google Fonts</li>
+                        <li>Courier Prime — Google Fonts</li>
+                    </ul>
+                </section>
+
+            </div>
+        </div>
+
+    </main>
+
+    <div data-include="footer"></div>
+
+<script src="/js/data.js"></script>
+<script src="/js/project-data.js"></script>
+<script src="/js/page.js"></script>
+<script src="/js/include.js"></script>
+<script>
+    mermaid.initialize({
+        startOnLoad: false,
+        theme: 'dark',
+        themeVariables: {
+            primaryColor: '#ede9fe',
+            primaryTextColor: '#e8e8f0',
+            primaryBorderColor: '#7c3aed',
+            lineColor: '#6b7280',
+            secondaryColor: '#1e1b4b',
+            tertiaryColor: '#141418',
+            fontFamily: 'Inter, sans-serif',
+            fontSize: '14px'
+        },
+        flowchart: { htmlLabels: true, curve: 'basis' }
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        mermaid.run();
+    });
+</script>
+</body>
+</html>

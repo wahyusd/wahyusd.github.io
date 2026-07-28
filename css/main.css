@@ -1185,6 +1185,47 @@ p {
     transform: translateY(-2px);
 }
 
+/* View App button — secondary to Read More */
+.project-view-app {
+    padding: 0.55rem 1.1rem;
+    background: rgba(251, 146, 60, 0.12);
+    border: 1px solid rgba(251, 146, 60, 0.25);
+    color: #fb923c;
+    border-radius: 8px;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    transition: var(--transition-smooth);
+    text-decoration: none;
+    white-space: nowrap;
+}
+.project-view-app svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: #fb923c;
+    flex-shrink: 0;
+}
+.project-view-app:hover {
+    background: rgba(251, 146, 60, 0.22);
+    border-color: rgba(251, 146, 60, 0.45);
+    box-shadow: 0 0 14px rgba(251, 146, 60, 0.2);
+    transform: translateY(-2px);
+}
+
+/* SVG icons inside buttons inherit dark color */
+.btn svg {
+    width: 1.8rem;
+    height: 1.8rem;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+.btn svg path {
+    fill: currentColor;
+}
+
 /* Section footer — View All button positioned right */
 .section-footer {
     margin-top: 4rem;
