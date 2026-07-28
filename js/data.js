@@ -39,11 +39,11 @@ const portfolioData = {
         //------
 
         building: [
-            { label: "WS B-Roll Assistant", status: "done"     },
-            { label: "News Center",         status: "done"     },
             { label: "EmoTube WS",          status: "done"     },
             { label: "Portfolio Website",   status: "done" },
+            { label: "Snellen Chart - Digital", status: "done"     },
             { label: "WS Pustaka - Ringkasan Buku",      status: "progress"     },
+            { label: "Script Studio", status: "progress"     },
         ],
 
         exploring: [
