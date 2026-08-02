@@ -1174,6 +1174,8 @@ p {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
+    min-width: 10rem;
+    justify-content: center;
     transition: var(--transition-smooth);
     text-decoration: none;
     white-space: nowrap;
@@ -1187,17 +1189,19 @@ p {
 
 /* View App button — secondary to Read More */
 .project-view-app {
-    padding: 0.55rem 1.1rem;
+    padding: 0.7rem 1.4rem;
     background: rgba(251, 146, 60, 0.12);
     border: 1px solid rgba(251, 146, 60, 0.25);
     color: #fb923c;
     border-radius: 8px;
     font-family: var(--font-heading);
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     font-weight: 600;
     display: inline-flex;
     align-items: center;
-    gap: 0.45rem;
+    gap: 0.5rem;
+    min-width: 10rem;
+    justify-content: center;
     transition: var(--transition-smooth);
     text-decoration: none;
     white-space: nowrap;
@@ -1652,6 +1656,17 @@ p {
     }
     .project-content {
         padding: 2.4rem;
+    }
+    /* Mobile S/M: saat tombol View App ada, Read More pindah ke baris kedua rata kanan
+       (lebar & tinggi tombol tetap alami, tidak diregangkan) */
+    .project-card .project-actions:has(.project-view-app) {
+        display: grid;
+        grid-template-columns: auto auto;
+        gap: 0.6rem;
+    }
+    .project-card .project-actions:has(.project-view-app) .project-read-more {
+        grid-column: 1 / -1;
+        justify-self: end;
     }
     .footer-container {
         flex-direction: column;
