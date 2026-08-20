@@ -28,7 +28,29 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { font-size: 62.5%; scroll-behavior: smooth; }
+html {
+    font-size: 62.5%;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-glow) var(--bg-base);
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-base);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-glow);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary);
+}
 
 body {
     background-color: var(--bg-base);
