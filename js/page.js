@@ -128,6 +128,7 @@ function initPageSearch() {
     const bar = document.getElementById('page-search-bar');
     const input = document.getElementById('page-search-input');
     const close = document.getElementById('page-search-close');
+    const submitBtn = document.getElementById('page-search-submit');
     if (!navBtn || !bar) return;
 
     navBtn.addEventListener('click', () => {
@@ -148,14 +149,16 @@ function initPageSearch() {
         if (typeof window._searchFilter === 'function') window._searchFilter('');
     }
 
-    close.addEventListener('click', closeSearch);
-
-    input.addEventListener('input', () => {
+    function submitSearch() {
         if (typeof window._searchFilter === 'function') window._searchFilter(input.value);
-    });
+    }
+
+    close.addEventListener('click', closeSearch);
+    if (submitBtn) submitBtn.addEventListener('click', submitSearch);
 
     input.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') closeSearch();
+        if (e.key === 'Enter') submitSearch();
     });
 
     document.addEventListener('click', (e) => {
