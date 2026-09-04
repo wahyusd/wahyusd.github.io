@@ -129,6 +129,7 @@ function initPageSearch() {
     const input = document.getElementById('page-search-input');
     const close = document.getElementById('page-search-close');
     const submitBtn = document.getElementById('page-search-submit');
+    const textBtn = document.getElementById('page-search-text-btn');
     if (!navBtn || !bar) return;
 
     navBtn.addEventListener('click', () => {
@@ -146,6 +147,7 @@ function initPageSearch() {
     function closeSearch() {
         bar.classList.remove('active');
         input.value = '';
+        if (textBtn) textBtn.classList.remove('visible');
         if (typeof window._searchFilter === 'function') window._searchFilter('');
     }
 
@@ -153,8 +155,21 @@ function initPageSearch() {
         if (typeof window._searchFilter === 'function') window._searchFilter(input.value);
     }
 
+    function applyAndClose() {
+        submitSearch();
+        bar.classList.remove('active');
+    }
+
     close.addEventListener('click', closeSearch);
     if (submitBtn) submitBtn.addEventListener('click', submitSearch);
+    if (textBtn) textBtn.addEventListener('click', submitSearch);
+
+    input.addEventListener('input', () => {
+        if (textBtn) {
+            if (input.value.trim()) textBtn.classList.add('visible');
+            else textBtn.classList.remove('visible');
+        }
+    });
 
     input.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') closeSearch();
@@ -163,7 +178,7 @@ function initPageSearch() {
 
     document.addEventListener('click', (e) => {
         if (bar.classList.contains('active') && !e.target.closest('#page-search-bar') && !e.target.closest('#nav-search-btn')) {
-            closeSearch();
+            applyAndClose();
         }
     });
 }
